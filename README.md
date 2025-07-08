@@ -1,54 +1,73 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Vite + React + TypeScript Project
 
-Currently, two official plugins are available:
+This project is built using [Vite](https://vitejs.dev/) with React and TypeScript. It follows a scalable and organized folder structure to help teams maintain and grow the application efficiently.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Install dependencies
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Start development server
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+npm run dev
+```
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+---
+
+## Folder Structure
+
+```
+src/
+├── components/
+│   └── ui/                # Reusable UI components (e.g. Button, Input)
+├── features/
+│   └── auth/              # Encapsulated feature logic (e.g. LoginForm, Auth hooks)
+├── pages/
+│   └── dashboard/         # Page-level components (compositions of features and UI)
+├── lib/                   # Core libraries or service clients (e.g. API wrapper)
+├── utils/                 # Utility functions (e.g. className merger, validators)
+├── hooks/                 # Reusable custom React hooks
+├── index.css              # Global styles
+└── main.tsx               # Application entry point
+```
+
+---
+
+## Aliases
+
+We use a `@/` alias pointing to the `src/` directory, making imports cleaner and easier to manage.
+
+### Example:
+
+```ts
+import { Button } from "@/components/ui/Button";
+import { LoginForm } from "@/features/auth/LoginForm";
+```
+
+---
+
+## Conventions
+
+* **`components/ui/`**: Only dumb/presentational components or shadcn-styled UI building blocks.
+* **`features/`**: Self-contained business logic and feature modules.
+* **`pages/`**: Route-level pages that compose features and UI.
+* **`lib/`**: Singletons, clients, services (e.g. Axios instances, API interfaces).
+* **`utils/`**: Stateless utility helpers and formatters.
+* **`hooks/`**: Shared custom React hooks (e.g. `useToggle`, `useDebounce`).
+
+---
+
+## 🧹 Formatting
+
+This project uses [Prettier](https://prettier.io) for code formatting. Config is in `.prettierrc`.
+
+```bash
+npx prettier --write .
 ```
