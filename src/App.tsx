@@ -1,17 +1,17 @@
-import './App.css'
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "@/pages/Home";
-import Login from "@/pages/Login.tsx";
+import Successful from "./pages/Successful";
+
 
 function App() {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Home/>}/>
-                <Route path="/login" element={<Login/>}/>
-            </Routes>
-        </BrowserRouter>
-    )
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Successful />} />
+        {/* Add other routes here */}
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
