@@ -46,6 +46,7 @@
   max-width: 36rem;
   padding-top: 4rem;
   padding-bottom: 4rem;
+  margin-left: 10rem;
 }
 @media (min-width: 768px) {
   .home-hero .hero-left {
