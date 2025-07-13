@@ -42,8 +42,6 @@ const Successful = () => {
 
         <button className="import-button">Continue to Dashboard</button>
       </div>
-
-      <div className="profile-circle">M</div>
     </div>
   );
 };

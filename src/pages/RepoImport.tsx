@@ -52,8 +52,6 @@ const RepoImport = () => {
           ))}
         </div>
       </div>
-
-      <div className="profile-circle">M</div>
     </div>
   );
 };

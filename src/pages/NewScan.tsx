@@ -91,8 +91,6 @@ const NewScan = () => {
 
         <button className="start-button">Start Scan</button>
       </div>
-
-      <div className="profile-circle">M</div>
     </div>
   );
 };
