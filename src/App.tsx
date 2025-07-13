@@ -11,7 +11,7 @@ import Home from "./pages/Home";
 function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-[#030711] flex flex-col">
+      <div className="min-h-screen flex flex-col" style={{background: "radial-gradient(ellipse at 70% 40%, #101624 60%, #030711 100%)"}}>
         <Navbar />
         <main className="flex-1">
           <Routes>

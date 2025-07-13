@@ -19,7 +19,7 @@ const Navbar = () => {
     const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
     return (
-        <nav className="bg-[#0A0D14] rounded-lg mt-2 mx-2 px-4 py-2 flex items-center justify-between border border-white">
+        <nav className="bg-transparent rounded-lg mt-2 mx-2 px-4 py-2 flex items-center justify-between border border-white">
             {/* Left: Logo and Links */}
             <div className="flex items-center space-x-6">
                 <div className="flex items-center space-x-2 cursor-pointer" onClick={() => navigate("/")}> 
@@ -88,7 +88,7 @@ const Navbar = () => {
             </div>
             {/* Mobile menu */}
             {isMobileMenuOpen && (
-                <div className="absolute top-16 left-0 w-full bg-[#0A0D14] rounded-b-lg shadow-lg z-50 md:hidden">
+                <div className="absolute top-16 left-0 w-full bg-transparent rounded-b-lg shadow-lg z-50 md:hidden">
                     <div className="flex flex-col items-start px-4 py-4 space-y-2">
                         {navLinks.map((link) => (
                             <button
