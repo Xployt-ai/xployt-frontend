@@ -1,5 +1,6 @@
 import React from "react";
 import "./Successful.css";
+import NavBar from "@/features/nav/NavBar";
 
 const Successful = () => {
   const repositories = [
@@ -7,6 +8,8 @@ const Successful = () => {
   ];
 
   return (
+    <div>
+      <NavBar />
     <div className="success-container">
       <div className="success-card">
         <div className="success-header-box">
@@ -44,6 +47,7 @@ const Successful = () => {
       </div>
 
       <div className="profile-circle">M</div>
+    </div>
     </div>
   );
 };

@@ -1,0 +1,92 @@
+/* Typography & Colors */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --bg-color: #000;
+  --border-color: #4B5563;
+  --text-color: #E5E8EB; /* subtle-medium */
+  --text-bold: #ffffff;
+}
+
+/* Nav Container */
+.navbar {
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.75rem 2rem;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-color);
+  display: flex;
+  justify-content: center;
+
+}
+
+/* Flex Container */
+.navbar-content {
+  display: flex;
+  width: 1200px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Left Section */
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo {
+  height: 40px;
+  margin-right: 2rem;
+}
+
+/* Navigation Links */
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 1.5rem;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-links li a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+  transition: color 0.3s;
+}
+
+.nav-links li a:hover {
+  color: var(--text-bold);
+}
+
+/* Right Section */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-name {
+  color: var(--text-color);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.logout-button {
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 0.4rem 0.9rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.logout-button:hover {
+  background-color: #27272a;
+  color: var(--text-bold);
+  border-color: #52525b;
+}
