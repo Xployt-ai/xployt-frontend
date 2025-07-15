@@ -8,7 +8,6 @@ import Pricing from "./pages/Pricing";
 import Documentation from "./pages/Documentation";
 import Contact from "./pages/Contact";
 import Home from "./pages/Home";
-import Successful from "./pages/Successful";
 import RepoImport from "./pages/RepoImport";
 import NewScan from "./pages/NewScan";
 
@@ -29,7 +28,6 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/contact" element={<NewScan />} />
             <Route path="/contact" element={<RepoImport />} />
-             <Route path="/contact" element={<Successful />} />
               
             
             {/* Add other routes here */}

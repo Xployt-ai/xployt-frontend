@@ -1,3 +1,4 @@
+import { useState } from "react";
 
 
 const repositories = [
@@ -7,7 +8,7 @@ const repositories = [
 ];
 
 const RepoImport = () => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(" ");
 
   const filteredRepos = repositories.filter((repo) =>
     repo.name.toLowerCase().includes(search.toLowerCase())
