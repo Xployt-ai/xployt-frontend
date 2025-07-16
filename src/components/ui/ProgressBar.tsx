@@ -1,11 +1,13 @@
-const ProgressBar = ({ percentage = 0 }) => (
-  <div>
+const ProgressBar = ({ progress }: { progress: number }) => (
+  <div className="space-y-2 text-left mt-6">
     <p>
-      Overall Progress:{" "}
-      <span className="text-green-400 font-bold">{percentage}%</span>
+      Overall Progress: <span className="text-white">{progress}%</span>
     </p>
-    <div className="w-full h-3 bg-gray-700 rounded-md overflow-hidden mt-1">
-      <div className="h-full bg-green-500 transition-all" style={{ width: `${percentage}%` }}></div>
+    <div className="w-full h-3 bg-gray-700 rounded-md overflow-hidden">
+      <div
+        className="h-full bg-white transition-all duration-300"
+        style={{ width: `${progress}%` }}
+      ></div>
     </div>
   </div>
 );

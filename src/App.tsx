@@ -10,7 +10,11 @@ import Contact from "./pages/Contact";
 import Home from "./pages/Home";
 import RepoImport from "./pages/RepoImport";
 import NewScan from "./pages/NewScan";
+
+import Sucessful from "./pages/Successful";
+
 import Dashboard from "./pages/Dashboard";
+
 
 function App() {
   return (
@@ -22,6 +26,9 @@ function App() {
         <Navbar />
         <main className="flex-1">
           <Routes>
+
+          <Route path="/" element={<Home />} />
+
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/pricing" element={<Pricing />} />
@@ -30,7 +37,9 @@ function App() {
             <Route path="/contact" element={<NewScan />} />
             <Route path="/contact" element={<RepoImport />} />
             <Route path="/Dashboard" element={<Dashboard />} />
+            <Route path="/successful" element={<Sucessful />} />
     
+
           </Routes>
         </main>
         <Footer />
