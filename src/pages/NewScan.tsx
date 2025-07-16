@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
 
 const NewScan = () => {
-  const [envVars, setEnvVars] = useState([{ key: '', value: '' }]);
+  const [envVars, setEnvVars] = useState([{ key: "", value: "" }]);
 
   const handleAddEnvVar = () => {
-    setEnvVars([...envVars, { key: '', value: '' }]);
+    setEnvVars([...envVars, { key: "", value: "" }]);
   };
 
   const handleRemoveEnvVar = (index) => {
@@ -21,16 +24,16 @@ const NewScan = () => {
 
   return (
     <div className="min-h-screen bg-black text-white p-12 flex flex-col items-center relative font-sans">
-      <div className="bg-[#1c1c1e] p-8 rounded-xl w-full max-w-xl shadow-lg">
+      <Card className="w-full max-w-xl p-8 rounded-xl shadow-lg bg-[#1c1c1e]">
         <h2 className="text-2xl font-bold mb-6">New Scan</h2>
 
         {/* GitHub import */}
         <div className="mb-4">
           <label className="block mb-1 text-sm font-semibold">Importing from GitHub</label>
-          <input
+          <Input
             disabled
             value="github.com/xployt-ai/xploit-scan-stub"
-            className="w-full p-2 rounded-md bg-gray-900 text-gray-400 border border-gray-700 cursor-not-allowed"
+            className="bg-gray-900 text-gray-400 border-gray-700 cursor-not-allowed"
           />
         </div>
 
@@ -46,19 +49,13 @@ const NewScan = () => {
         {/* Project Name */}
         <div className="mb-4">
           <label className="block mb-1 text-sm font-semibold">Project Name</label>
-          <input
-            placeholder="Enter your project name"
-            className="w-full p-2 rounded-md bg-black border border-gray-700 text-white"
-          />
+          <Input placeholder="Enter your project name" />
         </div>
 
         {/* Root Directory */}
         <div className="mb-6">
           <label className="block mb-1 text-sm font-semibold">Root Directory</label>
-          <input
-            defaultValue="/"
-            className="w-full p-2 rounded-md bg-black border border-gray-700 text-white"
-          />
+          <Input defaultValue="/" />
         </div>
 
         <div className="text-sm text-gray-400 font-semibold mb-2">Build and Output Settings</div>
@@ -66,28 +63,19 @@ const NewScan = () => {
         {/* Build Command */}
         <div className="mb-4">
           <label className="block mb-1 text-sm font-semibold">Build Command</label>
-          <input
-            placeholder='"npm run build" or "yarn build"'
-            className="w-full p-2 rounded-md bg-black border border-gray-700 text-white"
-          />
+          <Input placeholder='"npm run build" or "yarn build"' />
         </div>
 
         {/* Output Directory */}
         <div className="mb-4">
           <label className="block mb-1 text-sm font-semibold">Output Directory</label>
-          <input
-            placeholder='"public" (if exists), else "/"'
-            className="w-full p-2 rounded-md bg-black border border-gray-700 text-white"
-          />
+          <Input placeholder='"public" (if exists), else "/"' />
         </div>
 
         {/* Install Command */}
         <div className="mb-6">
           <label className="block mb-1 text-sm font-semibold">Install Command</label>
-          <input
-            placeholder='"npm install" or "yarn install"'
-            className="w-full p-2 rounded-md bg-black border border-gray-700 text-white"
-          />
+          <Input placeholder='"npm install" or "yarn install"' />
         </div>
 
         {/* Env Vars */}
@@ -95,37 +83,40 @@ const NewScan = () => {
 
         {envVars.map((env, index) => (
           <div key={index} className="flex gap-2 items-center mb-2">
-            <input
+            <Input
               type="text"
               placeholder="EXAMPLE_NAME"
               value={env.key}
-              onChange={(e) => handleEnvChange(index, 'key', e.target.value)}
-              className="w-1/2 p-2 rounded-md bg-black border border-gray-700 text-white"
+              onChange={(e) => handleEnvChange(index, "key", e.target.value)}
+              className="w-1/2"
             />
-            <input
+            <Input
               type="text"
               placeholder="Value"
               value={env.value}
-              onChange={(e) => handleEnvChange(index, 'value', e.target.value)}
-              className="w-1/2 p-2 rounded-md bg-black border border-gray-700 text-white"
+              onChange={(e) => handleEnvChange(index, "value", e.target.value)}
+              className="w-1/2"
             />
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => handleRemoveEnvVar(index)}
-              className="text-red-400 text-xl font-bold px-2"
+              className="text-red-500 font-bold px-2"
               title="Remove"
             >
               -
-            </button>
+            </Button>
           </div>
         ))}
 
         {/* Add more env vars */}
-        <button
+        <Button
+          variant="link"
           onClick={handleAddEnvVar}
-          className="text-blue-400 hover:text-blue-500 font-semibold text-sm mb-4"
+          className="text-blue-400 hover:text-blue-500 font-semibold text-sm mb-4 px-0"
         >
           + Add More
-        </button>
+        </Button>
 
         {/* Tip */}
         <p className="text-xs text-gray-500 mb-4">
@@ -133,15 +124,13 @@ const NewScan = () => {
         </p>
 
         {/* Start Scan */}
-        <button className="w-full bg-white text-black py-2 rounded-md font-bold hover:bg-gray-200 transition">
+        <Button className="w-full bg-white text-black hover:bg-gray-200 font-bold">
           Start Scan
-        </button>
-      </div>
+        </Button>
+      </Card>
 
-      {/* Profile Circle */}
-      <div className="fixed top-8 right-8 w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center font-bold">
-        M
-      </div>
+    
+      
     </div>
   );
 };

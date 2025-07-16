@@ -10,6 +10,7 @@ import Contact from "./pages/Contact";
 import Home from "./pages/Home";
 import RepoImport from "./pages/RepoImport";
 import NewScan from "./pages/NewScan";
+import Sucessful from "./pages/Successful";
 
 function App() {
   return (
@@ -21,15 +22,14 @@ function App() {
         <Navbar />
         <main className="flex-1">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/pricing" element={<Pricing />} />
-            <Route path="/docs" element={<Documentation />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/contact" element={<NewScan />} />
-            <Route path="/contact" element={<RepoImport />} />
-              
-            
+          <Route path="/" element={<Home />} />
+<Route path="/about" element={<About />} />
+<Route path="/pricing" element={<Pricing />} />
+<Route path="/docs" element={<Documentation />} />
+<Route path="/contact" element={<Contact />} />
+<Route path="/new-scan" element={<NewScan />} />
+<Route path="/repo-import" element={<RepoImport />} />
+<Route path="/successful" element={<Sucessful />} />
             {/* Add other routes here */}
           </Routes>
         </main>
