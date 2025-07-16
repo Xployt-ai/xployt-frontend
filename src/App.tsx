@@ -10,6 +10,7 @@ import Contact from "./pages/Contact";
 import Home from "./pages/Home";
 import RepoImport from "./pages/RepoImport";
 import NewScan from "./pages/NewScan";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -28,9 +29,8 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/contact" element={<NewScan />} />
             <Route path="/contact" element={<RepoImport />} />
-              
-            
-            {/* Add other routes here */}
+            <Route path="/Dashboard" element={<Dashboard />} />
+    
           </Routes>
         </main>
         <Footer />
