@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
@@ -19,12 +18,12 @@ import Dashboard from "./pages/Dashboard";
 function App() {
   return (
     <BrowserRouter>
-      {/* <div
+      <div
         className="min-h-screen flex flex-col"
         style={{ background: "radial-gradient(ellipse at 70% 40%, #101624 60%, #030711 100%)" }}
       >
         <Navbar />
-        <main className="flex-1"> */}
+        <main className="flex-1">
           <Routes>
 
           <Route path="/" element={<Home />} />
@@ -41,9 +40,9 @@ function App() {
     
 
           </Routes>
-        {/* </main>
+        </main>
         <Footer />
-      </div> */}
+      </div>
     </BrowserRouter>
   );
 }
