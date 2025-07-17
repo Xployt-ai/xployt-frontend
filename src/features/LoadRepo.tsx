@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { Search, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
@@ -50,7 +49,6 @@ const LoadRepo = () => {
           {isLoading ? 'Scanning...' : 'Start Scan'}
         </Button>
       </div>
-
       {/* Project Cards */}
       <div className="space-y-4">
         {projects.map((project) => (
