@@ -1,98 +1,136 @@
-import React, { useState } from 'react';
-import './NewScan.css';
+import React, { useState } from "react";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Card } from "@/components/ui/Card";
 
 const NewScan = () => {
-  const [envVars, setEnvVars] = useState([{ key: '', value: '' }]);
+  const [envVars, setEnvVars] = useState([{ key: "", value: "" }]);
 
   const handleAddEnvVar = () => {
-    setEnvVars([...envVars, { key: '', value: '' }]);
+    setEnvVars([...envVars, { key: "", value: "" }]);
   };
 
-  const handleRemoveEnvVar = (index: number) => {
+  const handleRemoveEnvVar = (index) => {
     const updated = [...envVars];
     updated.splice(index, 1);
     setEnvVars(updated);
   };
 
-  const handleEnvChange = (index: number, field: 'key' | 'value', value: string) => {
+  const handleEnvChange = (index, field, value) => {
     const updated = [...envVars];
     updated[index][field] = value;
     setEnvVars(updated);
   };
 
   return (
-    <div className="scan-container">
-      <div className="scan-card">
-        <h2>New Scan</h2>
+    <div className="min-h-screen bg-gray-900uod text-white p-12 flex flex-col items-center relative font-sans">
+      <Card className="w-full max-w-xl p-8 rounded-xl shadow-lg bg-[#1c1c1e] space-y-6 border border-gray-700">
+        <h2 className="text-2xl font-bold mb-6">New Scan</h2>
 
-        <div className="input-group">
-          <label>Importing from GitHub</label>
-          <input disabled value="github.com/xployt-ai/xploit-scan-stub" />
+        {/* GitHub import */}
+        <div className="mb-4">
+          <label className="block mb-1 text-sm font-semibold">Importing from GitHub</label>
+          <Input
+            disabled
+            value="github.com/xployt-ai/xploit-scan-stub"
+            className="bg-gray-900 text-gray-400 border-gray-700 cursor-not-allowed"
+          />
         </div>
 
-        <div className="input-group">
-          <label>Select the branch</label>
-          <select>
+        {/* Branch select */}
+        <div className="mb-4">
+          <label className="block mb-1 text-sm font-semibold">Select the branch</label>
+          <select className="w-full p-2 rounded-md bg-black border border-gray-700 text-white">
             <option>main</option>
             <option>dev</option>
           </select>
         </div>
 
-        <div className="input-group">
-          <label>Project Name</label>
-          <input placeholder="Enter your project name" />
+        {/* Project Name */}
+        <div className="mb-4">
+          <label className="block mb-1 text-sm font-semibold">Project Name</label>
+          <Input placeholder="Enter your project name" />
         </div>
 
-        <div className="input-group">
-          <label>Root Directory</label>
-          <input defaultValue="/" />
+        {/* Root Directory */}
+        <div className="mb-6">
+          <label className="block mb-1 text-sm font-semibold">Root Directory</label>
+          <Input defaultValue="/" />
         </div>
 
-        <div className="section-label">Build and Output Settings</div>
+        <div className="text-sm text-gray-400 font-semibold mb-2">Build and Output Settings</div>
 
-        <div className="input-group">
-          <label>Build Command</label>
-          <input placeholder={`"npm run build" or "yarn build"`} />
+        {/* Build Command */}
+        <div className="mb-4">
+          <label className="block mb-1 text-sm font-semibold">Build Command</label>
+          <Input placeholder='"npm run build" or "yarn build"' />
         </div>
 
-        <div className="input-group">
-          <label>Output Directory</label>
-          <input placeholder={`"public" (if exists), else "/"`} />
+        {/* Output Directory */}
+        <div className="mb-4">
+          <label className="block mb-1 text-sm font-semibold">Output Directory</label>
+          <Input placeholder='"public" (if exists), else "/"' />
         </div>
 
-        <div className="input-group">
-          <label>Install Command</label>
-          <input placeholder={`"npm install" or "yarn install"`} />
+        {/* Install Command */}
+        <div className="mb-6">
+          <label className="block mb-1 text-sm font-semibold">Install Command</label>
+          <Input placeholder='"npm install" or "yarn install"' />
         </div>
 
-        <div className="section-label">Environment Variables</div>
+        {/* Env Vars */}
+        <div className="text-sm text-gray-400 font-semibold mb-2">Environment Variables</div>
 
         {envVars.map((env, index) => (
-          <div className="env-pair" key={index}>
-            <input
+          <div key={index} className="flex gap-2 items-center mb-2">
+            <Input
               type="text"
               placeholder="EXAMPLE_NAME"
               value={env.key}
-              onChange={(e) => handleEnvChange(index, 'key', e.target.value)}
+              onChange={(e) => handleEnvChange(index, "key", e.target.value)}
+              className="w-1/2"
             />
-            <input
+            <Input
               type="text"
               placeholder="Value"
               value={env.value}
-              onChange={(e) => handleEnvChange(index, 'value', e.target.value)}
+              onChange={(e) => handleEnvChange(index, "value", e.target.value)}
+              className="w-1/2"
             />
-            <button onClick={() => handleRemoveEnvVar(index)}>-</button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleRemoveEnvVar(index)}
+              className="text-red-500 font-bold px-2"
+              title="Remove"
+            >
+              -
+            </Button>
           </div>
         ))}
 
-        <button onClick={handleAddEnvVar} className="add-more">+ Add More</button>
+        {/* Add more env vars */}
+        <Button
+          variant="link"
+          onClick={handleAddEnvVar}
+          className="text-blue-400 hover:text-blue-500 font-semibold text-sm mb-4 px-0"
+        >
+          + Add More
+        </Button>
 
-        <p className="tip">Tip: Push an env above to populate this form.</p>
+        {/* Tip */}
+        <p className="text-xs text-gray-500 mb-4">
+          Tip: Push an env above to populate this form.
+        </p>
 
-        <button className="start-button">Start Scan</button>
-      </div>
+        {/* Start Scan */}
+        <Button className="w-full bg-white text-black hover:bg-gray-200 font-bold">
+          Start Scan
+        </Button>
+      </Card>
 
-      <div className="profile-circle">M</div>
+    
+      
     </div>
   );
 };

@@ -1,18 +1,18 @@
-import * as React from "react";
-import { cn } from "@/lib/utils";
+import React from "react";
+import { cn } from "@/lib/utils.ts";
 
-const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("rounded-lg border bg-card text-card-foreground shadow-sm", className)} {...props} />
-  )
-);
-Card.displayName = "Card";
+type CardProps = React.HTMLAttributes<HTMLDivElement>;
 
-const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
-  )
-);
-CardContent.displayName = "CardContent";
-
-export { Card, CardContent };
+export function Card({ className, children, ...props }: CardProps) {
+  return (
+    <div
+      className={cn(
+        "bg-[#1c1c1e] p-8 rounded-xl w-full max-w-xl shadow-lg",
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+}

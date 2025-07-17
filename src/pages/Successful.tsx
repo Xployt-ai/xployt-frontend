@@ -1,53 +1,29 @@
-import React from "react";
-import "./Successful.css";
-import NavBar from "@/features/nav/NavBar";
+import { useState } from "react";
+
+import SuccessMessage from "@/components/ui/SuccessMessage";
+import ProjectDetails from "@/components/ui/ProjectDetails";
+import ProgressBar from "@/components/ui/ProgressBar";
+import ContinueButton from "@/components/ui/ContinueButton";
 
 const Successful = () => {
-  const repositories = [
-    { name: "Automatisch", date: "2023-11-20" },
-  ];
+  
+  const today = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD" format
+const repositories = [{ name: "Automatisch", date: today }];
+
+
+  const handleContinue = () => {
+    console.log("Continue clicked! Navigate to dashboard...");
+    // You can add your router navigation here
+  };
 
   return (
-    <div>
-      <NavBar />
-    <div className="success-container">
-      <div className="success-card">
-        <div className="success-header-box">
-          <h1>🎉 Congratulations!</h1>
-          <p>You just started a new project for scanning.</p>
-        </div>
-
-        <div className="details-section">
-          <h2>📁 Project Details</h2>
-
-          {repositories.map((repo, index) => (
-            <div key={index} className="repo-box">
-              <div className="field">
-                <label>Repository</label>
-                <div>{repo.name}</div>
-              </div>
-              <div className="field">
-                <label>Last Commit</label>
-                <div>{repo.date}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="progress-box">
-          <p>
-            Overall Progress: <span className="progress-text">67%</span>
-          </p>
-          <div className="progress-bar">
-            <div className="progress-fill" style={{ width: "67%" }}></div>
-          </div>
-        </div>
-
-        <button className="import-button">Continue to Dashboard</button>
+    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-6 font-sans relative">
+      <div className="bg-[#1c1c1e] w-[948px] h-[539px] pl-[22px] pr-[32px] pt-8 pb-8 rounded-2xl shadow-lg text-center space-y-6 border border-gray-700">
+        <SuccessMessage />
+        <ProjectDetails repositories={repositories} />
+        <ProgressBar progress={67} />
+        <ContinueButton onClick={handleContinue} />
       </div>
-
-      <div className="profile-circle">M</div>
-    </div>
     </div>
   );
 };
