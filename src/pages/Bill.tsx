@@ -1,5 +1,5 @@
 import UNavBar from "@/components/UNavbar";
-import TypographyH1 from "@/components/Typography";
+import { TypographyH1, TypographyP } from "@/components/ui/typography";
 
 const Bill = () => {
   return (
@@ -11,9 +11,9 @@ const Bill = () => {
             <TypographyH1>
               Billing
             </TypographyH1>
-            <body>
+            <TypographyP>
                 Manage your Xployt.ai subscription and payment history.
-            </body>
+            </TypographyP>
         </div>    
     </div>
     </div>
