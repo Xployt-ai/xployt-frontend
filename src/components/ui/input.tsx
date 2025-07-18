@@ -13,7 +13,7 @@ export function Input({ label, className, ...props }: InputProps) {
         {...props}
         className={cn(
           "w-full p-2 rounded-md bg-black border border-gray-700 text-white",
-          "",
+          "focus:outline-none focus:ring-2 focus:ring-blue-500",
           className
         )}
       />
