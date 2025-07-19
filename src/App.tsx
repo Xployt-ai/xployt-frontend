@@ -10,7 +10,8 @@ import Contact from "./pages/Contact";
 import Home from "./pages/Home";
 import RepoImport from "./pages/RepoImport";
 import NewScan from "./pages/NewScan";
-import Sucessful from "./pages/Successful";
+import Successful from "./pages/Successful";
+
 
 function App() {
   return (
@@ -29,8 +30,9 @@ function App() {
 <Route path="/contact" element={<Contact />} />
 <Route path="/new-scan" element={<NewScan />} />
 <Route path="/repo-import" element={<RepoImport />} />
-<Route path="/successful" element={<Sucessful />} />
-            {/* Add other routes here */}
+<Route path="/successful" element={<Successful />} />
+
+           
           </Routes>
         </main>
         <Footer />
