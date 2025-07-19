@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
@@ -10,8 +9,12 @@ import Contact from "./pages/Contact";
 import Home from "./pages/Home";
 import RepoImport from "./pages/RepoImport";
 import NewScan from "./pages/NewScan";
+
 import Successful from "./pages/Successful";
 
+
+import Dashboard from "./pages/Dashboard";
+import Bill from "./pages/Bill";
 
 function App() {
   return (
@@ -23,16 +26,24 @@ function App() {
         <Navbar />
         <main className="flex-1">
           <Routes>
-          <Route path="/" element={<Home />} />
-<Route path="/about" element={<About />} />
-<Route path="/pricing" element={<Pricing />} />
-<Route path="/docs" element={<Documentation />} />
-<Route path="/contact" element={<Contact />} />
-<Route path="/new-scan" element={<NewScan />} />
-<Route path="/repo-import" element={<RepoImport />} />
-<Route path="/successful" element={<Successful />} />
 
-           
+          <Route path="/" element={<Home />} />
+
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/docs" element={<Documentation />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/new-scan" element={<NewScan />} />
+            <Route path="/Dashboard" element={<Dashboard />} />
+            <Route path="/successful" element={<Successful />} />
+             <Route path="/repo-import" element={<RepoImport />} />
+             
+            
+            <Route path="/bill" element={<Bill />} />
+
+    
+
           </Routes>
         </main>
         <Footer />

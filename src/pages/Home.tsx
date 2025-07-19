@@ -1,26 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/Button.tsx";
-import "./Home.css";
 import { useState } from "react";
-
-const features = [
-  {
-    title: "AI-Powered Vulnerability Detection",
-    desc: "Uses large language models to understand your code and detect complex security flaws automatically"
-  },
-  {
-    title: "Secret & Credential Leak Detection",
-    desc: "Finds hardcoded API keys, tokens, and secrets before they get exploited"
-  },
-  {
-    title: "OWASP Top 10 Coverage",
-    desc: "Scans and flags vulnerabilities like XSS, SQL Injection, Broken Auth, and more"
-  },
-  {
-    title: "Dependency Vulnerability Detection",
-    desc: "Detects vulnerable packages and suggests secure alternatives"
-  }
-];
 
 const Home = () => {
     const navigate = useNavigate();

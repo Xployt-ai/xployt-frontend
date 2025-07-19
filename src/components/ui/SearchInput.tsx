@@ -1,4 +1,4 @@
-import { Input } from "@/components/ui/Input";
+import { Input } from "@/components/ui/input";
 
 const SearchInput = ({ value, onChange }: { value: string; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) => (
   <Input
