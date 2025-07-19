@@ -17,8 +17,8 @@ const BillCard = () => {
         </div>
       </div>
       <div className=" flex flex-col items-center justify-center ">
-        <Button className="mb-4">Update Payment Method</Button>
-        <Button variant="outline" >Update Payment Method</Button>
+        <Button className="mb-4 ">Update Payment Method</Button>
+        <Button variant="outline" className="text-red-700" >Update Payment Method</Button>
       </div>
 
     </Card>
