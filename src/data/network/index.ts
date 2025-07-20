@@ -47,6 +47,12 @@ class Network {
         xhr.setRequestHeader('Content-Type', type);
       }
 
+      // Add authentication token if available
+      const token = localStorage.getItem('xployt_token');
+      if (token) {
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+      }
+
       xhr.onload = () => {
         console.log(`Request to ${url} completed with status: ${xhr.status}`);
         // console.log(xhr.response);
