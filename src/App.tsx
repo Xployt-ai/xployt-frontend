@@ -10,12 +10,14 @@ import Sucessful from "./pages/Successful";
 import Dashboard from "./pages/Dashboard";
 import Bill from "./pages/Bill";
 import ScanningPage from "./pages/ScanningPage";
+import UNavBar from "@/components/UNavbar.tsx";
 
 
 function App() {
   return (
     <BrowserRouter>
       <main className="flex-1">
+        <UNavBar />
         <Routes>
 
           <Route path="/" element={<Home />} />
