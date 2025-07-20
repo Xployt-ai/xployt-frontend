@@ -10,17 +10,17 @@ import Sucessful from "./pages/Successful";
 import Dashboard from "./pages/Dashboard";
 import Bill from "./pages/Bill";
 import ScanningPage from "./pages/ScanningPage";
-import SecurityDashboardPage from "./pages/SecurityDashboardPage";
+import UNavBar from "@/components/UNavbar.tsx";
 
 
 function App() {
   return (
     <BrowserRouter>
       <main className="flex-1">
+        <UNavBar />
         <Routes>
 
           <Route path="/" element={<Home />} />
-
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/pricing" element={<Pricing />} />
@@ -31,7 +31,7 @@ function App() {
           <Route path="/successful" element={<Sucessful />} />
           <Route path="/bill" element={<Bill />} />
           <Route path="/scanning" element={<ScanningPage />} />
-          <Route path="/securitydashboard" element={<SecurityDashboardPage />} />
+
 
         </Routes>
       </main>
