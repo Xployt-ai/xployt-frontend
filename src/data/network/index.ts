@@ -292,5 +292,5 @@ export class NetworkError {
   }
 }
 
-const NETWORK = new Network('localhost:8080');
+const NETWORK = new Network('localhost:8000/api/v1');
 export default NETWORK;
