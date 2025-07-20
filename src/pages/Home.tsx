@@ -1,13 +1,36 @@
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/Button.tsx";
 import { useState } from "react";
+import "./Home.css";
+import Navbar from "@/components/Navbar.tsx";
+import Footer from "@/components/Footer.tsx";
 
 const Home = () => {
     const navigate = useNavigate();
     const [active, setActive] = useState(0);
 
+    const features = [
+      {
+        title: "AI-Powered Vulnerability Detection",
+        desc: "Uses large language models to understand your code and detect complex security flaws automatically"
+      },
+      {
+        title: "Secret & Credential Leak Detection",
+        desc: "Finds hardcoded API keys, tokens, and secrets before they get exploited"
+      },
+      {
+        title: "OWASP Top 10 Coverage",
+        desc: "Scans and flags vulnerabilities like XSS, SQL Injection, Broken Auth, and more"
+      },
+      {
+        title: "Dependency Vulnerability Detection",
+        desc: "Detects vulnerable packages and suggests secure alternatives"
+      }
+    ];
+
     return (
-        <>
+      <div
+      >
+        <Navbar />
         {/* ...existing hero section... */}
         <section className="home-hero">
             {/* Decorative lines bottom left */}
@@ -63,7 +86,8 @@ const Home = () => {
             ))}
           </div>
         </section>
-        </>
+        <Footer />
+      </div>
     );
 }
 
