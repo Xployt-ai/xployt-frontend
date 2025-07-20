@@ -1,7 +1,7 @@
-import * as React from "react"
-import { cn } from "@/lib/utils"
+import React from "react";
+import { cn } from "@/lib/utils.ts";
 
-type CardProps = React.HTMLAttributes<HTMLDivElement>
+type CardProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function Card({ className, children, ...props }: CardProps) {
   return (
@@ -14,17 +14,5 @@ export function Card({ className, children, ...props }: CardProps) {
     >
       {children}
     </div>
-  )
-}
-
-export function CardContent({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("pt-0", className)} {...props} />
-}
-
-export function CardHeader({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("mb-4", className)} {...props} />
-}
-
-export function CardFooter({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("mt-4", className)} {...props} />
+  );
 }
