@@ -15,6 +15,7 @@ import Successful from "./pages/Successful";
 import Dashboard from "./pages/Dashboard";
 import Bill from "./pages/Bill";
 import ScanningPage from "./pages/ScanningPage";
+import SecurityDashboardPage from "./pages/SecurityDashboardPage";
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
           <Route path="/successful" element={<Sucessful />} />
           <Route path="/bill" element={<Bill />} />
           <Route path="/scanning" element={<ScanningPage />} />
+<<<<<<< HEAD
 =======
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
@@ -54,6 +56,9 @@ function App() {
             <Route path="/bill" element={<Bill />} />
 >>>>>>> madushika
 
+=======
+          <Route path="/securitydashboard" element={<SecurityDashboardPage />} />
+>>>>>>> 3f210e30280fd06aae59629d55678800ac9b44dc
 
         </Routes>
       </main>
