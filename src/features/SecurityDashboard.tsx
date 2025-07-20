@@ -9,6 +9,14 @@ import {
   TypographyMuted,
 } from '@/components/ui/typography';
 import {Card} from '@/components/ui/Card';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/Table"
 
 
 const SecurityDashboard = () => {
@@ -154,39 +162,38 @@ const projectDetails = [
             </div>
 
             {/* Issues Table */}
-            <div className="rounded-lg overflow-hidden">
-              <div className="bg-gray-800 px-4 py-3 grid grid-cols-4 gap-4 text-sm font-medium text-gray-300">
-                <TypographySmall>Issue</TypographySmall>
-                <TypographySmall>Severity</TypographySmall>
-                <TypographySmall>Status</TypographySmall>
-                <TypographySmall>File</TypographySmall>
-              </div>
+<Table className="rounded-lg overflow-hidden text-sm">
+  <TableHeader className="bg-[#ffffff10] text-gray-300">
+    <TableRow>
+      <TableHead className="font-medium">Issue</TableHead>
+      <TableHead className="font-medium">Severity</TableHead>
+      <TableHead className="font-medium">Status</TableHead>
+      <TableHead className="font-medium">File</TableHead>
+    </TableRow>
+  </TableHeader>
 
-              {issues.map((issue) => (
-                <div
-                  key={issue.id}
-                  className="px-4 py-3 grid grid-cols-4 gap-4 text-sm border-t border-gray-700 hover:bg-gray-700"
-                >
-                  <TypographyP>{issue.issue}</TypographyP>
-                  <div>
-                    <span
-                      className={cn(
-                        'px-2 py-1 rounded text-xs font-medium',
-                        getSeverityColor(issue.severity)
-                      )}
-                    >
-                      {issue.severity}
-                    </span>
-                  </div>
-                  <TypographySmall className={getStatusColor(issue.status)}>
-                    {issue.status}
-                  </TypographySmall>
-                  <TypographyMuted className="truncate text-xs">
-                    {issue.file}
-                  </TypographyMuted>
-                </div>
-              ))}
-            </div>
+  <TableBody>
+    {issues.map((issue) => (
+      <TableRow key={issue.id}>
+        <TableCell className="">{issue.issue}</TableCell>
+        <TableCell>
+          <span className={cn("px-2 py-1 rounded text-xs font-medium")}>
+            {issue.severity}
+          </span>
+        </TableCell>
+        <TableCell className='' >
+          <span className="bg-[#ffffff10] w- rounded-xl px-4 py-1 text-center text-s">
+            {issue.status}
+          </span>
+        </TableCell>
+        <TableCell className="truncate text-gray-400 text-xs max-w-s">
+          {issue.file}
+        </TableCell>
+      </TableRow>
+    ))}
+  </TableBody>
+</Table>
+
           </div>
         </div>
       </div>
