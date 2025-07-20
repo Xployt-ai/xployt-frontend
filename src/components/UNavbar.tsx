@@ -6,6 +6,7 @@ const UNavBar: React.FC = () => {
   return (
     <nav className="border-b border-muted-foreground bg-background py-3 px-8 font-sans">
       <div className="mx-auto flex max-w-screen-xl items-center justify-between">
+        {/* Left Section */}
         <div className="flex items-center space-x-8">
           <img src={logo} alt="logo" height={40} className="h-10 w-auto" />
           <ul className="flex list-none space-x-6 text-sm font-medium text-muted-foreground">
@@ -25,8 +26,8 @@ const UNavBar: React.FC = () => {
               </a>
             </li>
             <li>
-              <a href="/bill" className="hover:text-foreground transition-colors">
-                Bill
+              <a href="/Reports" className="hover:text-foreground transition-colors">
+                Reports
               </a>
             </li>
           </ul>
