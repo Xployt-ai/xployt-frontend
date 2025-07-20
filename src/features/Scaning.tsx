@@ -1,5 +1,5 @@
 import { Progress } from "@/components/ui/progress"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/Button"
 import { Badge } from "@/components/ui/badge"
 import {
   TypographyH1,
@@ -12,7 +12,6 @@ const scanSteps = [
   { label: "Deep Static Analysis", status: "Ongoing", color: "yellow" },
   { label: "Runtime Behavior Scan", status: "Queued", color: "red" },
 ]
-
 
 const projectDetails = [
   { label: "Repository", value: "Automatisch" },
@@ -57,7 +56,7 @@ const ScanDashboard = () => {
           <div className="lg:col-span-2 space-y-8">
             {/* Scan Status */}
             <div className="space-y-6">
-              <TypographyH2>Scan Status</TypographyH2>
+              <TypographyH2 className="border-b-2">Scan Status</TypographyH2>
 
               {/* Overall Progress */}
               <div className="space-y-2">
@@ -70,23 +69,22 @@ const ScanDashboard = () => {
 
               {/* Scan Steps */}
               <div className="space-y-4">
-{scanSteps.map(({ label, status, color }, index) => (
-  <div
-    key={label}
-    className={`flex justify-between items-center py-3 ${
-      index !== 0 ? "border-t border-gray-700" : ""
-    }`}
-  >
-    <TypographySmall>{label}</TypographySmall>
-    <div className="flex items-center gap-2">
-      <div className={`w-2 h-2 bg-${color}-500 rounded-full`} />
-      <TypographySmall className={`text-muted-foreground text-sm`}>
-        {status}
-      </TypographySmall>
-    </div>
-  </div>
-))}
-
+                {scanSteps.map(({ label, status, color }, index) => (
+                  <div
+                    key={label}
+                    className={`flex justify-between items-center py-3 ${
+                      index !== 0 ? "border-t border-gray-700" : ""
+                    }`}
+                  >
+                    <TypographySmall>{label}</TypographySmall>
+                    <div className="flex items-center gap-2">
+                      <div className={`w-2 h-2 bg-${color}-500 rounded-full`} />
+                      <TypographySmall className={`text-muted-foreground text-sm`}>
+                        {status}
+                      </TypographySmall>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -105,28 +103,27 @@ const ScanDashboard = () => {
 
             {/* Scan Details */}
             <div className="space-y-6">
-              <TypographyH2>Scan Details</TypographyH2>
+              <TypographyH2 className="border-b-2">Scan Details</TypographyH2>
 
               {/* Table Header */}
-              <div className="grid grid-cols-3 gap-4 py-3 bg-gray-800 px-4 rounded-t">
-                <TypographySmall className="text-white">Severity</TypographySmall>
-                <TypographySmall className="text-white">Finding</TypographySmall>
-                <TypographySmall className="text-white">Affected URL</TypographySmall>
+              <div className="grid grid-cols-3 gap-4 py-3 bg-[] px-4 rounded-t">
+                <TypographySmall>Severity</TypographySmall>
+                <TypographySmall>Finding</TypographySmall>
+                <TypographySmall>Affected URL</TypographySmall>
               </div>
 
               {/* Table Rows */}
-              <div className=" rounded-b">
+              <div className="rounded-b">
                 {scanFindings.map(({ severity, finding, url }) => (
                   <div
                     key={finding}
-                    className="grid grid-cols-3 gap-4 py-3 px-4 border-b border-gray-800 last:border-b-0"
+                    className="grid grid-cols-3 gap-4 py-3 px-4 border-b  last:border-b-0"
                   >
-                    <TypographySmall className={` text-muted-foreground `}>
+                    <TypographySmall className="text-muted-foreground">
                       {severity}
                     </TypographySmall>
                     <TypographySmall className="text-muted-foreground">{finding}</TypographySmall>
                     <TypographySmall className="truncate">{url}</TypographySmall>
-
                   </div>
                 ))}
               </div>
@@ -136,25 +133,24 @@ const ScanDashboard = () => {
           {/* Right Sidebar */}
           <div className="space-y-8">
             {/* Project Details */}
-<div className="space-y-4">
-  <TypographyH2>Project Details</TypographyH2>
-  <div className="space-y-4">
-    {projectDetails.map(({ label, value }) => (
-      <div key={label} className="flex justify-between items-center">
-        <TypographySmall className="text-muted-foreground">{label}</TypographySmall>
-        <TypographySmall className="text-muted-foreground">{value}</TypographySmall>
-      </div>
-    ))}
-  </div>
-</div>
-
+            <div className="space-y-4 ">
+              <TypographyH2 className="border-b-2">Project Details</TypographyH2>
+              <div className="space-y-4">
+                {projectDetails.map(({ label, value }) => (
+                  <div key={label} className="flex justify-between items-center ">
+                    <TypographySmall>{label}</TypographySmall>
+                    <TypographySmall className="text-muted-foreground">{value}</TypographySmall>
+                  </div>
+                ))}
+              </div>
+            </div>
 
             {/* Scan Indicators */}
             <div className="space-y-4">
-              <TypographyH2>Scan Indicators</TypographyH2>
+              <TypographyH2 className="border-b-2">Scan Indicators</TypographyH2>
               {scanIndicators.map(([label, value]) => (
                 <div key={label} className="flex justify-between items-center">
-                  <TypographySmall className="text-muted-foreground">{label}</TypographySmall>
+                  <TypographySmall>{label}</TypographySmall>
                   <TypographySmall className="text-muted-foreground">{value}</TypographySmall>
                 </div>
               ))}
