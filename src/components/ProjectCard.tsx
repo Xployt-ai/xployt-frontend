@@ -6,9 +6,11 @@ import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-const navigate = useNavigate()
+
 
 export const ProjectCard = ({ project }: { project: Project }) => {
+  const navigate = useNavigate()
+
   const [scanningProject, setScanningProject] = useState("");
   return (
     <Card key={project.id} className=" p-4 max-w-full">
