@@ -182,7 +182,7 @@ const projectDetails = [
           </span>
         </TableCell>
         <TableCell className='' >
-          <span className="bg-[#ffffff10] w- rounded-xl px-4 py-1 text-center text-s">
+          <span className=" rounded-xl px-4 py-1 text-center text-s">
             {issue.status}
           </span>
         </TableCell>
