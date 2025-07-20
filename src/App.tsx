@@ -10,6 +10,7 @@ import Sucessful from "./pages/Successful";
 import Dashboard from "./pages/Dashboard";
 import Bill from "./pages/Bill";
 import ScanningPage from "./pages/ScanningPage";
+import SecurityDashboardPage from "./pages/SecurityDashboardPage";
 
 
 function App() {
@@ -30,7 +31,7 @@ function App() {
           <Route path="/successful" element={<Sucessful />} />
           <Route path="/bill" element={<Bill />} />
           <Route path="/scanning" element={<ScanningPage />} />
-
+          <Route path="/securitydashboard" element={<SecurityDashboardPage />} />
 
         </Routes>
       </main>
