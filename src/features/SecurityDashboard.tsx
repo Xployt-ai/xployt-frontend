@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { cn } from '@/lib/utils';
 import {
   TypographyH1,
@@ -8,6 +8,8 @@ import {
   TypographySmall,
   TypographyMuted,
 } from '@/components/ui/typography';
+import {Card} from '@/components/ui/Card';
+
 
 const SecurityDashboard = () => {
 
@@ -96,33 +98,33 @@ const projectDetails = [
 
         {/* Issues Section */}
         <div className="mb-8">
-          <TypographyH2 className="mb-4">Issues</TypographyH2>
+          <TypographyH2>Issues</TypographyH2>
           <TypographyMuted className="mb-6 block">
             View and manage all security issues across your organization.
           </TypographyMuted>
 
           {/* Security Posture Score */}
           <div className="mb-6">
-            <TypographyH3 className="mb-2">Security Posture Score</TypographyH3>
-            <TypographyH2 className="text-green-400">75/100</TypographyH2>
+            <TypographyH3>Security Posture Score</TypographyH3>
+            <TypographyH2 className="text-gray-400">75/100</TypographyH2>
           </div>
 
           {/* Issue Summary */}
           <div className="mb-6">
             <TypographyH3 className="mb-4">Issue Summary</TypographyH3>
             <div className="grid grid-cols-3 gap-4">
-              <div className="bg-gray-800 rounded-lg p-4 text-center">
-                <TypographySmall className="text-gray-400 mb-2 block">Critical</TypographySmall>
-                <TypographyH2 className="text-red-400">3</TypographyH2>
-              </div>
-              <div className="bg-gray-800 rounded-lg p-4 text-center">
-                <TypographySmall className="text-gray-400 mb-2 block">High</TypographySmall>
-                <TypographyH2 className="text-orange-400">5</TypographyH2>
-              </div>
-              <div className="bg-gray-800 rounded-lg p-4 text-center">
-                <TypographySmall className="text-gray-400 mb-2 block">Medium</TypographySmall>
-                <TypographyH2 className="text-yellow-400">2</TypographyH2>
-              </div>
+              <Card>
+                <TypographySmall className="text-gray-400 ">Critical</TypographySmall>
+                <TypographyH2 >3</TypographyH2>
+              </Card>
+              <Card >
+                <TypographySmall className="text-gray-400 ">High</TypographySmall>
+                <TypographyH2 >5</TypographyH2>
+              </Card>
+              <Card >
+                <TypographySmall className="text-gray-400 ">Medium</TypographySmall>
+                <TypographyH2 >2</TypographyH2>
+              </Card>
             </div>
           </div>
 
@@ -133,7 +135,7 @@ const projectDetails = [
             {/* Toolbar */}
             <div className="flex items-center gap-2 mb-4">
               {[1, 2, 3, 4].map((_, idx) => (
-                <button key={idx} className="p-2 bg-gray-800 rounded hover:bg-gray-700">
+                <button key={idx} className="p-2 border rounded hover:bg-gray-700">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
