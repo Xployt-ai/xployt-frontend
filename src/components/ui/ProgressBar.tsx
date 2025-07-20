@@ -3,7 +3,7 @@ const ProgressBar = ({ progress }: { progress: number }) => (
     <p>
       Overall Progress: <span className="text-white">{progress}%</span>
     </p>
-    <div className="w-full h-3 bg-gray-700 rounded-md overflow-hidden">
+    <div className="w-full h-3 bg-gray-600 rounded-md overflow-hidden">
       <div
         className="h-full bg-white transition-all duration-300"
         style={{ width: `${progress}%` }}
