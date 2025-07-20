@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./Home.css";
-import Navbar from "@/components/Navbar.tsx";
 import Footer from "@/components/Footer.tsx";
 
 const Home = () => {
@@ -30,7 +29,6 @@ const Home = () => {
     return (
       <div
       >
-        <Navbar />
         {/* ...existing hero section... */}
         <section className="home-hero">
             {/* Decorative lines bottom left */}
