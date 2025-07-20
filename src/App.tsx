@@ -9,6 +9,8 @@ import Contact from "./pages/Contact";
 import Home from "./pages/Home";
 import RepoImport from "./pages/RepoImport";
 import NewScan from "./pages/NewScan";
+import IssueDetail from "./pages/IssueDetail";
+
 
 import Successful from "./pages/Successful";
 
@@ -38,6 +40,9 @@ function App() {
             <Route path="/Dashboard" element={<Dashboard />} />
             <Route path="/successful" element={<Successful />} />
              <Route path="/repo-import" element={<RepoImport />} />
+                 <Route path="/issuedetail" element={<IssueDetail />} />
+              
+
              
             
             <Route path="/bill" element={<Bill />} />
