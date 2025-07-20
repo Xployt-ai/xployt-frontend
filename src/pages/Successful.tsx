@@ -11,7 +11,6 @@ const repositories = [{ name: "Automatisch", date: today }];
 
   const handleContinue = () => {
     console.log("Continue clicked! Navigate to dashboard...");
-    // You can add your router navigation here
   };
 
   return (
