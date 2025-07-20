@@ -154,8 +154,8 @@ const projectDetails = [
             </div>
 
             {/* Issues Table */}
-            <div className="bg-gray-800 rounded-lg overflow-hidden">
-              <div className="bg-gray-700 px-4 py-3 grid grid-cols-4 gap-4 text-sm font-medium text-gray-300">
+            <div className="rounded-lg overflow-hidden">
+              <div className="bg-gray-800 px-4 py-3 grid grid-cols-4 gap-4 text-sm font-medium text-gray-300">
                 <TypographySmall>Issue</TypographySmall>
                 <TypographySmall>Severity</TypographySmall>
                 <TypographySmall>Status</TypographySmall>

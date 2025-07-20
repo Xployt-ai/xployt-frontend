@@ -106,7 +106,7 @@ const ScanDashboard = () => {
               <TypographyH2 className="border-b-2">Scan Details</TypographyH2>
 
               {/* Table Header */}
-              <div className="grid grid-cols-3 gap-4 py-3 bg-[] px-4 rounded-t">
+              <div className="grid grid-cols-3 gap-4 py-3 bg-[#fffff] px-4 rounded-t">
                 <TypographySmall>Severity</TypographySmall>
                 <TypographySmall>Finding</TypographySmall>
                 <TypographySmall>Affected URL</TypographySmall>
