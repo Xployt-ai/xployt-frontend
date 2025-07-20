@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 
 interface RepositoryCardProps {
   name: string;
@@ -17,7 +17,9 @@ const RepositoryCard = ({ name, date, onImport }: RepositoryCardProps) => (
         <div className="text-sm text-gray-500">{date}</div>
       </div>
     </div>
-    <Button className="bg-white text-black font-bold">Import</Button>
+    <Button onClick={onImport} className="bg-white text-black font-bold">
+      Import
+    </Button>
   </div>
 );
 
