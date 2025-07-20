@@ -32,7 +32,7 @@ const guestNavItems: NavItem[] = [
     name: "About Us"
   },
   {
-    link: "/pricing",
+    link: "/bill",
     name: "Pricing"
   },
   {
@@ -53,7 +53,9 @@ const UNavBar: React.FC = () => {
       <div className="mx-auto flex max-w-screen-xl items-center justify-between">
         {/* Left Section */}
         <div className="flex items-center space-x-8">
-          <img src={logo} alt="logo" height={40} className="h-10 w-auto"/>
+          <a href="/">
+            <img src={logo} alt="logo" height={40} className="h-10 w-auto"/>
+          </a>
           <ul className="flex list-none space-x-6 text-sm font-medium text-muted-foreground">
             {
               (loggedIn ? userNavItems : guestNavItems).map((navItem, index) => (

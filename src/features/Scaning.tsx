@@ -1,6 +1,5 @@
 import { Progress } from "@/components/ui/progress"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/Button"
 import {
   TypographyH1,
   TypographyH2,

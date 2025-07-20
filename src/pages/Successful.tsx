@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import SuccessMessage from "@/components/ui/SuccessMessage";
 import ProjectDetails from "@/components/ui/ProjectDetails";
 import ProgressBar from "@/components/ui/ProgressBar";
