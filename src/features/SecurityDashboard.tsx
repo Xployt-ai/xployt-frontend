@@ -8,7 +8,7 @@ import {
   TypographySmall,
   TypographyMuted,
 } from '@/components/ui/typography';
-import {Card} from '@/components/ui/Card';
+import {Card} from '@/components/ui/card';
 
 
 const SecurityDashboard = () => {
