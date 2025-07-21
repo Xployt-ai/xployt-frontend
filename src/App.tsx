@@ -35,7 +35,7 @@ function App() {
           <Route path="/docs" element={<Documentation />} />
           <Route path="/contact" element={<Contact />} />
 
-          <Route path="/new-scan" element={<NewScan />} />
+          <Route path="/new-scan/:repo_name" element={<NewScan />} />
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/successful" element={<Successful />} />
           <Route path="/repo-import" element={<RepoImport />} />

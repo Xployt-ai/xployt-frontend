@@ -4,12 +4,14 @@ import {Input} from "@/components/ui/input";
 import {Card} from "@/components/ui/card";
 import {useState} from "react";
 import {scanEndpoints} from "@/data/network/scan.ts";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 const Scan = () => {
   const [envVars, setEnvVars] = useState([{key: "", value: ""}]);
 
   const navigate = useNavigate();
+
+  const {repo_name} = useParams()
 
   const handleAdd = () => {
     setEnvVars([...envVars, {key: "", value: ""}]);
@@ -27,7 +29,8 @@ const Scan = () => {
 
   const startScan = async() => {
     try {
-      const scan_id = await scanEndpoints.startScan("")
+      if (!repo_name) return;
+      const scan_id = await scanEndpoints.startScan(repo_name)
       console.log("Scan started successfully:", scan_id);
       navigate(`/scanning/${scan_id}`)
     }catch (error) {

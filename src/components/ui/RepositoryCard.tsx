@@ -2,6 +2,7 @@ import {Button} from "@/components/ui/Button";
 import type {Repo} from "@/data/models/repo.ts";
 import {repoEndpoints} from "@/data/network/repo.ts";
 import {useNavigate} from "react-router-dom";
+import {formatRepoName} from "@/lib/utils.ts";
 
 interface RepositoryCardProps {
   repo: Repo;
@@ -20,8 +21,16 @@ const importRepo = async (repo: Repo) => {
 
 const RepositoryCard = ({repo, date}: RepositoryCardProps) => {
   const navigate = useNavigate();
+  const handleCardClick = () => {
+    if (!repo.is_linked) return;
+    navigate(`/new-scan/${formatRepoName(repo.name)}`);
+  };
+
   return (
-    <div className="bg-[#121212] p-4 border border-gray-800 rounded-md flex justify-between items-center w-full">
+    <div className="bg-[#121212] p-4 border border-gray-800 rounded-md flex justify-between items-center w-full"
+    onClick={() => handleCardClick()
+    }
+    >
       <div className="flex items-center gap-3">
       <span role="img" aria-label="folder" className="text-xl">
         📁
