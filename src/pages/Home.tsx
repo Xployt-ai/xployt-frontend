@@ -60,7 +60,7 @@ const Home = () => {
             </div>
         </section>
         {/* Features Section */}
-        <section className="features-section">
+        <section className="features-section bg-transparent">
           <div className="features-label">FEATURES</div>
           <h2 className="features-title">Key Service Features<br/>Protecting You</h2>
           <div className="features-carousel-wrapper">

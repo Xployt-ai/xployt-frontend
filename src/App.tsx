@@ -30,20 +30,19 @@ function App() {
         <UNavBar />
         <Routes>
           <Route path="/" element={<Home />} />
->>>>>>> 5fb15dcb8ea5b0975e38e9a5864d0638dd864998
           <Route path="/about" element={<About />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/docs" element={<Documentation />} />
           <Route path="/contact" element={<Contact />} />
 
-          <Route path="/new-scan" element={<NewScan />} />
+          <Route path="/new-scan/:repo_name" element={<NewScan />} />
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/successful" element={<Successful />} />
           <Route path="/repo-import" element={<RepoImport />} />
           <Route path="/issuedetail" element={<IssueDetail />} />
-          <Route path="/scanning" element={<ScanningPage />} />
+          <Route path="/scanning/:scan_id" element={<ScanningPage />} />
           <Route path="/bill" element={<Bill />} />
-          <Route path="/securitydashboard" element={<SecurityDashboardPage />} />
+          <Route path="/securitydashboard/:scan_id" element={<SecurityDashboardPage />} />
           <Route path="/callback" element={<GitHubCallback />} />
           <Route path="/usage" element={<Usage />} />
 
