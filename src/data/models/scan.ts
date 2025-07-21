@@ -36,3 +36,32 @@ export interface ScanProgress {
 //   "status": "string",
 //   "progress_percent": 0,
 //   "progress_text": "string"
+
+export interface ScanResult {
+  type: string;
+  severity: string;
+  description: string;
+  location: {
+    [key: string]: any;
+  };
+  metadata: {
+    [key: string]: any;
+  };
+  id: string;
+  scan_id: string;
+  created_at: string;
+  status?: string;
+}
+
+// "type": "string",
+//   "severity": "string",
+//   "description": "string",
+//   "location": {
+//   "additionalProp1": {}
+// },
+// "metadata": {
+//   "additionalProp1": {}
+// },
+// "id": "string",
+//   "scan_id": "string",
+//   "created_at": "2025-07-21T20:53:57.790Z"

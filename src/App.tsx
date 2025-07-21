@@ -30,7 +30,6 @@ function App() {
         <UNavBar />
         <Routes>
           <Route path="/" element={<Home />} />
->>>>>>> 5fb15dcb8ea5b0975e38e9a5864d0638dd864998
           <Route path="/about" element={<About />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/docs" element={<Documentation />} />
@@ -43,7 +42,7 @@ function App() {
           <Route path="/issuedetail" element={<IssueDetail />} />
           <Route path="/scanning/:scan_id" element={<ScanningPage />} />
           <Route path="/bill" element={<Bill />} />
-          <Route path="/securitydashboard" element={<SecurityDashboardPage />} />
+          <Route path="/securitydashboard/:scan_id" element={<SecurityDashboardPage />} />
           <Route path="/callback" element={<GitHubCallback />} />
           <Route path="/usage" element={<Usage />} />
 

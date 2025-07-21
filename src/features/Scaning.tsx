@@ -61,12 +61,12 @@ const ScanDashboard = () => {
       try {
         if (!scan_id) return
 
-        const progress = await scanEndpoints.getScanProgress(scan_id)
-        setScanProgress(progress)
+        const data = await scanEndpoints.getScanProgress(scan_id)
+        setScanProgress(data)
 
-        if( progress.progress_percent >= 100) {
+        if( data.progress_percent >= 100) {
           clearInterval(interval)
-          navigate('/securitydashboard')
+          navigate(`/securitydashboard/${scan_id}`)
         }
 
       } catch (error) {
