@@ -49,9 +49,24 @@ const features = [
   }
 ];
 
+const DOT_COUNT = 4; // Number of dots to show
+
 const Home = () => {
     const navigate = useNavigate();
     const [active, setActive] = useState(0);
+
+    const getDotActive = (dotIdx: number) => {
+      // Map dot index to feature index
+      const start = active - (active % DOT_COUNT);
+      return active === (start + dotIdx);
+    };
+
+    const handleNext = () => {
+      setActive((prev) => (prev + 1) % features.length);
+    };
+    const handlePrev = () => {
+      setActive((prev) => (prev - 1 + features.length) % features.length);
+    };
 
     return (
         <>
@@ -98,12 +113,12 @@ const Home = () => {
             </div>
           </div>
           <div className="features-dots">
-            {features.map((_, i) => (
+            {Array.from({ length: DOT_COUNT }).map((_, i) => (
               <button
                 key={i}
-                className={`dot${i === active ? " active" : ""}`}
-                onClick={() => setActive(i)}
-                aria-label={`Go to feature ${i + 1}`}
+                className={`dot${getDotActive(i) ? " active" : ""}`}
+                onClick={() => setActive((active - (active % DOT_COUNT)) + i)}
+                aria-label={`Go to feature ${(active - (active % DOT_COUNT)) + i + 1}`}
               />
             ))}
           </div>
