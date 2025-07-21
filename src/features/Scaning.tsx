@@ -1,21 +1,25 @@
-import { Progress } from "@/components/ui/progress"
-import { Button } from "@/components/ui/Button"
+import {Progress} from "@/components/ui/progress"
+import {Button} from "@/components/ui/Button"
 import {
   TypographyH1,
   TypographyH2,
   TypographySmall,
 } from "@/components/ui/typography"
+import {useEffect, useState} from "react";
+import type {ScanProgress} from "@/data/models/scan.ts";
+import {scanEndpoints} from "@/data/network/scan.ts";
+import {useParams} from "react-router-dom";
 
 const scanSteps = [
-  { label: "Basic Scan", status: "Done", color: "green" },
-  { label: "Deep Static Analysis", status: "Ongoing", color: "yellow" },
-  { label: "Runtime Behavior Scan", status: "Queued", color: "red" },
+  {label: "Basic Scan", status: "Done", color: "green"},
+  {label: "Deep Static Analysis", status: "Ongoing", color: "yellow"},
+  {label: "Runtime Behavior Scan", status: "Queued", color: "red"},
 ]
 
 
 const projectDetails = [
-  { label: "Repository", value: "Automatisch" },
-  { label: "Last Commit", value: "2023-11-20" },
+  {label: "Repository", value: "Automatisch"},
+  {label: "Last Commit", value: "2023-11-20"},
 ];
 
 const scanFindings = [
@@ -43,6 +47,29 @@ const scanIndicators = [
 ]
 
 const ScanDashboard = () => {
+  const [scanProgress, setScanProgress] = useState<ScanProgress>({
+    progress_percent: 0,
+    progress_text: "",
+    scan_id: "",
+    status: ""
+  })
+  const {scan_id} = useParams()
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        if (!scan_id) return
+        const progress = await scanEndpoints.getScanProgress(scan_id)
+        setScanProgress(progress)
+      } catch (error) {
+        console.error("Error fetching scan progress:", error)
+      }
+
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <div className="p-6">
       <div className="max-w-7xl mx-auto">
@@ -62,29 +89,29 @@ const ScanDashboard = () => {
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
                   <TypographySmall>Overall Progress</TypographySmall>
-                  <TypographySmall>67%</TypographySmall>
+                  <TypographySmall>{scanProgress.progress_percent}</TypographySmall>
                 </div>
-                <Progress value={67} className="bg-gray-800 h-1" />
+                <Progress value={scanProgress.progress_percent} className="bg-gray-800 h-1"/>
               </div>
 
               {/* Scan Steps */}
               <div className="space-y-4">
-{scanSteps.map(({ label, status, color }, index) => (
-  <div
-    key={label}
-    className={`flex justify-between items-center py-3 ${
-      index !== 0 ? "border-t border-gray-700" : ""
-    }`}
-  >
-    <TypographySmall>{label}</TypographySmall>
-    <div className="flex items-center gap-2">
-      <div className={`w-2 h-2 bg-${color}-500 rounded-full`} />
-      <TypographySmall className={`text-muted-foreground text-sm`}>
-        {status}
-      </TypographySmall>
-    </div>
-  </div>
-))}
+                {scanSteps.map(({label, status, color}, index) => (
+                  <div
+                    key={label}
+                    className={`flex justify-between items-center py-3 ${
+                      index !== 0 ? "border-t border-gray-700" : ""
+                    }`}
+                  >
+                    <TypographySmall>{label}</TypographySmall>
+                    <div className="flex items-center gap-2">
+                      <div className={`w-2 h-2 bg-${color}-500 rounded-full`}/>
+                      <TypographySmall className={`text-muted-foreground text-sm`}>
+                        {status}
+                      </TypographySmall>
+                    </div>
+                  </div>
+                ))}
 
               </div>
             </div>
@@ -115,7 +142,7 @@ const ScanDashboard = () => {
 
               {/* Table Rows */}
               <div className=" rounded-b">
-                {scanFindings.map(({ severity, finding, url }) => (
+                {scanFindings.map(({severity, finding, url}) => (
                   <div
                     key={finding}
                     className="grid grid-cols-3 gap-4 py-3 px-4 border-b border-gray-800 last:border-b-0"
@@ -135,17 +162,17 @@ const ScanDashboard = () => {
           {/* Right Sidebar */}
           <div className="space-y-8">
             {/* Project Details */}
-<div className="space-y-4">
-  <TypographyH2>Project Details</TypographyH2>
-  <div className="space-y-4">
-    {projectDetails.map(({ label, value }) => (
-      <div key={label} className="flex justify-between items-center">
-        <TypographySmall className="text-muted-foreground">{label}</TypographySmall>
-        <TypographySmall className="text-muted-foreground">{value}</TypographySmall>
-      </div>
-    ))}
-  </div>
-</div>
+            <div className="space-y-4">
+              <TypographyH2>Project Details</TypographyH2>
+              <div className="space-y-4">
+                {projectDetails.map(({label, value}) => (
+                  <div key={label} className="flex justify-between items-center">
+                    <TypographySmall className="text-muted-foreground">{label}</TypographySmall>
+                    <TypographySmall className="text-muted-foreground">{value}</TypographySmall>
+                  </div>
+                ))}
+              </div>
+            </div>
 
 
             {/* Scan Indicators */}

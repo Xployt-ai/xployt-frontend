@@ -35,7 +35,7 @@ function App() {
           <Route path="/successful" element={<Successful />} />
           <Route path="/repo-import" element={<RepoImport />} />
           <Route path="/issuedetail" element={<IssueDetail />} />
-          <Route path="/scanning" element={<ScanningPage />} />
+          <Route path="/scanning/:scan_id" element={<ScanningPage />} />
           <Route path="/bill" element={<Bill />} />
           <Route path="/securitydashboard" element={<SecurityDashboardPage />} />
           <Route path="/callback" element={<GitHubCallback />} />
