@@ -8,7 +8,7 @@ export const scanEndpoints = {
       scanner_name: "default",
       configurations: {}
     });
-    console.log("Response from /scans:", response);
+
     if (response.status === 422) {
       throw new Error(
         `Failed to create scan: ${response.data.detail.msg}\n${response.data.detail.loc}\n${response.data.detail.type}`
@@ -18,8 +18,10 @@ export const scanEndpoints = {
   },
 
   async getScanProgress(scan_id: string): Promise<ScanProgress>{
+
+    NETWORK.invalidateCache(`/scans/${scan_id}`);
     const response = await NETWORK.get(`/scans/${scan_id}`);
-    console.log("Response from /scans/scan_id", response)
+
     if (response.status === 422) {
       throw new Error(
         `Failed to get scan progress: ${response.data.detail.msg}\n${response.data.detail.loc}\n${response.data.detail.type}`

@@ -8,7 +8,7 @@ import {
 import {useEffect, useState} from "react";
 import type {ScanProgress} from "@/data/models/scan.ts";
 import {scanEndpoints} from "@/data/network/scan.ts";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 const scanSteps = [
   {label: "Basic Scan", status: "Done", color: "green"},
@@ -54,15 +54,24 @@ const ScanDashboard = () => {
     status: ""
   })
   const {scan_id} = useParams()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const interval = setInterval(async () => {
       try {
         if (!scan_id) return
+
         const progress = await scanEndpoints.getScanProgress(scan_id)
         setScanProgress(progress)
+
+        if( progress.progress_percent >= 100) {
+          clearInterval(interval)
+          navigate('/securitydashboard')
+        }
+
       } catch (error) {
         console.error("Error fetching scan progress:", error)
+        clearInterval(interval)
       }
 
     }, 1000)
