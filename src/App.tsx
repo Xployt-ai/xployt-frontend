@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import NewScan from './pages/NewScan';
 import IssueDetail from './pages/IssueDetail';
 import RepoImport from './pages/RepoImport';
+import Usage from './pages/Usage';
 
 import Successful from './pages/Successful';
 
@@ -39,6 +40,7 @@ function App() {
           <Route path="/bill" element={<Bill />} />
           <Route path="/securitydashboard" element={<SecurityDashboardPage />} />
           <Route path="/callback" element={<GitHubCallback />} />
+          <Route path="/usage" element={<Usage />} />
         </Routes>
       </main>
     </BrowserRouter>
