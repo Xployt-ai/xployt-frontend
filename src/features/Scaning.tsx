@@ -2,7 +2,7 @@ import {Progress} from "@/components/ui/progress"
 import {Button} from "@/components/ui/Button"
 import {
   TypographyH1,
-  TypographyH2,
+  TypographyH2, TypographyMonospace,
   TypographySmall,
 } from "@/components/ui/typography"
 import {useEffect, useState} from "react";
@@ -101,6 +101,7 @@ const ScanDashboard = () => {
                   <TypographySmall>{scanProgress.progress_percent}</TypographySmall>
                 </div>
                 <Progress value={scanProgress.progress_percent} className="bg-gray-800 h-1"/>
+                <TypographyMonospace>{scanProgress.progress_text}</TypographyMonospace>
               </div>
 
               {/* Scan Steps */}

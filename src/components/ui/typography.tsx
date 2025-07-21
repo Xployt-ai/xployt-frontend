@@ -78,3 +78,9 @@ export function TypographyTable({ className, ...props }: React.HTMLAttributes<HT
     <table className={cn("w-full caption-bottom text-sm border-collapse font-sans", className)} {...props} />
   );
 }
+
+export function TypographyMonospace({ className, ...props }: React.HTMLAttributes<HTMLElement>) {
+  return (
+    <code className={cn("font-mono text-sm", className)} {...props} />
+  );
+}
