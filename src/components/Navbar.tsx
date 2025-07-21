@@ -18,6 +18,19 @@ const Navbar = () => {
     const isActiveLink = (path: string) => location.pathname === path;
     const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
+    const scrollToSection = (id: string) => {
+        if (location.pathname !== "/") {
+            navigate("/", { replace: false });
+            setTimeout(() => {
+                const el = document.getElementById(id);
+                if (el) el.scrollIntoView({ behavior: "smooth" });
+            }, 100);
+        } else {
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+
     return (
         <nav className="bg-transparent rounded-lg mt-2 mx-2 px-4 py-2 flex items-center justify-between border border-white">
             {/* Left: Logo and Links */}
@@ -27,19 +40,36 @@ const Navbar = () => {
                     <span className="text-[#E0E0E0] text-lg font-medium tracking-wide select-none"></span>
                 </div>
                 <div className="hidden md:flex items-center space-x-1 ml-2">
-                    {navLinks.map((link) => (
-                        <button
-                            key={link.name}
-                            onClick={() => navigate(link.path)}
-                            className={`px-4 py-2 rounded font-medium transition-colors duration-200 text-white ${
-                                isActiveLink(link.path)
-                                    ? "bg-[#181C25] text-white"
-                                    : "hover:bg-[#181C25] hover:text-white text-white/80"
-                            }`}
-                        >
-                            {link.name}
-                        </button>
-                    ))}
+                    <button
+                        onClick={() => navigate("/")}
+                        className={`px-4 py-2 rounded font-medium transition-colors duration-200 text-white ${isActiveLink("/") ? "bg-[#181C25] text-white" : "hover:bg-[#181C25] hover:text-white text-white/80"}`}
+                    >
+                        Home
+                    </button>
+                    <button
+                        onClick={() => scrollToSection("about")}
+                        className="px-4 py-2 rounded font-medium transition-colors duration-200 text-white hover:bg-[#181C25] hover:text-white text-white/80"
+                    >
+                        About Us
+                    </button>
+                    <button
+                        onClick={() => scrollToSection("pricing")}
+                        className="px-4 py-2 rounded font-medium transition-colors duration-200 text-white hover:bg-[#181C25] hover:text-white text-white/80"
+                    >
+                        Pricing
+                    </button>
+                    <button
+                        onClick={() => scrollToSection("documentation")}
+                        className="px-4 py-2 rounded font-medium transition-colors duration-200 text-white hover:bg-[#181C25] hover:text-white text-white/80"
+                    >
+                        Documentation
+                    </button>
+                    <button
+                        onClick={() => navigate("/contact")}
+                        className={`px-4 py-2 rounded font-medium transition-colors duration-200 text-white ${isActiveLink("/contact") ? "bg-[#181C25] text-white" : "hover:bg-[#181C25] hover:text-white text-white/80"}`}
+                    >
+                        Contact
+                    </button>
                 </div>
             </div>
             {/* Right: Auth Buttons */}
@@ -90,36 +120,44 @@ const Navbar = () => {
             {isMobileMenuOpen && (
                 <div className="absolute top-16 left-0 w-full bg-transparent rounded-b-lg shadow-lg z-50 md:hidden">
                     <div className="flex flex-col items-start px-4 py-4 space-y-2">
-                        {navLinks.map((link) => (
-                            <button
-                                key={link.name}
-                                onClick={() => {
-                                    navigate(link.path);
-                                    setIsMobileMenuOpen(false);
-                                }}
-                                className={`w-full text-left px-4 py-2 rounded font-medium transition-colors duration-200 text-white ${
-                                    isActiveLink(link.path)
-                                        ? "bg-[#181C25] text-white"
-                                        : "hover:bg-[#181C25] hover:text-white text-white/80"
-                                }`}
-                            >
-                                {link.name}
-                            </button>
-                        ))}
                         <button
-                            onClick={() => {
-                                navigate("/login");
-                                setIsMobileMenuOpen(false);
-                            }}
+                            onClick={() => { navigate("/"); setIsMobileMenuOpen(false); }}
+                            className={`w-full text-left px-4 py-2 rounded font-medium transition-colors duration-200 text-white ${isActiveLink("/") ? "bg-[#181C25] text-white" : "hover:bg-[#181C25] hover:text-white text-white/80"}`}
+                        >
+                            Home
+                        </button>
+                        <button
+                            onClick={() => { scrollToSection("about"); setIsMobileMenuOpen(false); }}
+                            className="w-full text-left px-4 py-2 rounded font-medium transition-colors duration-200 text-white hover:bg-[#181C25] hover:text-white text-white/80"
+                        >
+                            About Us
+                        </button>
+                        <button
+                            onClick={() => { scrollToSection("pricing"); setIsMobileMenuOpen(false); }}
+                            className="w-full text-left px-4 py-2 rounded font-medium transition-colors duration-200 text-white hover:bg-[#181C25] hover:text-white text-white/80"
+                        >
+                            Pricing
+                        </button>
+                        <button
+                            onClick={() => { scrollToSection("documentation"); setIsMobileMenuOpen(false); }}
+                            className="w-full text-left px-4 py-2 rounded font-medium transition-colors duration-200 text-white hover:bg-[#181C25] hover:text-white text-white/80"
+                        >
+                            Documentation
+                        </button>
+                        <button
+                            onClick={() => { navigate("/contact"); setIsMobileMenuOpen(false); }}
+                            className={`w-full text-left px-4 py-2 rounded font-medium transition-colors duration-200 text-white ${isActiveLink("/contact") ? "bg-[#181C25] text-white" : "hover:bg-[#181C25] hover:text-white text-white/80"}`}
+                        >
+                            Contact
+                        </button>
+                        <button
+                            onClick={() => { navigate("/login"); setIsMobileMenuOpen(false); }}
                             className="border border-white text-white px-4 py-2 rounded transition-colors duration-200 hover:bg-[#181C25] font-medium w-full"
                         >
                             Login
                         </button>
                         <button
-                            onClick={() => {
-                                navigate("/signup");
-                                setIsMobileMenuOpen(false);
-                            }}
+                            onClick={() => { navigate("/signup"); setIsMobileMenuOpen(false); }}
                             className="bg-white text-black px-4 py-2 rounded font-medium transition-colors duration-200 w-full"
                         >
                             Sign Up

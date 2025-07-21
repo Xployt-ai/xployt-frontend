@@ -109,7 +109,7 @@ const Home = () => {
           </div>
         </section>
         {/* About Us Section */}
-        <section className="about-section">
+        <section className="about-section" id="about">
           <div className="about-image">
             <img
               src="/map.png"
@@ -133,7 +133,7 @@ const Home = () => {
           </div>
         </section>
         {/* How It Works Section */}
-        <section className="howit-section">
+        <section className="howit-section" id="documentation">
           <div className="howit-header">
             <div className="howit-label">DOCUMENTATION</div>
             <h2 className="howit-title">How It Works</h2>
@@ -160,7 +160,7 @@ const Home = () => {
           </div>
         </section>
         {/* Pricing Section */}
-        <section className="pricing-section">
+        <section className="pricing-section" id="pricing">
           <div className="pricing-header">
             <div className="pricing-label">PRICING</div>
             <h2 className="pricing-title">Start using cyber<br/>security protect</h2>
