@@ -1,26 +1,50 @@
-import { Button } from "@/components/ui/Button";
+import {Button} from "@/components/ui/Button";
+import type {Repo} from "@/data/models/repo.ts";
+import {repoEndpoints} from "@/data/network/repo.ts";
+import {useNavigate} from "react-router-dom";
 
 interface RepositoryCardProps {
-  name: string;
-  date: string;
-  onImport?: () => void;
+  repo: Repo;
+  date?: string;
 }
 
-const RepositoryCard = ({ name, date, onImport }: RepositoryCardProps) => (
-  <div className="bg-[#121212] p-4 border border-gray-800 rounded-md flex justify-between items-center">
-    <div className="flex items-center gap-3">
+const importRepo = async (repo: Repo) => {
+  try {
+    const response = await repoEndpoints.linkRepo(repo)
+    console.log('Repository imported successfully:', response);
+    repo.is_linked = true;
+  } catch (error) {
+    console.error('Failed to import repository:', error);
+  }
+}
+
+const RepositoryCard = ({repo, date}: RepositoryCardProps) => {
+  const navigate = useNavigate();
+  return (
+    <div className="bg-[#121212] p-4 border border-gray-800 rounded-md flex justify-between items-center w-full">
+      <div className="flex items-center gap-3">
       <span role="img" aria-label="folder" className="text-xl">
         📁
       </span>
-      <div>
-        <strong>{name}</strong>
-        <div className="text-sm text-gray-500">{date}</div>
+        <div>
+          <strong>{repo.name}</strong>
+          {date && <div className="text-sm text-gray-500">{date}</div>}
+        </div>
       </div>
+      {!repo.is_linked &&
+          <Button onClick={() => {
+            importRepo(repo)
+              .then(() => {
+                console.log(`Repository ${repo.name} imported successfully.`)
+                navigate('/securitydashboard')
+              })
+              .catch((error) => console.error(`Failed to import repository ${repo.name}:`, error))
+          }} className="bg-white text-black font-bold">
+              Import
+          </Button>}
+
     </div>
-    <Button onClick={onImport} className="bg-white text-black font-bold">
-      Import
-    </Button>
-  </div>
-);
+  )
+};
 
 export default RepositoryCard;
