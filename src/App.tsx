@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
+
+
 import About from './pages/About';
 import Pricing from './pages/Pricing';
 import Documentation from './pages/Documentation';
@@ -8,6 +10,7 @@ import Home from './pages/Home';
 import NewScan from './pages/NewScan';
 import IssueDetail from './pages/IssueDetail';
 import RepoImport from './pages/RepoImport';
+import Usage from './pages/Usage';
 
 import Successful from './pages/Successful';
 
@@ -15,6 +18,7 @@ import Dashboard from './pages/Dashboard';
 import Bill from './pages/Bill';
 import ScanningPage from './pages/ScanningPage';
 import UNavBar from '@/components/UNavBar.tsx';
+
 
 import SecurityDashboardPage from './pages/SecurityDashboardPage';
 import GitHubCallback from './pages/GitHubCallback';
@@ -26,10 +30,12 @@ function App() {
         <UNavBar />
         <Routes>
           <Route path="/" element={<Home />} />
+>>>>>>> 5fb15dcb8ea5b0975e38e9a5864d0638dd864998
           <Route path="/about" element={<About />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/docs" element={<Documentation />} />
           <Route path="/contact" element={<Contact />} />
+
           <Route path="/new-scan" element={<NewScan />} />
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/successful" element={<Successful />} />
@@ -39,6 +45,8 @@ function App() {
           <Route path="/bill" element={<Bill />} />
           <Route path="/securitydashboard" element={<SecurityDashboardPage />} />
           <Route path="/callback" element={<GitHubCallback />} />
+          <Route path="/usage" element={<Usage />} />
+
         </Routes>
       </main>
     </BrowserRouter>
