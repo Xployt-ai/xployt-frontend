@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 import { cn } from '@/lib/utils';
 import {
   TypographyH1,
@@ -8,7 +7,7 @@ import {
   TypographySmall,
   TypographyMuted,
 } from '@/components/ui/typography';
-import {Card} from '@/components/ui/Card';
+import {Card} from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -17,33 +16,53 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/Table"
+import type {ScanResult} from "@/data/models/scan.ts";
+import {useEffect, useState} from "react";
+import {scanEndpoints} from "@/data/network/scan.ts";
+import {useParams} from "react-router-dom";
 
 
 const SecurityDashboard = () => {
 
-  const issues = [
-    {
-      id: 1,
-      issue: "Potential SQL Injection",
-      severity: "Critical",
-      status: "Open",
-      file: "src/main/java/com/example/app/UserController.java"
-    },
-    {
-      id: 2,
-      issue: "Potential SQL Injection",
-      severity: "High",
-      status: "Resolved",
-      file: "src/main/java/com/example/app/UserController.java"
-    },
-    {
-      id: 3,
-      issue: "Potential SQL Injection",
-      severity: "Medium",
-      status: "In Progress",
-      file: "src/main/java/com/example/app/UserController.java"
+  // const issues = [
+  //   {
+  //     id: 1,
+  //     issue: "Potential SQL Injection",
+  //     severity: "Critical",
+  //     status: "Open",
+  //     file: "src/main/java/com/example/app/UserController.java"
+  //   },
+  //   {
+  //     id: 2,
+  //     issue: "Potential SQL Injection",
+  //     severity: "High",
+  //     status: "Resolved",
+  //     file: "src/main/java/com/example/app/UserController.java"
+  //   },
+  //   {
+  //     id: 3,
+  //     issue: "Potential SQL Injection",
+  //     severity: "Medium",
+  //     status: "In Progress",
+  //     file: "src/main/java/com/example/app/UserController.java"
+  //   }
+  // ];
+
+  const [results, setResults] = useState<ScanResult[]>([]);
+  const {scan_id} = useParams();
+
+  useEffect(() => {
+    try{
+      const fetchResults = async () => {
+        if (!scan_id) return;
+        const data = await scanEndpoints.getScanResults(scan_id)
+        setResults(data)
+      }
+      fetchResults();
+    }catch (error) {
+      console.error("Failed to fetch scan results:", error);
     }
-  ];
+  }, [])
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
@@ -194,10 +213,34 @@ const projectDetails = [
   </TableBody>
 </Table>
 
+              {results.map((issue) => (
+                <div
+                  key={issue.id}
+                  className="px-4 py-3 grid grid-cols-4 gap-4 text-sm border-t border-gray-700 hover:bg-gray-700"
+                >
+                  <TypographyP>{issue.description}</TypographyP>
+                  <div>
+                    <span
+                      className={cn(
+                        'px-2 py-1 rounded text-xs font-medium',
+                        getSeverityColor(issue.severity)
+                      )}
+                    >
+                      {issue.severity}
+                    </span>
+                  </div>
+                  <TypographySmall className={getStatusColor(issue.status ? issue.status : 'Open')}>
+                    {issue.status ? issue.status : 'Open'}
+                  </TypographySmall>
+                  <TypographyMuted className="truncate text-xs">
+                    {issue.location.endpoint + " : " + issue.location.line || 'Unknown File'}
+                  </TypographyMuted>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
