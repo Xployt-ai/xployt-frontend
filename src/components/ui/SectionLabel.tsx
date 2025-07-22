@@ -1,3 +1,4 @@
+
 import { cn } from "@/lib/utils.ts";
 
 type SectionLabelProps = React.HTMLAttributes<HTMLHeadingElement>;
