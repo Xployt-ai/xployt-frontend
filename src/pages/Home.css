@@ -1,3 +1,19 @@
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+
+}
+
+.vector-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+}
+
 body, .home-root {
   background: #030711 !important;
 }
@@ -10,6 +26,8 @@ body, .home-root {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+    height: 90vh;
+
 }
 .home-hero .decorative-lines {
   position: absolute;
@@ -100,6 +118,7 @@ body, .home-root {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100vh;
   width: 100%;
   padding-top: 2rem;
   padding-bottom: 2rem;
@@ -112,9 +131,7 @@ body, .home-root {
   }
 }
 .home-hero .shield-img {
-  width: 340px;
-  height: 340px;
-  max-width: 100%;
+    max-width: var(--shield-img-max-width);
   object-fit: contain;
   filter: drop-shadow(0 4px 24px rgba(0,0,0,0.5));
 }
@@ -124,6 +141,8 @@ body, .home-root {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+    height: 90vh;
+
 }
 .features-label {
   color: #6b7280;
@@ -215,25 +234,25 @@ body, .home-root {
   justify-content: center;
   padding: 4rem 0;
   gap: 3rem;
-  padding-right: 2vw;
-  
+  height: 90vh;
 }
 .about-section .about-image {
   flex: 1 1 0;
   display: flex;
   justify-content: center;
+  max-width: 600px;
 }
 .about-section .about-image img {
-  max-width: 480px;
-  width: 100%;
+  max-width: 540px;
   border-radius: 12px;
   border: 2px solid #888;
   box-shadow: 0 4px 32px rgba(0,0,0,0.4);
 }
 .about-section .about-content {
-  flex: 1 1 0;
+  
   color: white;
   max-width: 600px;
+  padding-right: 2rem;
 }
 .about-section .about-label {
   letter-spacing: 0.1em;
@@ -288,6 +307,8 @@ body, .home-root {
 
 /* How It Works Section */
 .howit-section {
+    height: 90vh;
+
   width: 100%;
   padding: 6rem 0 4rem 0;
   display: flex;
@@ -334,6 +355,7 @@ body, .home-root {
   align-items: center;
   text-align: center;
   transition: box-shadow 0.2s;
+
 }
 .howit-card:hover {
   box-shadow: 0 8px 40px 0 rgba(0,0,0,0.28);

@@ -5,6 +5,7 @@ import { useState } from "react";
 import FeatureCard from "@/components/ui/FeatureCard";
 import PricingCard from "@/components/ui/PricingCard";
 
+// Feature list
 const features = [
   {
     title: "AI-Powered Vulnerability Detection",
@@ -71,9 +72,14 @@ const Home = () => {
     return (
         <>
         {/* ...existing hero section... */}
-        <section className="home-hero">
-          
+
+          <section className="home-hero">
+
+  {/* <div className="vector-bg">
+    <img src="/Vector.png" alt="Decorative background" />
+  </div> */}
             <div className="hero-content">
+              
                 {/* Left: Text content */}
                 <div className="hero-left">
                     <h1 className="hero-title">Build Fast. Stay Secure</h1>
@@ -97,6 +103,10 @@ const Home = () => {
         </section>
         {/* Features Section */}
         <section className="features-section">
+          
+  {/* <div className="vector1-bg">
+    <img src="/Vector.png" alt="Decorative background" />
+  </div> */}
           <div className="features-label">FEATURES</div>
           <h2 className="features-title">Key Service Features<br/>Protecting You</h2>
           <div className="features-carousel-wrapper">
