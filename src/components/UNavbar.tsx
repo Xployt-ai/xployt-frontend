@@ -92,6 +92,15 @@ const UNavBar: React.FC = () => {
               </li>
             ))}
           </ul>
+          {
+            loggedIn && user && (
+              <Button>
+                <a href="/repo-import" className="hover:text-foreground transition-colors">
+                  Import Repo
+                </a>
+              </Button>
+            )
+          }
         </div>
 
         {/* Right Section */}
