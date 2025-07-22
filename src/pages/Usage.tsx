@@ -9,7 +9,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from '@/components/ui/Table';
 import { UsageLineChart } from '@/components/ui/usage-line-chart';
 import { format, subDays, isSameDay } from 'date-fns';
 
