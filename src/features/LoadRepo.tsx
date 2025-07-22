@@ -1,27 +1,40 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import { Search, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 import { Input } from '@/components/ui/input';
-import type { Project } from '@/types/Project.tsx';
 import { ProjectCard } from '@/components/ProjectCard.tsx';
+import {repoEndpoints} from "@/data/network/repo.ts";
+import type {Repo} from "@/data/models/repo.ts";
 
 const LoadRepo = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [repositories, setRepositories] = useState<Repo[]>([]);
 
-  const projects: Project[] = [
-    {
-      id: 1,
-      name: 'Automatisch',
-      lastScan: '2025-07-20',
-    },
-    {
-      id: 2,
-      name: 'Xployt.ai',
-      lastScan: '2024-06-2',
-    },
-  ];
+
+
+  useEffect(() => {
+    console.debug("RepoImport mounted");
+    const getRepositories = async () => {
+      setIsLoading(true)
+      console.debug("Fetching repositories...");
+      const repos = await repoEndpoints.getRepos();
+      console.debug("Repositories fetched:", repos);
+      console.log(repos);
+      setIsLoading(false)
+      return repos;
+    };
+    getRepositories()
+      .then((repos) => {
+        repos = repos.filter(repo => repo.is_linked);
+        setRepositories(repos);
+        console.debug("Repositories set in state:", repos);
+      })
+      .catch((error) => {
+        console.error("Error fetching repositories:", error);
+      });
+  }, []);
 
   return (
     <div className="min-h-screen bg-black">
@@ -47,12 +60,12 @@ const LoadRepo = () => {
         </div>
 
         <div className="w-full space-y-4 ">
-          {projects.map(project => (
-            <ProjectCard key={project.id} project={project} />
+          {repositories.map(project => (
+            <ProjectCard key={project.github_repo_id} project={project} />
           ))}
         </div>
 
-        {projects.length === 0 && searchQuery && (
+        {repositories.length === 0 && searchQuery && (
           <div className="py-12 text-center">
             <p className="text-lg text-gray-500">No projects found matching "{searchQuery}"</p>
           </div>

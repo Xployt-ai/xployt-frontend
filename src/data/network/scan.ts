@@ -1,5 +1,5 @@
 import NETWORK from "@/data/network/index.ts";
-import type {ScanProgress, ScanResult} from "@/data/models/scan.ts";
+import type {ScanProgress, ScanResult, Scan} from "@/data/models/scan.ts";
 
 export const scanEndpoints = {
   async startScan(repo_name: string): Promise<string> {
@@ -38,5 +38,15 @@ export const scanEndpoints = {
       );
     }
     return response.data as ScanResult[];
+  },
+
+  async listScans(): Promise<Scan[]> {
+    const response = await NETWORK.get(`/scans`);
+    if (response.status === 422) {
+      throw new Error(
+        `Failed to get scan results: ${response.data.detail.msg}\n${response.data.detail.loc}\n${response.data.detail.type}`
+      );
+    }
+    return response.data as Scan[];
   }
 };
