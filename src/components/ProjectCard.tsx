@@ -1,31 +1,36 @@
-import type { Project } from '@/types/Project.tsx';
 import { Card } from '@/components/ui/card';
 // import icon from '../../public/x logo.png';
 import { Button } from '@/components/ui/Button.tsx';
 import { Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import type {Repo} from "@/data/models/repo.ts";
+import {formatRepoName} from "@/lib/utils.ts";
 
-export const ProjectCard = ({ project }: { project: Project }) => {
+export const ProjectCard = ({ project }: { project: Repo }) => {
   const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/securitydashboard/${formatRepoName(project.name)}`);
+  }
 
   const [scanningProject, setScanningProject] = useState('');
   return (
-    <Card key={project.id} className=" max-w-full p-4">
+    <Card key={project.github_repo_id} className=" max-w-full p-4">
       <div className="flex items-center justify-between ">
         <div className="flex items-center gap-4">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-transparent">
             {/* <img src={icon} alt="Project Logo" className="h-8 w-8" /> TODO: load from src */}
           </div>
-          <div>
+          <div onClick={() => {handleClick()}}>
             <h3 className="mb-1 text-lg font-semibold text-white">{project.name}</h3>
-            <p className="text-sm text-gray-400">Last scan - {project.lastScan}</p>
+            {/*<p className="text-sm text-gray-400">Last scan - {project.lastScan}</p>*/}
           </div>
         </div>
 
         <Button
           onClick={() => {
-            navigate('/scanning');
+            navigate(`/new-scan/${formatRepoName(project.name)}`);
             setScanningProject(project.name);
           }}
           disabled={scanningProject === project.name}
