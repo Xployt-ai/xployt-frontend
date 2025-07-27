@@ -16,13 +16,13 @@ import ScanningPage from './pages/ScanningPage';
 import SecurityDashboardPage from './pages/SecurityDashboardPage';
 import GitHubCallback from './pages/GitHubCallback';
 
-import UNavBar from '@/components/UNavBar.tsx';
+import Navbar from '@/components/Navbar.tsx';
 import Footer from "@/components/Footer.tsx";
 
 function App() {
   return (
     <BrowserRouter>
-      <UNavBar />
+      <Navbar />
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
