@@ -1,37 +1,35 @@
 import { useEffect, useState } from "react";
-import SearchInput from "@/components/ui/SearchInput";
-import RepositoryCard from "@/components/ui/RepositoryCard";
+import RepositoryCard from "@/components/RepositoryCard.tsx";
+import { SearchBar } from "@/components/SearchBar.tsx";
 import { repoEndpoints } from "@/data/network/repo.ts";
 import type { Repo } from "@/data/models/repo.ts";
 
 
 const RepoImport = () => {
-    const [repositories, setRepositories] = useState<Repo[]>([]);
+  const [repositories, setRepositories] = useState<Repo[]>([]);
 
-    useEffect(() => {
-        console.debug("RepoImport mounted");
-        const getRepositories = async () => {
-            console.debug("Fetching repositories...");
-            const repos = await repoEndpoints.getRepos();
-            console.debug("Repositories fetched:", repos);
-            console.log(repos);
-            return repos;
-        };
-        getRepositories()
-            .then((repos) => {
-                setRepositories(repos);
-                console.debug("Repositories set in state:", repos);
-            })
-            .catch((error) => {
-                console.error("Error fetching repositories:", error);
-            });
-    }, []);
+  useEffect(() => {
+    const getRepositories = async () => {
+      console.debug("Fetching repositories...");
+      const repos = await repoEndpoints.getRepos();
+      console.log(repos);
+      return repos;
+    };
+    getRepositories()
+      .then((repos) => {
+        setRepositories(repos);
+        console.debug("Repositories set in state:");
+      })
+      .catch((error) => {
+        console.error("Error fetching repositories:", error);
+      });
+  }, []);
 
-    const [search, setSearch] = useState("");
+  const [search, setSearch] = useState("");
 
-    const filteredRepos = repositories.filter((repo) =>
-        repo.name.toLowerCase().includes(search.toLowerCase())
-    );
+  const filteredRepos = repositories.filter((repo) =>
+    repo.name.toLowerCase().includes(search.toLowerCase())
+  );
 
     return (
         <div
@@ -62,8 +60,11 @@ const RepoImport = () => {
                     ))}
                 </div>
             </div>
+
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default RepoImport;

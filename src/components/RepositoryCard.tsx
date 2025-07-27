@@ -1,8 +1,8 @@
-import {Button} from "@/components/ui/Button";
-import type {Repo} from "@/data/models/repo.ts";
-import {repoEndpoints} from "@/data/network/repo.ts";
-import {useNavigate} from "react-router-dom";
-import {formatRepoName} from "@/lib/utils.ts";
+import { Button } from "@/components/ui/Button.tsx";
+import type { Repo } from "@/data/models/repo.ts";
+import { repoEndpoints } from "@/data/network/repo.ts";
+import { useNavigate } from "react-router-dom";
+import { formatRepoName } from "@/lib/utils.ts";
 
 interface RepositoryCardProps {
   repo: Repo;
@@ -27,12 +27,13 @@ const RepositoryCard = ({repo, date}: RepositoryCardProps) => {
   };
 
   return (
-    <div className="bg-[#121212] p-4 border border-gray-800 rounded-md flex justify-between items-center w-full"
-    onClick={() => handleCardClick()
-    }
+    <div
+      className="bg-[#121212] p-4 border border-gray-800 rounded-md flex justify-between items-center w-full"
+      onClick={() => handleCardClick()}
     >
       <div className="flex items-center gap-3">
-      <span role="img" aria-label="folder" className="text-xl">
+        {/*  TODO: add lucide react icons*/}
+        <span role="img" aria-label="folder" className="text-xl">
         📁
       </span>
         <div>
@@ -41,14 +42,16 @@ const RepositoryCard = ({repo, date}: RepositoryCardProps) => {
         </div>
       </div>
       {!repo.is_linked &&
-          <Button onClick={() => {
-            importRepo(repo)
-              .then(() => {
-                console.log(`Repository ${repo.name} imported successfully.`)
-                navigate('/securitydashboard')
-              })
-              .catch((error) => console.error(`Failed to import repository ${repo.name}:`, error))
-          }} className="bg-white text-black font-bold">
+          <Button
+              onClick={() => {
+                importRepo(repo)
+                  .then(() => {
+                    console.log(`Repository ${repo.name} imported successfully.`)
+                    navigate('/new-scan/' + formatRepoName(repo.name))
+                  })
+              }}
+              className="bg-white text-black font-bold"
+          >
               Import
           </Button>}
 
