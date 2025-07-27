@@ -1,5 +1,5 @@
 export const scan = {
-  ScanFindings: [
+  ScanFindingsMock: [
     {
       severity: "High",
       finding: "SQL Injection Vulnerability",

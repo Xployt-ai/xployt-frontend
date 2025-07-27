@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Button } from "@/components/ui/Button.tsx";
 import type { newScanProps } from "@/data/models/scan.ts";
-import { EnvVariables } from "@/components/EnvVariables.tsx";
+import { EnvVariables } from "@/features/EnvVariables.tsx";
 // Assuming you have a top nav component
 
 const NewScan = () => {

@@ -92,3 +92,9 @@ export interface ScanStep {
   status: string;
   color: string;
 }
+
+export interface ScanIndicator {
+  label: string;
+  status: string;
+  color: string;
+}
