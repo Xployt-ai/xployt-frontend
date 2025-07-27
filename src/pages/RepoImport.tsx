@@ -35,7 +35,7 @@ const RepoImport = () => {
 
     return (
         <div
-            className="min-h-screen  text-white p-12 flex flex-col items-center relative font-sans space-y-6 border border-gray-700 ">
+            className="min-h-screen bg-black p-12 flex flex-col items-center relative font-sans space-y-6 border border-gray-700 ">
             {/* Header */}
             <div className="text-center max-w-xl mb-8 ">
                 <h1 className="text-4xl font-bold">Let's build secure app</h1>
@@ -62,8 +62,6 @@ const RepoImport = () => {
                     ))}
                 </div>
             </div>
-
-
         </div>
     );
 };

@@ -17,7 +17,7 @@ import Successful from './pages/Successful';
 import Dashboard from './pages/Dashboard';
 import Bill from './pages/Bill';
 import ScanningPage from './pages/ScanningPage';
-import UNavBar from '@/components/UNavBar.tsx';
+import UNavBar from '@/components/UNavbar.tsx';
 
 
 import SecurityDashboardPage from './pages/SecurityDashboardPage';
@@ -34,7 +34,7 @@ function App() {
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/docs" element={<Documentation />} />
           <Route path="/contact" element={<Contact />} />
-
+          <Route path="/selectscan" element={<Selectscan />} />
           <Route path="/new-scan/:repo_name" element={<NewScan />} />
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/successful" element={<Successful />} />
