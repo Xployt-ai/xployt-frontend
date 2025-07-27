@@ -66,6 +66,7 @@ export interface ScanResult {
 //   "scan_id": "string",
 //   "created_at": "2025-07-21T20:53:57.790Z"
 
+// To be integrated with the backend
 export interface newScanProps {
   repository_name: string;
   branch: string;
@@ -74,4 +75,20 @@ export interface newScanProps {
   output_directory: string;
   install_command?: string;
   env_variables?: Array<{ key: string; value: string }>;
+}
+
+export interface ScanFinding{
+  severity: string;
+  finding: string;
+  url: string;
+  id?: string;
+  scan_id?: string;
+  created_at?: string;
+  status?: string;
+}
+
+export interface ScanStep {
+  label: string;
+  status: string;
+  color: string;
 }
