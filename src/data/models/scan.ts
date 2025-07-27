@@ -65,3 +65,13 @@ export interface ScanResult {
 // "id": "string",
 //   "scan_id": "string",
 //   "created_at": "2025-07-21T20:53:57.790Z"
+
+export interface newScanProps {
+  repository_name: string;
+  branch: string;
+  root_directory: string;
+  build_command: string;
+  output_directory: string;
+  install_command?: string;
+  env_variables?: Array<{ key: string; value: string }>;
+}
