@@ -4,22 +4,21 @@ import ProgressBar from "@/components/ui/ProgressBar";
 import ContinueButton from "@/components/ui/ContinueButton";
 
 const Successful = () => {
-  
-  const today = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD" format
-const repositories = [{ name: "Automatisch", date: today }];
-
+  const today = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
+  const repositories = [{ name: "Automatisch", date: today }];
 
   const handleContinue = () => {
     console.log("Continue clicked! Navigate to dashboard...");
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-6 font-sans relative">
-      <div className="bg-[#1c1c1e] w-[948px] h-[539px] pl-[22px] pr-[32px] pt-8 pb-8 rounded-2xl shadow-lg text-center space-y-6 border border-gray-700">
+    <div className="min-h-screen bg-black text-white flex items-center justify-center px-4">
+      <div className="bg-[#1C1C1E] w-full max-w-[720px] rounded-2xl shadow-lg border border-gray-700 p-12 space-y-8 text-center">
         <SuccessMessage />
         <ProjectDetails repositories={repositories} />
         <ProgressBar progress={67} />
-        <ContinueButton onClick={handleContinue} />
+        {/* Added cursor-pointer here */}
+        <ContinueButton onClick={handleContinue} className="cursor-pointer" />
       </div>
     </div>
   );
