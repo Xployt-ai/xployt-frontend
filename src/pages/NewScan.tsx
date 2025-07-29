@@ -100,47 +100,46 @@ const NewScan = () => {
               placeholder="EXAMPLE_NAME"
               value={env.key}
               onChange={(e) => handleEnvChange(index, 'key', e.target.value)}
-              className="w-1/2 p-2 rounded-md bg-black border border-gray-700 text-white"
+              className="flex-1 p-1.5 rounded border border-gray-700 bg-black text-white"
             />
             <input
               type="text"
-              placeholder="Value"
+              placeholder="example_value"
               value={env.value}
               onChange={(e) => handleEnvChange(index, 'value', e.target.value)}
-              className="w-1/2 p-2 rounded-md bg-black border border-gray-700 text-white"
+              className="flex-1 p-1.5 rounded border border-gray-700 bg-black text-white"
             />
-            <button
-              onClick={() => handleRemoveEnvVar(index)}
-              className="text-red-400 text-xl font-bold px-2"
-              title="Remove"
-            >
-              -
-            </button>
+            {envVars.length > 1 && (
+              <button
+                type="button"
+                onClick={() => handleRemoveEnvVar(index)}
+                className="bg-gray-600 text-white border-none py-0 px-3 rounded cursor-pointer"
+              >
+                ×
+              </button>
+            )}
           </div>
         ))}
 
-        {/* Add more env vars */}
         <button
+          type="button"
           onClick={handleAddEnvVar}
-          className="text-blue-400 hover:text-blue-500 font-semibold text-sm mb-4"
+          className="mt-2 py-1.5 px-4 bg-gray-700 border-none text-white rounded cursor-pointer"
         >
-          + Add More
+          Add More
         </button>
 
-        {/* Tip */}
-        <p className="text-xs text-gray-500 mb-4">
-          Tip: Push an env above to populate this form.
-        </p>
+        <div className="text-xs text-gray-500 mt-3">
+          Tip: Add any environment variables your application needs to run properly.
+        </div>
 
-        {/* Start Scan */}
-        <button className="w-full bg-white text-black py-2 rounded-md font-bold hover:bg-gray-200 transition">
+        <button className="mt-6 w-full py-3 bg-white text-black border-none rounded font-bold cursor-pointer">
           Start Scan
         </button>
       </div>
 
-      {/* Profile Circle */}
       <div className="fixed top-8 right-8 w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center font-bold">
-        M
+        JD
       </div>
     </div>
   );
