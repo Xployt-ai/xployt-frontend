@@ -15,7 +15,6 @@ import Successful from './pages/Successful';
 import Dashboard from './pages/Dashboard.tsx';
 import Bill from './pages/Bill';
 import ScanningPage from './pages/ScanningPage';
-import UNavBar from '@/components/UNavbar.tsx';
 
 
 
@@ -29,7 +28,7 @@ function App() {
   return (
     <BrowserRouter>
       <Navbar />
-      <main className="flex-1">
+      <main className="flex-1 bg-black">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />

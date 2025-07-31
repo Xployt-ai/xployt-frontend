@@ -1,116 +1,234 @@
 "use client"
 
-import { Button } from "@/components/ui/Button"
-import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
-import {
-  TypographyH1,
-  TypographyH2,
-  TypographyP,
-  TypographyMuted,
-  TypographySmall,
-} from "@/components/ui/typography"
+import { useState } from "react";
+import { Button } from "@/components/ui/Button";
+import { Switch } from "@/components/ui/switch";
+import { Check, Clock, Shield, Zap, Cpu } from "lucide-react";
 
-import { Info, Search, Shield, Gavel, Puzzle, Key } from "lucide-react"
+export default function SecurityScanUI() {
+  const [enableAI, setEnableAI] = useState(false);
 
-const Selectscan = () => {
   return (
-    <div className="min-h-screen bg-zinc-900 p-12 flex flex-col items-center font-sans space-y-6">
-      <div className=" text-center">
-        <TypographyH1 className="text-gray-100">Select Scan Type</TypographyH1>
-        <TypographyP className="text-gray-400 text-sm">
-          Choose the type of scan to run on your repository
-        </TypographyP>
-      </div>
-
-      <div className="bg-zinc-800 p-8 rounded-xl shadow-lg space-y-8 border border-gray-700 w-full max-w-5xl">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
-
-          {/* Basic Scan */}
-          <div className="bg-zinc-900 hover:bg-zinc-800 border border-gray-700 rounded-lg p-6 text-white space-y-2">
-            <div className="flex items-center gap-4">
-              <Shield className="text-gray-500" />
-              <div>
-                <TypographyH2 className="text-gray-100 text-xl">
-                  Basic Scan (Recommended)
-                </TypographyH2>
-                <TypographyMuted className="text-gray-400">
-                  Covers common vulnerabilities and basic code checks.
-                </TypographyMuted>
-              </div>
-            </div>
-            <div className="pl-12 text-sm text-gray-400">
-              <ul className="list-disc ml-4">
-                <li>Vulnerability scanning</li>
-                <li>Dependency check</li>
-                <li>Basic code quality</li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Deep Static Analysis */}
-          <div className="bg-zinc-900 hover:bg-zinc-800 border border-gray-700 rounded-lg p-6 text-white space-y-2">
-            <div className="flex items-center gap-4">
-              <Search className="text-gray-500" />
-              <div>
-                <TypographyH2 className="text-gray-100 text-xl">
-                  Deep Static Analysis
-                </TypographyH2>
-                <TypographyMuted className="text-gray-400">
-                  In-depth static code analysis and architecture insights.
-                </TypographyMuted>
-              </div>
-            </div>
-            <div className="pl-12 text-sm text-gray-400">
-              <ul className="list-disc ml-4">
-                <li>Advanced vulnerability detection</li>
-                <li>Code metrics</li>
-                <li>Architecture analysis</li>
-              </ul>
-            </div>
-          </div>
+    <div className="min-h-screen p-12 flex flex-col items-center font-sans bg-gray-950">
+      <div className="w-full max-w-6xl space-y-10">
+        {/* Header */}
+        <div className="text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-200 mb-2">
+            Select Scan Type
+          </h1>
+          <p className="text-gray-400 text-base">
+            Choose the security scan that best fits your needs
+          </p>
         </div>
 
-        {/* Toggle Options */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          {[
-            { id: "secrets", icon: <Key className="text-gray-400" />, label: "Secrets Detection" },
-            { id: "dependencies", icon: <Puzzle className="text-gray-400" />, label: "Dependencies Scan" },
-            { id: "license", icon: <Gavel className="text-gray-400" />, label: "License Compliance" }
-          ].map(({ id, icon, label }) => (
-            <div
-              key={id}
-              className="flex items-center justify-between bg-zinc-900 p-4 rounded-lg border border-gray-700"
-            >
-              <div className="flex items-center gap-3 text-white">
-                {icon}
-                <Label htmlFor={id} className="text-gray-100">
-                  {label}
-                </Label>
+        {/* Recommended Templates */}
+        <section>
+          <h2 className="text-lg font-semibold text-gray-200 mb-4">
+            Recommended Templates
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Full Scan */}
+            <div className="hover:bg-gray-900 border border-gray-700 rounded-xl shadow-lg transition p-6 bg-transparent">
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="text-gray-200 text-xl font-semibold">
+                  Full Scan
+                </h3>
+                <span className="inline-block bg-gray-600 text-gray-200 rounded px-2 py-1 text-xs">
+                  Recommended
+                </span>
               </div>
-              <Switch id={id} />
+              <p className="text-gray-400 mb-4">
+                Comprehensive security analysis with AI assistance
+              </p>
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 text-gray-400 text-sm font-medium">
+                  <Check className="w-4 h-4 filter grayscale opacity-75" /> Static Analysis
+                </div>
+                <div className="flex items-center gap-2 text-gray-400 text-sm font-medium">
+                  <Check className="w-4 h-4 filter grayscale opacity-75" /> Dynamic Testing
+                </div>
+                <div className="flex items-center gap-2 text-gray-400 text-sm font-medium">
+                  <Cpu className="w-4 h-4 filter grayscale opacity-75" /> AI-Powered Review
+                </div>
+                <Button className="w-full bg-gray-300 text-gray-900 hover:bg-gray-100 mt-4 rounded-md font-semibold transition">
+                  Select Template
+                </Button>
+              </div>
             </div>
-          ))}
-        </div>
 
-        {/* Footer */}
-        <div className="flex justify-between items-center pt-4 border-t border-gray-700 text-sm text-gray-400">
-          <div className="flex items-center gap-2">
-            <Info className="w-4 h-4 text-gray-500" />
-            <TypographySmall className="text-gray-400">
-              Scan results will be available in the Security tab once completed.
-            </TypographySmall>
+            {/* No AI Scan */}
+            <div className="hover:bg-gray-900 border border-gray-700 rounded-xl shadow-lg transition p-6 bg-transparent">
+              <div className="mb-4">
+                <h3 className="text-gray-200 text-xl font-semibold">
+                  No AI Scan
+                </h3>
+              </div>
+              <p className="text-gray-400 mb-4">
+                Traditional security scanning without AI integration
+              </p>
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 text-gray-400 text-sm font-medium">
+                  <Check className="w-4 h-4 filter grayscale opacity-75" /> Static Analysis
+                </div>
+                <div className="flex items-center gap-2 text-gray-400 text-sm font-medium">
+                  <Check className="w-4 h-4 filter grayscale opacity-75" /> Dynamic Testing
+                </div>
+                <div className="flex items-center gap-2 text-gray-400 text-sm font-medium">
+                  <Check className="w-4 h-4 filter grayscale opacity-75" /> Manual Review
+                </div>
+                <Button className="w-full bg-gray-300 text-gray-900 hover:bg-gray-100 mt-4 rounded-md font-semibold transition">
+                  Select Template
+                </Button>
+              </div>
+            </div>
+
+            {/* Basic Scan */}
+            <div className="hover:bg-gray-900 border border-gray-700 rounded-xl shadow-lg transition p-6 bg-transparent">
+              <div className="mb-4">
+                <h3 className="text-gray-200 text-xl font-semibold">
+                  Basic Scan
+                </h3>
+              </div>
+              <p className="text-gray-400 mb-4">
+                Quick security check for basic vulnerabilities
+              </p>
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 text-gray-400 text-sm font-medium">
+                  <Check className="w-4 h-4 filter grayscale opacity-75" /> Static Analysis
+                </div>
+                <div className="flex items-center gap-2 text-gray-400 text-sm font-medium">
+                  <Check className="w-4 h-4 filter grayscale opacity-75" /> Basic Testing
+                </div>
+                <div className="flex items-center gap-2 text-gray-400 text-sm font-medium">
+                  <Check className="w-4 h-4 filter grayscale opacity-75" /> Quick Report
+                </div>
+                <Button className="w-full bg-gray-300 text-gray-900 hover:bg-gray-100 mt-4 rounded-md font-semibold transition">
+                  Select Template
+                </Button>
+              </div>
+            </div>
           </div>
-          <div className="flex items-center gap-4">
-            <span className="text-gray-500 text-xs">Est. Time: 5–10 mins</span>
-            <Button className="bg-gray-700 hover:bg-gray-600 text-white">
-              Start Scan
-            </Button>
+        </section>
+
+        {/* Individual Scan Options */}
+        <section className="space-y-4">
+          <h2 className="text-lg font-semibold text-gray-200 mb-2">
+            Individual Scan Options
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Static Scan */}
+            <div className="border border-gray-700 rounded-xl shadow-lg p-6 bg-transparent">
+              <div className="pb-4 flex items-center gap-4">
+                <Shield className="w-7 h-7 filter grayscale opacity-75" />
+                <div>
+                  <h4 className="text-gray-200 text-lg font-semibold">
+                    Static Scan
+                  </h4>
+                  <p className="text-gray-400">
+                    Code analysis for security vulnerabilities
+                  </p>
+                </div>
+              </div>
+              <div className="space-y-3 pt-0">
+                <div className="flex items-center text-gray-400 text-sm">
+                  <Clock className="w-4 h-4 mr-2 filter grayscale opacity-75" /> Duration: 5-10 min
+                </div>
+                <div className="flex items-center text-gray-400 text-sm">
+                  <Zap className="w-4 h-4 mr-2 filter grayscale opacity-75" /> Resource: Low
+                </div>
+              </div>
+            </div>
+
+            {/* LLM Deep Dive */}
+            <div className="border border-gray-700 rounded-xl shadow-lg p-6 bg-transparent">
+              <div className="pb-4 flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <Cpu className="w-7 h-7 filter grayscale opacity-75" />
+                  <div>
+                    <h4 className="text-gray-200 text-lg font-semibold">
+                      LLM Deep Dive
+                    </h4>
+                    <p className="text-gray-400">
+                      AI-powered security assessment
+                    </p>
+                  </div>
+                </div>
+                <span className="bg-gray-500 text-gray-100 rounded px-2 py-1 text-xs">
+                  Pro
+                </span>
+              </div>
+              <div className="space-y-3 pt-0">
+                <div className="flex items-center text-gray-400 text-sm">
+                  <Clock className="w-4 h-4 mr-2 filter grayscale opacity-75" /> Duration: 15-20 min
+                </div>
+                <div className="flex items-center text-gray-400 text-sm">
+                  <Zap className="w-4 h-4 mr-2 filter grayscale opacity-75" /> Resource: Medium
+                </div>
+              </div>
+            </div>
+
+            {/* Dynamic Scan */}
+            <div className="border border-gray-700 rounded-xl shadow-lg p-6 bg-transparent">
+              <div className="pb-4 flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <Zap className="w-7 h-7 filter grayscale opacity-75" />
+                  <div>
+                    <h4 className="text-gray-200 text-lg font-semibold">
+                      Dynamic Scan
+                    </h4>
+                    <p className="text-gray-400">
+                      Runtime security testing
+                    </p>
+                  </div>
+                </div>
+                <span className="bg-gray-500 text-gray-100 rounded px-2 py-1 text-xs">
+                  Pro
+                </span>
+              </div>
+              <div className="space-y-3 pt-0">
+                <div className="flex items-center text-gray-400 text-sm">
+                  <Clock className="w-4 h-4 mr-2 filter grayscale opacity-75" /> Duration: 20-30 min
+                </div>
+                <div className="flex items-center text-gray-400 text-sm">
+                  <Zap className="w-4 h-4 mr-2 filter grayscale opacity-75" /> Resource: High
+                </div>
+              </div>
+            </div>
+
+            {/* Enable AI Integration */}
+            <div className="border border-gray-700 rounded-xl shadow-lg p-6 bg-transparent">
+              <div className="pb-4 flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <Cpu className="w-7 h-7 filter grayscale opacity-75" />
+                  <div>
+                    <h4 className="text-gray-200 text-lg font-semibold">
+                      Enable AI Integration
+                    </h4>
+                    <p className="text-gray-400">
+                      Enhance results with LLM-powered analysis
+                    </p>
+                  </div>
+                </div>
+                <Switch
+                  checked={enableAI}
+                  onCheckedChange={setEnableAI}
+                  className="data-[state=checked]:bg-gray-400"
+                />
+              </div>
+            </div>
           </div>
+        </section>
+
+        {/* Footer Button */}
+        <div className="pt-6 flex justify-end border-t border-gray-700">
+          <Button
+            size="lg"
+            className="bg-gray-300 hover:bg-gray-100 text-gray-900 font-semibold px-8 py-2 rounded-md shadow"
+          >
+            Start Scan
+          </Button>
         </div>
       </div>
     </div>
-  )
+  );
 }
-
-export default Selectscan;

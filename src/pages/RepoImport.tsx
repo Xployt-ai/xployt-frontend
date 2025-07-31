@@ -62,9 +62,7 @@ const RepoImport = () => {
             </div>
 
         </div>
-      </div>
-    </div>
-  );
+      );
 };
 
 export default RepoImport;
