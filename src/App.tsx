@@ -22,6 +22,7 @@ import UNavBar from '@/components/UNavBar.tsx';
 
 import SecurityDashboardPage from './pages/SecurityDashboardPage';
 import GitHubCallback from './pages/GitHubCallback';
+import SelectScanType from './pages/SelectScanType';
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
           <Route path="/securitydashboard/:scan_id" element={<SecurityDashboardPage />} />
           <Route path="/callback" element={<GitHubCallback />} />
           <Route path="/usage" element={<Usage />} />
+             <Route path="/selectscan" element={<SelectScanType />} />
 
         </Routes>
       </main>
