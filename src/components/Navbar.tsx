@@ -32,7 +32,7 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="bg-transparent rounded-lg mt-2 mx-2 px-4 py-2 flex items-center justify-between border border-white">
+        <nav className="bg-transparent rounded-2xl mt-2 mx-2 px-4 py-2 flex items-center justify-between border border-white">
             {/* Left: Logo and Links */}
             <div className="flex items-center space-x-6">
                 <div className="flex items-center space-x-2 cursor-pointer" onClick={() => navigate("/")}> 

@@ -77,18 +77,20 @@ const Home = () => {
   <div className="absolute top-0 left-0 w-full h-full -z-10">
     <img src="/Vector.png" alt="Decorative background" />
   </div>
-            <div className="relative z-10 flex flex-col gap-8 w-full max-w-6xl px-6 md:flex-row md:px-12">
+            <div className="relative z-10 flex flex-col gap-8 w-full max-w-7xl px-6 md:flex-row md:px-12">
               
                 {/* Left: Text content */}
-                <div className="flex-1 flex flex-col items-start justify-center text-left max-w-2xl pt-16 pb-16 ml-40 md:pt-32 md:pb-32">
+                <div className="flex-1 flex flex-col items-start justify-center text-left pt-16 pb-16 md:pt-32 md:pb-32">
                     <h1 className="text-4xl font-extrabold text-white mb-6 md:text-6xl">Build Fast. Stay Secure</h1>
-                    <p className="text-lg text-gray-400 mb-8 max-w-lg md:text-xl">Our AI-powered platform analyzes your MERN stack applications for security vulnerabilities providing actionable insights and automated fixes.</p>
-                    <button
-                        className="bg-gray-200 text-gray-900 font-semibold py-3 px-6 rounded-md shadow-sm mb-4 transition-colors duration-200 border-none cursor-pointer hover:bg-gray-300"
+                    <p className="text-lg text-gray-400 mb-8 md:text-xl">Our AI-powered platform analyzes your MERN stack applications for security vulnerabilities providing actionable insights and automated fixes.</p>
+                    <Button
+                        variant="secondary"
+                        size="lg"
+                        className="mb-4"
                         onClick={() => navigate("/login")}
                     >
                         Start Free Scan
-                    </button>
+                    </Button>
                 </div>
                 {/* Right: Shield image */}
                 <div className="flex-1 flex items-center justify-center w-full pt-8 pb-8 md:w-auto md:pt-0 md:pb-0">
@@ -106,33 +108,42 @@ const Home = () => {
             <div className="text-gray-500 font-bold tracking-wider text-center mb-2">FEATURES</div>
             <h2 className="text-white text-4xl font-extrabold text-center mb-10 leading-tight">Advanced Security Features</h2>
             
-            <div className="w-full max-w-6xl overflow-hidden mb-8">
-              <div className="flex transition-transform duration-500 ease-out" style={{ transform: `translateX(-${active * 420}px)` }}>
-                {features.map((feature, idx) => (
-                  <div
-                    key={idx}
-                    className={`min-w-[370px] max-w-[420px] mx-5 bg-gradient-to-br from-white/[0.04] to-white/[0.01] rounded-3xl p-10 px-8 text-white shadow-lg border-2 border-transparent transition-colors duration-300 flex flex-col justify-start ${
-                      active === idx ? 'border-white bg-gradient-to-br from-white/[0.08] to-white/[0.02]' : ''
-                    }`}
-                  >
-                    <h3 className="text-3xl font-bold mb-4">{feature.title}</h3>
-                    <p className="text-lg text-gray-200">{feature.desc}</p>
+            <div className="w-full max-w-7xl mx-auto mb-8 relative">
+              <div className="flex justify-center">
+                <div className="w-[1200px] overflow-hidden relative">
+                  <div className="flex transition-transform duration-500 ease-out" style={{ transform: `translateX(-${active * 440}px)` }}>
+                    {features.map((feature, idx) => (
+                      <div
+                        key={idx}
+                        className="w-[400px] mx-5 flex-shrink-0 bg-gradient-to-br from-white/[0.04] to-white/[0.01] rounded-3xl p-10 px-8 text-white shadow-lg border-2 border-transparent transition-all duration-300 flex flex-col justify-start hover:border-white hover:shadow-white/20 hover:shadow-2xl"
+                      >
+                        <h3 className="text-3xl font-bold mb-4">{feature.title}</h3>
+                        <p className="text-lg text-gray-200">{feature.desc}</p>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </div>
+              
+              {/* Navigation Arrows */}
+                             <button
+                 onClick={handlePrev}
+                 className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full p-3 text-white hover:bg-white/20 transition-all duration-200 hover:scale-110 z-10"
+               >
+                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                 </svg>
+               </button>
+               
+               <button
+                 onClick={handleNext}
+                 className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full p-3 text-white hover:bg-white/20 transition-all duration-200 hover:scale-110 z-10"
+               >
+                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                 </svg>
+               </button>
             </div>
-            
-            <div className="flex gap-3 justify-center items-center">
-              {Array.from({ length: DOT_COUNT }, (_, i) => (
-                <button
-                  key={i}
-                  className={`w-3.5 h-3.5 rounded-full border-none cursor-pointer transition-colors duration-200 ${
-                    getDotActive(i) ? 'bg-white' : 'bg-gray-600'
-                  }`}
-                  onClick={() => setActive(i)}
-              />
-            ))}
-          </div>
         </section>
 
         {/* About Us Section */}
@@ -153,9 +164,13 @@ const Home = () => {
               <p className="text-gray-300 text-lg mb-8">
                 Our platform combines cutting-edge AI technology with industry best practices to provide comprehensive security analysis for your applications.
               </p>
-              <button className="py-3 px-8 border-[1.5px] border-gray-300 rounded-lg bg-transparent text-white font-semibold text-lg cursor-pointer transition-all duration-200 hover:bg-white hover:text-gray-900">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-gray-300 text-white hover:bg-white hover:text-gray-900"
+              >
                 Learn More
-            </button>
+              </Button>
           </div>
         </section>
 
@@ -194,58 +209,70 @@ const Home = () => {
               <h2 className="text-white text-5xl font-extrabold mb-0 leading-tight">Choose Your Plan</h2>
             </div>
             <div className="flex gap-12 justify-center items-stretch w-full max-w-4xl">
-              <div className="bg-gradient-to-br from-gray-700/0 via-gray-900/85 to-gray-900/85 rounded-[22px] shadow-2xl p-10 px-8 pb-8 flex-1 min-w-[260px] max-w-[340px] flex flex-col items-center text-center transition-shadow duration-200 border-[1.5px] border-gray-600/13">
-                <div className="text-white text-lg font-bold mb-6 tracking-wider">FREE</div>
-                <div className="w-full flex items-center justify-center mb-8">
-                  <div className="bg-gradient-to-r from-gray-700/45 via-gray-900/85 to-gray-900/85 rounded-full text-white text-4xl font-extrabold py-3 px-14 mr-2 shadow-lg">$0</div>
-                  <div className="text-gray-300 text-lg font-medium">/month</div>
-                </div>
-                <ul className="list-none p-0 m-0 mb-9 w-full">
-                  <li className="text-white text-lg font-normal mb-4 flex items-center gap-3 justify-start">
-                    <img src="/checkmark.png" alt="Check" className="w-4.5 h-4.5 object-contain filter drop-shadow-sm" />
-                    Up to 3 repositories
-                  </li>
-                  <li className="text-white text-lg font-normal mb-4 flex items-center gap-3 justify-start">
-                    <img src="/checkmark.png" alt="Check" className="w-4.5 h-4.5 object-contain filter drop-shadow-sm" />
-                    Basic vulnerability scan
-                  </li>
-                  <li className="text-white text-lg font-normal mb-4 flex items-center gap-3 justify-start">
-                    <img src="/checkmark.png" alt="Check" className="w-4.5 h-4.5 object-contain filter drop-shadow-sm" />
-                    Email notifications
-                  </li>
-                </ul>
-                <button className="w-full py-4 rounded-lg text-lg font-bold cursor-pointer transition-all duration-200 border-2 border-white bg-transparent text-white hover:bg-white hover:text-gray-900">
-                  Get Started
-                </button>
-              </div>
-              <div className="bg-gradient-to-br from-gray-700/0 via-gray-900/85 to-gray-900/85 rounded-[22px] shadow-2xl p-10 px-8 pb-8 flex-1 min-w-[260px] max-w-[340px] flex flex-col items-center text-center transition-shadow duration-200 border-[1.5px] border-gray-600 shadow-2xl">
-                <div className="text-white text-lg font-bold mb-6 tracking-wider">PRO</div>
-                <div className="w-full flex items-center justify-center mb-8">
-                  <div className="bg-gradient-to-r from-gray-700/45 via-gray-900/85 to-gray-900/85 rounded-full text-white text-4xl font-extrabold py-3 px-14 mr-2 shadow-2xl">$29</div>
-                  <div className="text-gray-300 text-lg font-medium">/month</div>
-          </div>
-                <ul className="list-none p-0 m-0 mb-9 w-full">
-                  <li className="text-white text-lg font-normal mb-4 flex items-center gap-3 justify-start">
-                    <img src="/checkmark.png" alt="Check" className="w-4.5 h-4.5 object-contain filter drop-shadow-sm" />
-                    Unlimited repositories
-                  </li>
-                  <li className="text-white text-lg font-normal mb-4 flex items-center gap-3 justify-start">
-                    <img src="/checkmark.png" alt="Check" className="w-4.5 h-4.5 object-contain filter drop-shadow-sm" />
-                    Advanced AI analysis
-                  </li>
-                  <li className="text-white text-lg font-normal mb-4 flex items-center gap-3 justify-start">
-                    <img src="/checkmark.png" alt="Check" className="w-4.5 h-4.5 object-contain filter drop-shadow-sm" />
-                    Priority support
-                  </li>
-                  <li className="text-white text-lg font-normal mb-4 flex items-center gap-3 justify-start">
-                    <img src="/checkmark.png" alt="Check" className="w-4.5 h-4.5 object-contain filter drop-shadow-sm" />
-                    Custom rules
-                  </li>
-                </ul>
-                <button className="w-full py-4 rounded-lg text-lg font-bold cursor-pointer transition-all duration-200 border-2 border-gray-700 bg-gray-700 text-white hover:bg-white hover:text-gray-900 hover:border-white">
-                  Start Pro Trial
-                </button>
-          </div>
+                             <div className="bg-gradient-to-br from-gray-700/0 via-gray-900/85 to-gray-900/85 rounded-[22px] shadow-2xl p-10 px-8 pb-8 flex-1 min-w-[260px] max-w-[340px] flex flex-col items-center text-center transition-all duration-300 border-[1.5px] border-gray-600/13 hover:border-white hover:shadow-white/20 hover:shadow-2xl">
+                 <div className="text-white text-lg font-bold mb-6 tracking-wider">FREE</div>
+                 <div className="w-full flex items-center justify-center mb-8">
+                   <div className="bg-gradient-to-r from-gray-700/45 via-gray-900/85 to-gray-900/85 rounded-full text-white text-4xl font-extrabold py-3 px-14 mr-2 shadow-lg">$0</div>
+                   <div className="text-gray-300 text-lg font-medium">/month</div>
+                 </div>
+                 <ul className="list-none p-0 m-0 mb-9 w-full">
+                   <li className="text-white text-lg font-normal mb-4 flex items-center gap-3 justify-start">
+                     <img src="/checkmark.png" alt="Check" className="w-4.5 h-4.5 object-contain filter drop-shadow-sm" />
+                     Up to 3 repositories
+                   </li>
+                   <li className="text-white text-lg font-normal mb-4 flex items-center gap-3 justify-start">
+                     <img src="/checkmark.png" alt="Check" className="w-4.5 h-4.5 object-contain filter drop-shadow-sm" />
+                     Basic vulnerability scan
+                   </li>
+                   <li className="text-white text-lg font-normal mb-4 flex items-center gap-3 justify-start">
+                     <img src="/checkmark.png" alt="Check" className="w-4.5 h-4.5 object-contain filter drop-shadow-sm" />
+                     Email notifications
+                   </li>
+                 </ul>
+                 <div className="mt-auto">
+                   <Button
+                     variant="outline"
+                     size="lg"
+                     className="w-full border-2 border-white bg-transparent text-white hover:bg-white hover:text-gray-900"
+                   >
+                     Get Started
+                   </Button>
+                 </div>
+               </div>
+               <div className="bg-gradient-to-br from-gray-700/0 via-gray-900/85 to-gray-900/85 rounded-[22px] shadow-2xl p-10 px-8 pb-8 flex-1 min-w-[260px] max-w-[340px] flex flex-col items-center text-center transition-all duration-300 border-[1.5px] border-gray-600 shadow-2xl hover:border-white hover:shadow-white/20 hover:shadow-2xl">
+                 <div className="text-white text-lg font-bold mb-6 tracking-wider">PRO</div>
+                 <div className="w-full flex items-center justify-center mb-8">
+                   <div className="bg-gradient-to-r from-gray-700/45 via-gray-900/85 to-gray-900/85 rounded-full text-white text-4xl font-extrabold py-3 px-14 mr-2 shadow-2xl">$29</div>
+                   <div className="text-gray-300 text-lg font-medium">/month</div>
+           </div>
+                 <ul className="list-none p-0 m-0 mb-9 w-full">
+                   <li className="text-white text-lg font-normal mb-4 flex items-center gap-3 justify-start">
+                     <img src="/checkmark.png" alt="Check" className="w-4.5 h-4.5 object-contain filter drop-shadow-sm" />
+                     Unlimited repositories
+                   </li>
+                   <li className="text-white text-lg font-normal mb-4 flex items-center gap-3 justify-start">
+                     <img src="/checkmark.png" alt="Check" className="w-4.5 h-4.5 object-contain filter drop-shadow-sm" />
+                     Advanced AI analysis
+                   </li>
+                   <li className="text-white text-lg font-normal mb-4 flex items-center gap-3 justify-start">
+                     <img src="/checkmark.png" alt="Check" className="w-4.5 h-4.5 object-contain filter drop-shadow-sm" />
+                     Priority support
+                   </li>
+                   <li className="text-white text-lg font-normal mb-4 flex items-center gap-3 justify-start">
+                     <img src="/checkmark.png" alt="Check" className="w-4.5 h-4.5 object-contain filter drop-shadow-sm" />
+                     Custom rules
+                   </li>
+                 </ul>
+                 <div className="mt-auto">
+                   <Button
+                     variant="default"
+                     size="lg"
+                     className="w-full border-2 border-gray-700 bg-gray-700 text-white hover:bg-white hover:text-gray-900 hover:border-white"
+                   >
+                     Start Pro Trial
+                   </Button>
+                 </div>
+           </div>
           </div>
         </section>
         </>
