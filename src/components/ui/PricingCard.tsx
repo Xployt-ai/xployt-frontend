@@ -26,4 +26,4 @@ const PricingCard: React.FC<PricingCardProps> = ({ plan, price, per, features, b
   </div>
 );
 
-export default PricingCard;
+export default PricingCard; 

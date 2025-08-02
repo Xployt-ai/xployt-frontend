@@ -1,143 +1,146 @@
-// src/pages/NewScan.tsx
-import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { scanEndpoints } from "@/data/network/scan.ts";
-import { Card } from "@/components/ui/card.tsx";
-import { Input } from "@/components/ui/input.tsx";
-import { Button } from "@/components/ui/Button.tsx";
-import type { newScanProps } from "@/data/models/scan.ts";
-import { EnvVariables } from "@/features/EnvVariables.tsx";
-// Assuming you have a top nav component
+import React, { useState } from 'react';
 
 const NewScan = () => {
-  const [envVars, setEnvVars] = useState([{key: "", value: ""}]);
-  const [newScanProps, setNewScanProps] = useState<newScanProps>({
-    repository_name: "",
-    branch: "",
-    root_directory: "/",
-    build_command: "",
-    output_directory: "",
-    install_command: "",
-    env_variables: [],
-  })
+  const [envVars, setEnvVars] = useState([{ key: '', value: '' }]);
 
-  const navigate = useNavigate();
+  const handleAddEnvVar = () => {
+    setEnvVars([...envVars, { key: '', value: '' }]);
+  };
 
-  const {repo_name} = useParams()
+  const handleRemoveEnvVar = (index) => {
+    const updated = [...envVars];
+    updated.splice(index, 1);
+    setEnvVars(updated);
+  };
 
-  const startScan = async () => {
-    try {
-      if (!repo_name) return;
-      setNewScanProps((prev) => ({
-        ...prev!,
-        repository_name: repo_name,
-        env_variables: envVars.filter((env) => env.key && env.value),
-      }));
-      await scanEndpoints.updateScanProps(newScanProps)
-      const scan_id = await scanEndpoints.startScan(repo_name)
-      console.log("Scan started successfully:", scan_id);
-      navigate(`/scanning/${scan_id}`)
-    } catch (error) {
-      console.error("Error starting scan:", error);
-    }
-  }
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setNewScanProps((prev) => ({
-      ...prev!,
-      [name]: value,
-    }));
+  const handleEnvChange = (index, field, value) => {
+    const updated = [...envVars];
+    updated[index][field] = value;
+    setEnvVars(updated);
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-12 flex flex-col items-center relative font-sans">
-
-
-      <Card className="w-full max-w-xl p-8 rounded-xl shadow-lg bg-[#1c1c1e] space-y-6 border border-gray-700">
+    <div className="min-h-screen bg-black text-white p-12 flex flex-col items-center relative font-sans">
+      <div className="bg-[#1c1c1e] p-8 rounded-xl w-full max-w-xl shadow-lg">
         <h2 className="text-2xl font-bold mb-6">New Scan</h2>
 
         {/* GitHub import */}
-        <div>
-          <label className="block mb-1 text-sm font-semibold">Codebase</label>
-          <Input
+        <div className="mb-4">
+          <label className="block mb-1 text-sm font-semibold">Importing from GitHub</label>
+          <input
             disabled
-            value={newScanProps.repository_name}
-            className="cursor-not-allowed text-gray-400"
-            name="repository_name"
+            value="github.com/xployt-ai/xploit-scan-stub"
+            className="w-full p-2 rounded-md bg-gray-900 text-gray-400 border border-gray-700 cursor-not-allowed"
           />
         </div>
 
         {/* Branch select */}
-        <div>
+        <div className="mb-4">
           <label className="block mb-1 text-sm font-semibold">Select the branch</label>
-          <Input
-            placeholder="main"
-            name="branch"
-            value={newScanProps.branch}
-            onChange={handleInputChange}
+          <select className="w-full p-2 rounded-md bg-black border border-gray-700 text-white">
+            <option>main</option>
+            <option>dev</option>
+          </select>
+        </div>
+
+        {/* Project Name */}
+        <div className="mb-4">
+          <label className="block mb-1 text-sm font-semibold">Project Name</label>
+          <input
+            placeholder="Enter your project name"
+            className="w-full p-2 rounded-md bg-black border border-gray-700 text-white"
           />
         </div>
 
         {/* Root Directory */}
-        <div>
+        <div className="mb-6">
           <label className="block mb-1 text-sm font-semibold">Root Directory</label>
-          <Input
-            name="root_directory"
-            value={newScanProps.root_directory}
-            onChange={handleInputChange}
+          <input
             defaultValue="/"
+            className="w-full p-2 rounded-md bg-black border border-gray-700 text-white"
           />
         </div>
 
-        <div className="text-sm text-gray-400 font-semibold">Build and Output Settings</div>
+        <div className="text-sm text-gray-400 font-semibold mb-2">Build and Output Settings</div>
 
         {/* Build Command */}
-        <div>
+        <div className="mb-4">
           <label className="block mb-1 text-sm font-semibold">Build Command</label>
-          <Input
+          <input
             placeholder='"npm run build" or "yarn build"'
-            name="build_command"
-            value={newScanProps.build_command}
-            onChange={handleInputChange}
+            className="w-full p-2 rounded-md bg-black border border-gray-700 text-white"
           />
         </div>
 
         {/* Output Directory */}
-        <div>
+        <div className="mb-4">
           <label className="block mb-1 text-sm font-semibold">Output Directory</label>
-          <Input
+          <input
             placeholder='"public" (if exists), else "/"'
-            name="output_directory"
-            value={newScanProps.output_directory}
-            onChange={handleInputChange}
+            className="w-full p-2 rounded-md bg-black border border-gray-700 text-white"
           />
         </div>
 
         {/* Install Command */}
-        <div>
+        <div className="mb-6">
           <label className="block mb-1 text-sm font-semibold">Install Command</label>
-          <Input
+          <input
             placeholder='"npm install" or "yarn install"'
-            name="install_command"
-            value={newScanProps.install_command}
-            onChange={handleInputChange}
+            className="w-full p-2 rounded-md bg-black border border-gray-700 text-white"
           />
         </div>
 
-        <EnvVariables envVars={envVars} setEnvVars={setEnvVars}/>
-        
+        {/* Env Vars */}
+        <div className="text-sm text-gray-400 font-semibold mb-2">Environment Variables</div>
 
-        <Button
-          className="w-full bg-white text-black hover:bg-gray-200 font-bold"
-          onClick={() => startScan()}
+        {envVars.map((env, index) => (
+          <div key={index} className="flex gap-2 items-center mb-2">
+            <input
+              type="text"
+              placeholder="EXAMPLE_NAME"
+              value={env.key}
+              onChange={(e) => handleEnvChange(index, 'key', e.target.value)}
+              className="flex-1 p-1.5 rounded border border-gray-700 bg-black text-white"
+            />
+            <input
+              type="text"
+              placeholder="example_value"
+              value={env.value}
+              onChange={(e) => handleEnvChange(index, 'value', e.target.value)}
+              className="flex-1 p-1.5 rounded border border-gray-700 bg-black text-white"
+            />
+            {envVars.length > 1 && (
+              <button
+                type="button"
+                onClick={() => handleRemoveEnvVar(index)}
+                className="bg-gray-600 text-white border-none py-0 px-3 rounded cursor-pointer"
+              >
+                ×
+              </button>
+            )}
+          </div>
+        ))}
+
+        <button
+          type="button"
+          onClick={handleAddEnvVar}
+          className="mt-2 py-1.5 px-4 bg-gray-700 border-none text-white rounded cursor-pointer"
         >
+          Add More
+        </button>
+
+        <div className="text-xs text-gray-500 mt-3">
+          Tip: Add any environment variables your application needs to run properly.
+        </div>
+
+        <button className="mt-6 w-full py-3 bg-white text-black border-none rounded font-bold cursor-pointer">
           Start Scan
-        </Button>
-      </Card>
-      );
+        </button>
+      </div>
 
-
+      <div className="fixed top-8 right-8 w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center font-bold">
+        JD
+      </div>
     </div>
   );
 };

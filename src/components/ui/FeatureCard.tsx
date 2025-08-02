@@ -14,4 +14,4 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ title, desc, active = false, 
   </div>
 );
 
-export default FeatureCard;
+export default FeatureCard; 
