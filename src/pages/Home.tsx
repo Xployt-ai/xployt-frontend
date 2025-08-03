@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
 import { useState } from "react";
-import FeatureCard from "@/components/ui/FeatureCard";
-import PricingCard from "@/components/ui/PricingCard";
+import FeatureCard from "@/components/FeatureCard.tsx";
+import PricingCard from "@/components/PricingCard.tsx";
 
 // Feature list
 const features = [

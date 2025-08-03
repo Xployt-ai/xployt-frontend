@@ -51,7 +51,7 @@ const NewScan = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-12 flex flex-col items-center relative font-sans">
+    <div className="min-h-screen bg-black text-white p-12 flex flex-col items-center relative font-sans">
 
 
       <Card className="w-full max-w-xl p-8 rounded-xl shadow-lg bg-[#1c1c1e] space-y-6 border border-gray-700">

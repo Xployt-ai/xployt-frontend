@@ -1,7 +1,7 @@
-import {useState} from "react";
-import {Loader2, Search} from "lucide-react";
-import {Button} from "@/components/ui/Button.tsx";
-import {Input} from "@/components/ui/input.tsx";
+import { useState } from "react";
+import { Loader2, Search } from "lucide-react";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/input";
 
 interface SearchBarProps {
   placeholder: string;
@@ -10,34 +10,39 @@ interface SearchBarProps {
   isLoading: boolean;
 }
 
-export const SearchBar = ({placeholder, onChange, onSearch, isLoading}: SearchBarProps) => {
-  const [searchQuery, setSearchQuery] = useState('');
-  // TODO: Add the search functionality
-  return(
+export const SearchBar = ({
+  placeholder,
+  onChange,
+  onSearch,
+  isLoading,
+}: SearchBarProps) => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  return (
     <div className="mb-8 flex items-center gap-4">
-      <div className="flex flex-1 items-center rounded-xl border border-gray-600 px-3 py-1 ">
-        <Search className="mr-2 h-4 w-4 text-gray-600"/>
+      <div className="flex flex-1 items-center rounded-xl border border-gray-600 px-3 py-2">
+        <Search className="mr-2 h-4 w-4 text-gray-600" />
         <Input
           type="text"
           placeholder={placeholder}
           value={searchQuery}
-          onChange={e => {
-            setSearchQuery(e.target.value)
-            onChange(e)
+          onChange={(e) => {
+            setSearchQuery(e.target.value);
+            onChange(e);
           }}
-          className=" max-w-full border-none bg-transparent outline-none  "
+          className="w-full border-none bg-transparent outline-none"
         />
       </div>
       <Button
         disabled={isLoading}
-        className="flex items-center gap-2 rounded-xl bg-gray-800 px-6 py-6 font-medium text-white transition-colors hover:bg-gray-900 disabled:cursor-not-allowed disabled:opacity-50"
-        onClick={e => {
-          if (onSearch) { onSearch(e) }
+        onClick={(e) => {
+          if (onSearch) onSearch(e);
         }}
+        className="cursor-pointer flex items-center gap-2 rounded-xl bg-gray-800 px-6 py-3 font-medium text-white transition-colors hover:bg-gray-900 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {isLoading && <Loader2 className="h-4 w-4 animate-spin"/>}
-        {isLoading ? 'Searching...' : 'Search'}
+        {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
+        {isLoading ? "Searching..." : "Search"}
       </Button>
     </div>
-  )
-}
+  );
+};

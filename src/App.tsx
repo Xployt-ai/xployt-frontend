@@ -15,9 +15,6 @@ import Successful from './pages/Successful';
 import Dashboard from './pages/Dashboard.tsx';
 import Bill from './pages/Bill';
 import ScanningPage from './pages/ScanningPage';
-
-
-
 import SecurityDashboardPage from './pages/SecurityDashboardPage';
 import GitHubCallback from './pages/GitHubCallback';
 

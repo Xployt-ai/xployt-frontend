@@ -43,26 +43,28 @@ const RepoImport = () => {
                 </p>
             </div>
 
-            {/* Card */}
-            <div
-                className="bg-[#1c1c1e] p-8 rounded-xl shadow-lg space-y-6 border border-gray-700 w-4xl"
-            >
-                <h2 className="text-2xl font-bold mb-4">Import Git Repository</h2>
+      {/* Card */}
+      <div className="bg-[#1c1c1e] p-8 rounded-xl shadow-lg space-y-6 border border-gray-700 w-4xl">
+        <h2 className="text-2xl font-bold mb-4">Import Git Repository</h2>
 
-                <SearchInput value={search} onChange={(e) => setSearch(e.target.value)}/>
+        <SearchBar
+          placeholder="Search repositories"
+          onChange={e => setSearch(e.target.value)}
+          isLoading={false}
+        />
 
-                <div className="flex flex-col gap-4">
-                    {filteredRepos.map((repo, index) => (
-                        <RepositoryCard
-                            key={index}
-                            repo={repo}
-                        />
-                    ))}
-                </div>
-            </div>
-
+        <div className="flex flex-col gap-4">
+          {/*TODO: add pagination*/}
+          {filteredRepos.map((repo, index) => (
+            <RepositoryCard
+              key={index}
+              repo={repo}
+            />
+          ))}
         </div>
-      );
+      </div>
+    </div>
+  );
 };
 
 export default RepoImport;

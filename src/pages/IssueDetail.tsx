@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"; 
-import { Section } from "@/components/ui/Section";
-import { CodeBlock } from "@/components/ui/CodeBlock";
+import { Section } from "@/components/Section.tsx";
+import { CodeBlock } from "@/components/CodeBlock.tsx";
 import { Button } from "@/components/ui/Button";
 
 const IssueDetail = () => {
