@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"; // or use next/link for Next.js
+import { Link } from "react-router-dom"; 
 import { Section } from "@/components/ui/Section";
 import { CodeBlock } from "@/components/ui/CodeBlock";
 import { Button } from "@/components/ui/Button";
@@ -7,7 +7,6 @@ const IssueDetail = () => {
   return (
     <div className="min-h-screen bg-black text-white px-6 py-10">
       <div className="max-w-4xl mx-auto">
-        {/* ✅ Breadcrumb (outside border) */}
         <div className="text-sm text-gray-400 mb-4 space-x-1">
           <Link to="/" className="text-gray-500 hover:underline">
             Project
@@ -28,13 +27,8 @@ const IssueDetail = () => {
             Critical • High • #12345
           </div>
 
-        {/* ✅ Bordered Content */}
-        <div className="border border-gray-700 p-6 rounded-lg">
-          {/* Title */}
-        
-         
+        <div className="border border-gray-700 p-6 rounded-lg">     
 
-          {/* Issue Details */}
           <div className="mb-8">
             <h2 className="text-xl font-semibold mb-4">Issue Details</h2>
             <div className="grid grid-cols-2 gap-4 text-sm text-gray-300 divide-y divide-gray-700">

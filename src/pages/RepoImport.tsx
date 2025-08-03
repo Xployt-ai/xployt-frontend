@@ -31,17 +31,17 @@ const RepoImport = () => {
     repo.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  return (
-    <div
-      className="min-h-screen  text-white p-12 flex flex-col items-center relative font-sans space-y-6 border border-gray-700 ">
-      {/* Header */}
-      <div className="text-center max-w-xl mb-8 ">
-        <h1 className="text-4xl font-bold">Let's build a secure app</h1>
-        <p className="text-gray-400 mt-2 text-sm">
-          Select your GitHub repository to instantly begin scanning for security
-          issues to kick-start your secure development journey
-        </p>
-      </div>
+    return (
+        <div
+            className="min-h-screen bg-black p-12 flex flex-col items-center relative font-sans space-y-6 border border-gray-700 ">
+            {/* Header */}
+            <div className="text-center max-w-xl mb-8 ">
+                <h1 className="text-4xl font-bold">Let's build secure app</h1>
+                <p className="text-gray-400 mt-2 text-sm">
+                    Select your GitHub repository to instantly begin scanning for security
+                    issues to kick-start your secure development journey
+                </p>
+            </div>
 
       {/* Card */}
       <div className="bg-[#1c1c1e] p-8 rounded-xl shadow-lg space-y-6 border border-gray-700 w-4xl">

@@ -18,5 +18,5 @@ export const repoEndpoints = {
       `Failed to link repository: ${response.detail.msg}\n${response.detail.loc}\n${response.detail.type}`
     )
     return response.data;
-  }
+  },
 };
