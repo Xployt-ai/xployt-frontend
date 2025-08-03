@@ -1,5 +1,6 @@
-import { TypographyH2, TypographySmall } from "@/components/ui/typography.tsx";
+import { TypographyH2 } from "@/components/ui/typography.tsx";
 import type { ScanFinding } from "@/data/models/scan.ts";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table"
 
 interface scanDetailsProps {
   scanFindings: ScanFinding[];
@@ -10,31 +11,24 @@ export const ScanDetails = ({scanFindings}: scanDetailsProps) => {
     <div className="space-y-6">
       <TypographyH2>Scan Details</TypographyH2>
 
-      {/*TODO: use shad.cn table*/}
-
-      {/* Table Header */}
-      <div className="grid grid-cols-3 gap-4 py-3 bg-gray-800 px-4 rounded-t">
-        <TypographySmall className="text-white">Severity</TypographySmall>
-        <TypographySmall className="text-white">Finding</TypographySmall>
-        <TypographySmall className="text-white">Affected URL</TypographySmall>
-      </div>
-
-      {/* Table Rows */}
-      <div className=" rounded-b">
-        {scanFindings.map(({severity, finding, url}) => (
-          <div
-            key={finding}
-            className="grid grid-cols-3 gap-4 py-3 px-4 border-b border-gray-800 last:border-b-0"
-          >
-            <TypographySmall className={` text-muted-foreground `}>
-              {severity}
-            </TypographySmall>
-            <TypographySmall className="text-muted-foreground">{finding}</TypographySmall>
-            <TypographySmall className="truncate">{url}</TypographySmall>
-
-          </div>
-        ))}
-      </div>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Severity</TableHead>
+            <TableHead>Finding</TableHead>
+            <TableHead>Affected URL</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {scanFindings.map(({ severity, finding, url }) => (
+            <TableRow key={finding}>
+              <TableCell>{severity}</TableCell>
+              <TableCell>{finding}</TableCell>
+              <TableCell className="truncate">{url}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   )
 }

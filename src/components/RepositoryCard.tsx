@@ -3,6 +3,7 @@ import type { Repo } from "@/data/models/repo.ts";
 import { repoEndpoints } from "@/data/network/repo.ts";
 import { useNavigate } from "react-router-dom";
 import { formatRepoName } from "@/lib/utils.ts";
+import { Folder } from "lucide-react";
 
 interface RepositoryCardProps {
   repo: Repo;
@@ -32,10 +33,7 @@ const RepositoryCard = ({repo, date}: RepositoryCardProps) => {
       onClick={() => handleCardClick()}
     >
       <div className="flex items-center gap-3">
-        {/*  TODO: add lucide react icons*/}
-        <span role="img" aria-label="folder" className="text-xl">
-        📁
-      </span>
+        <Folder className="text-xl text-gray-400" aria-label="folder" />
         <div>
           <strong>{repo.name}</strong>
           {date && <div className="text-sm text-gray-500">{date}</div>}

@@ -15,7 +15,7 @@ export const SearchBar = ({placeholder, onChange, onSearch, isLoading}: SearchBa
   // TODO: Add the search functionality
   return(
     <div className="mb-8 flex items-center gap-4">
-      <div className="flex flex-1 items-center rounded-xl border border-gray-600 px-3 py-1 ">
+      <div className="flex flex-1 items-center rounded-xl border border-gray-600 px-3  ">
         <Search className="mr-2 h-4 w-4 text-gray-600"/>
         <Input
           type="text"
@@ -25,7 +25,7 @@ export const SearchBar = ({placeholder, onChange, onSearch, isLoading}: SearchBa
             setSearchQuery(e.target.value)
             onChange(e)
           }}
-          className=" max-w-full border-none bg-transparent outline-none  "
+          className=" max-w-fit border-none bg-transparent outline-none  "
         />
       </div>
       <Button

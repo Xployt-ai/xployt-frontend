@@ -3,6 +3,7 @@ import RepositoryCard from "@/components/RepositoryCard.tsx";
 import { SearchBar } from "@/components/SearchBar.tsx";
 import { repoEndpoints } from "@/data/network/repo.ts";
 import type { Repo } from "@/data/models/repo.ts";
+import SearchInput from "@/components/ui/SearchInput";
 
 
 const RepoImport = () => {
