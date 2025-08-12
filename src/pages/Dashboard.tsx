@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from "react";
-import type {Repo} from "@/data/models/repo.ts";
-import {repoEndpoints} from "@/data/network/repo.ts";
+import {useEffect, useState} from "react";
 import {Loader2} from "lucide-react";
 import {ProjectCard} from "@/components/ProjectCard.tsx";
 import {SearchBar} from "@/components/SearchBar.tsx";
+import {repoEndpoints} from "@/data/network/repo.ts";
+import type {Repo} from "@/data/models/repo.ts";
 
 const Dashboard: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');

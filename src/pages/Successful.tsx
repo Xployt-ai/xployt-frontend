@@ -1,7 +1,7 @@
-import SuccessMessage from "@/components/ui/SuccessMessage";
-import ProjectDetails from "@/components/ui/ProjectDetails";
-import ProgressBar from "@/components/ui/ProgressBar";
-import ContinueButton from "@/components/ui/ContinueButton";
+import SuccessMessage from "@/components/SuccessMessage.tsx";
+import ProjectDetails from "@/components/ProjectDetails.tsx";
+import ProgressBar from "@/components/ProgressBar.tsx";
+import ContinueButton from "@/components/ContinueButton.tsx";
 
 const Successful = () => {
   const today = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"

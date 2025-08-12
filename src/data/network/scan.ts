@@ -1,5 +1,5 @@
 import NETWORK from "@/data/network/index.ts";
-import type {ScanProgress, ScanResult, Scan} from "@/data/models/scan.ts";
+import type { ScanProgress, ScanResult, Scan, newScanProps } from "@/data/models/scan.ts";
 
 export const scanEndpoints = {
   async startScan(repo_name: string): Promise<string> {
@@ -48,5 +48,9 @@ export const scanEndpoints = {
       );
     }
     return response.data as Scan[];
+  },
+
+  async updateScanProps(scanProps: newScanProps): Promise<void>{
+    console.log("Updating scan props:", scanProps);
   }
 };

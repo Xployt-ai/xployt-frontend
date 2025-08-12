@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import ScanOptionCard from "@/components/ui/ScanOptionCard";
-import ToggleSwitch from "@/components/ui/ToggleSwitch";
-import StartScanFooter from "@/components/ui/StartScanFooter";
+import ScanOptionCard from "@/components/ScanOptionCard.tsx";
+import ToggleSwitch from "@/components/ToggleSwitch.tsx";
+import StartScanFooter from "@/components/StartScanFooter.tsx";
 
 const SelectScanType: React.FC = () => {
   const [selectedScan, setSelectedScan] = useState<"basic" | "deep">("basic");

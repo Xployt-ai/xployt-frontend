@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/Table';
-import { UsageLineChart } from '@/components/ui/usage-line-chart';
+import { UsageLineChart } from '@/components/usage-line-chart.tsx';
 import { format, subDays, isSameDay } from 'date-fns';
 
 const TIME_WINDOWS = [

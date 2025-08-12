@@ -1,5 +1,5 @@
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch.tsx";
+import { Label } from "@/components/ui/label.tsx";
 
 type ToggleSwitchProps = {
   label: string;

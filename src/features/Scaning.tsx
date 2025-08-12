@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import clsx from "clsx";
 import type { ScanProgress } from "@/data/models/scan.ts";
+import { scanEndpoints } from "@/data/network/scan.ts";
 
 const scanSteps = [
   { label: "Basic Scan", status: "Done", color: "green" },

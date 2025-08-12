@@ -30,6 +30,7 @@ const RepoImport = () => {
     repo.name.toLowerCase().includes(search.toLowerCase())
   );
 
+<<<<<<< HEAD
   return (
     <motion.div
       className="min-h-screen text-white p-12 flex flex-col items-center relative font-sans space-y-6 border border-gray-700"
@@ -50,6 +51,19 @@ const RepoImport = () => {
           issues to kick-start your secure development journey
         </p>
       </motion.div>
+=======
+    return (
+        <div
+            className="min-h-screen bg-black p-12 flex flex-col items-center relative font-sans space-y-6 border border-gray-700 ">
+            {/* Header */}
+            <div className="text-center max-w-xl mb-8 ">
+                <h1 className="text-4xl font-bold">Let's build secure app</h1>
+                <p className="text-gray-400 mt-2 text-sm">
+                    Select your GitHub repository to instantly begin scanning for security
+                    issues to kick-start your secure development journey
+                </p>
+            </div>
+>>>>>>> e041347c6558c9204a8c851bb599848a257a0fd1
 
       {/* Card */}
       <motion.div

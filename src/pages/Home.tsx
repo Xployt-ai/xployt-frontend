@@ -1,9 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
 import { useState } from "react";
-import FeatureCard from "@/components/ui/FeatureCard";
-import PricingCard from "@/components/ui/PricingCard";
-import Footer from "@/components/Footer.tsx";
+import FeatureCard from "@/components/FeatureCard.tsx";
+import PricingCard from "@/components/PricingCard.tsx";
 
 // Feature list
 const features = [
@@ -61,7 +60,7 @@ const Home = () => {
     const start = active - (active % DOT_COUNT);
     return active === (start + dotIdx);
   };
-
+  // TODO: delete if not needed
   const handleNext = () => {
     setActive((prev) => (prev + 1) % features.length);
   };
@@ -164,6 +163,7 @@ const Home = () => {
           <h2 className="howit-title">How It Works</h2>
         </div>
         <div className="howit-steps">
+          {/*TODO: add images of the mentioned logos*/}
           <div className="howit-card">
             <img src="/github.png" alt="GitHub" className="howit-icon" />
             <div className="howit-step">STEP 01</div>
@@ -207,7 +207,6 @@ const Home = () => {
           />
         </div>
       </section>
-      <Footer />
     </>
   );
 }
