@@ -10,7 +10,6 @@ import IssueDetail from './pages/IssueDetail';
 import RepoImport from './pages/RepoImport';
 import Usage from './pages/Usage';
 import Selectscan from './pages/Selectscan';
-
 import Successful from './pages/Successful';
 import Dashboard from './pages/Dashboard.tsx';
 import Bill from './pages/Bill';
