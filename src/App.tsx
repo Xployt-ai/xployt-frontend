@@ -10,7 +10,6 @@ import IssueDetail from './pages/IssueDetail';
 import RepoImport from './pages/RepoImport';
 import Usage from './pages/Usage';
 import Selectscan from './pages/Selectscan';
-
 import Successful from './pages/Successful';
 import Dashboard from './pages/Dashboard.tsx';
 import Bill from './pages/Bill';
@@ -20,6 +19,9 @@ import GitHubCallback from './pages/GitHubCallback';
 
 import Navbar from '@/components/Navbar.tsx';
 import Footer from "@/components/Footer.tsx";
+import CodeViewer from '@/pages/CodeViewerPage.tsx';
+
+
 
 function App() {
   return (
@@ -43,6 +45,7 @@ function App() {
           <Route path="/securitydashboard/:scan_id" element={<SecurityDashboardPage />} />
           <Route path="/callback" element={<GitHubCallback />} />
           <Route path="/usage" element={<Usage />} />
+          <Route path="/codeviewer" element={<CodeViewer />} />
 
         </Routes>
       </main>
