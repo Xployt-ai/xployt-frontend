@@ -1,5 +1,5 @@
 import NETWORK from "@/data/network/index.ts";
-import type { ScanProgress, ScanResult, Scan, newScanProps } from "@/data/models/scan.ts";
+import type { ScanProgress, ScanResult, Scan, newScanProps, Vulnerability } from "@/data/models/scan.ts";
 
 export const scanEndpoints = {
   async startScan(repo_name: string): Promise<string> {
@@ -52,5 +52,23 @@ export const scanEndpoints = {
 
   async updateScanProps(scanProps: newScanProps): Promise<void>{
     console.log("Updating scan props:", scanProps);
+  },
+
+////////////////// New method to get vulnerabilities
+
+  async getVulnerabilities(scan_id: string): Promise<Vulnerability[]> {
+  const response = await NETWORK.get(`/scans/${scan_id}/results`);
+  if (response.status === 422) {
+    throw new Error(
+      `Failed to get scan results: ${response.data.detail.msg}\n${response.data.detail.loc}\n${response.data.detail.type}`
+    );
   }
+  return response.data as Vulnerability[];
+}
+
+
+
+
+
 };
+
