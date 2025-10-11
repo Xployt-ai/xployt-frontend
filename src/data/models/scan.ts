@@ -98,3 +98,20 @@ export interface ScanIndicator {
   status: string;
   color: string;
 }
+
+////////////////// New Vulnerability Interface /////////////////////////
+
+export interface Vulnerability {
+  vuln: string;
+  relative_file_path: string;
+  line: number[];
+  description: string;
+  vulnerability: string;
+  severity: number;
+  confidence_level: number; 
+}
+
+export interface RepoData {
+  repo_id: string;
+  scan_type: string;
+}
