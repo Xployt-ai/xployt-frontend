@@ -193,12 +193,12 @@ body, .home-root {
 /* Hover & focus styles for better affordance */
 .feature-card:hover,
 .feature-card:focus-visible {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.30);
-  border-color: rgba(255,255,255,0.12);
+  transform: translateY(-12px) scale(1.04);
+  box-shadow: 0 22px 60px rgba(0,0,0,0.46);
+  border-color: rgba(255,255,255,0.14);
 }
 .feature-card:active {
-  transform: translateY(-2px) scale(0.997);
+  transform: translateY(-4px) scale(0.995);
 }
 .feature-card h3 {
   font-size: 2rem;
@@ -375,12 +375,12 @@ body, .home-root {
 }
 .howit-card:hover,
 .howit-card:focus-visible {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.30);
-  border-color: rgba(255,255,255,0.08);
+  transform: translateY(-12px) scale(1.04);
+  box-shadow: 0 22px 60px rgba(0,0,0,0.46);
+  border-color: rgba(255,255,255,0.14);
 }
 .howit-card:active {
-  transform: translateY(-2px) scale(0.997);
+  transform: translateY(-4px) scale(0.995);
 }
 
 /* Respect user preference for reduced motion */
@@ -508,9 +508,12 @@ body, .home-root {
 .pricing-card:hover,
 .pricing-card:focus-within,
 .pricing-card:focus-visible {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.30);
-  border-color: rgba(255,255,255,0.08);
+  transform: translateY(-12px) scale(1.04);
+  box-shadow: 0 22px 60px rgba(0,0,0,0.46);
+  border-color: rgba(255,255,255,0.14);
+}
+.pricing-card:active {
+  transform: translateY(-4px) scale(0.995);
 }
 .pricing-card:active {
   transform: translateY(-2px) scale(0.998);
