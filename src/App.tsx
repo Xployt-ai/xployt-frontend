@@ -39,7 +39,7 @@ function App() {
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/successful" element={<Successful />} />
           <Route path="/repo-import" element={<RepoImport />} />
-          <Route path="/issuedetail" element={<IssueDetail />} />
+          <Route path="/issuedetail/:issueId" element={<IssueDetail />} />
           <Route path="/scanning/:scan_id" element={<ScanningPage />} />
           <Route path="/bill" element={<Bill />} />
           <Route path="/securitydashboard/:scan_id" element={<SecurityDashboardPage />} />

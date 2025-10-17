@@ -1,31 +1,125 @@
 .documentation-container {
-  max-width: 64rem;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+  width: 100%;
+  padding: 4rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.documentation-title {
-  font-size: 1.875rem;
+
+.documentation-header {
+  text-align: center;
+  max-width: 800px;
+  margin-bottom: 3rem;
+}
+
+.documentation-label {
+  color: #6b7280;
   font-weight: 700;
-  color: #111827;
-  margin-bottom: 1.5rem;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
 }
-.documentation-prose {
-  font-size: 1.125rem;
-  color: #4b5563;
+
+.documentation-title {
+  color: #fff;
+  font-size: 2.5rem;
+  line-height: 1.1;
+  font-weight: 800;
   margin-bottom: 1rem;
 }
+
+.documentation-intro {
+  color: #e5e7eb;
+  font-size: 1.15rem;
+  line-height: 1.6;
+}
+
+.documentation-content {
+  max-width: 900px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.documentation-card {
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.02) 60%, rgba(255, 255, 255, 0.005));
+  border-radius: 1rem;
+  padding: 2rem 2.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.documentation-card:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.22);
+  transform: translateY(-2px);
+}
+
 .documentation-section-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
+  color: #fff;
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
 }
+
+.documentation-section-subtitle {
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.documentation-prose {
+  color: #e5e7eb;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
 .documentation-list {
-  list-style: decimal inside;
-  color: #4b5563;
-  margin-bottom: 1.5rem;
-  margin-top: 0.5rem;
+  list-style: none;
+  color: #e5e7eb;
+  margin: 1rem 0 0 0;
+  padding: 0;
+  counter-reset: step-counter;
+}
+
+.documentation-list li {
+  counter-increment: step-counter;
+  margin-bottom: 1rem;
+  padding-left: 2.5rem;
+  position: relative;
+  line-height: 1.5;
+}
+
+.documentation-list li::before {
+  content: counter(step-counter);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  background: #374151;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.documentation-list li span {
+  font-weight: 600;
+  color: #fff;
+}
+
+@media (max-width: 900px) {
+  .documentation-title {
+    font-size: 2rem;
+  }
+  .documentation-card {
+    padding: 1.5rem 1.25rem;
+  }
 } 
