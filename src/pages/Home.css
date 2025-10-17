@@ -140,7 +140,9 @@ body, .home-root {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 90vh;
+  /* allow content to overflow vertically when cards lift on hover */
+  overflow: visible;
+  padding-top: 1.5rem;
 
 }
 .features-label {
@@ -161,7 +163,10 @@ body, .home-root {
 .features-carousel-wrapper {
   width: 100%;
   max-width: 1200px;
-  overflow: hidden;
+  /* allow vertical overflow so lifted cards are not clipped, but still hide horizontal overflow */
+  overflow-x: hidden;
+  overflow-y: visible;
+  padding-top: 20px; /* space for hover lift */
   margin-bottom: 2rem;
 }
 .features-carousel {
