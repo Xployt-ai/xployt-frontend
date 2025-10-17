@@ -20,7 +20,7 @@ import GitHubCallback from './pages/GitHubCallback';
 import Navbar from '@/components/Navbar.tsx';
 import Footer from "@/components/Footer.tsx";
 import CodeViewer from '@/pages/CodeViewerPage.tsx';
-
+import BillPage from "@/pages/BillPage";
 
 
 function App() {
@@ -46,6 +46,7 @@ function App() {
           <Route path="/callback" element={<GitHubCallback />} />
           <Route path="/usage" element={<Usage />} />
           <Route path="/codeviewer" element={<CodeViewer />} />
+           <Route path="/billing" element={<BillPage />} />
 
         </Routes>
       </main>
