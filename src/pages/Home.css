@@ -481,33 +481,36 @@ body, .home-root {
   max-width: 900px;
 }
 .pricing-card {
-  background: linear-gradient(120deg, rgba(60,65,80,0.0) 0%, rgba(36,39,48,0.85) 100%);
-  border-radius: 22px;
-  box-shadow: 0 4px 32px 0 rgba(0,0,0,0.18);
-  padding: 2.5rem 2rem 2rem 2rem;
-  flex: 1 1 0;
+  /* Match other card styles for consistent visual language */
   min-width: 260px;
   max-width: 340px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  margin: 0 1.25rem;
+  background: linear-gradient(120deg,rgba(255,255,255,0.02) 60%,rgba(255,255,255,0.005));
+  border-radius: 1.5rem;
+  padding: 2.25rem 1.75rem;
+  color: #fff;
+  box-shadow: 0 2px 24px 0 rgba(0,0,0,0.12);
+  border: 2px solid transparent;
+  transition: transform 0.2s ease, box-shadow 0.25s ease, border 0.3s;
   cursor: pointer;
   will-change: transform, box-shadow;
-  border: 1.5px solid rgba(120,120,140,0.13);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  text-align: center;
 }
 .pricing-card-highlight {
-  border: 1.5px solid #6b7280;
-  box-shadow: 0 0 32px 0 rgba(120,120,140,0.18), 0 0 0 2px #6b7280;
+  /* Subtle highlight without an extra outer ring */
+  border-color: rgba(107,112,128,0.12);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
 }
 /* Hover & focus styles for pricing cards */
 .pricing-card:hover,
 .pricing-card:focus-within,
 .pricing-card:focus-visible {
-  transform: translateY(-8px) scale(1.01);
-  box-shadow: 0 18px 50px rgba(0,0,0,0.36);
-  border-color: rgba(255,255,255,0.18);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.30);
+  border-color: rgba(255,255,255,0.08);
 }
 .pricing-card:active {
   transform: translateY(-2px) scale(0.998);
@@ -537,7 +540,8 @@ body, .home-root {
   box-shadow: 0 0 24px 0 rgba(120,120,140,0.18);
 }
 .pricing-price-row-highlight .pricing-price {
-  box-shadow: 0 0 32px 0 #6b7280;
+  /* remove strong glow for highlighted price; keep a subtle depth only */
+  box-shadow: 0 8px 20px rgba(107,112,128,0.06);
 }
 .pricing-per {
   color: #b3b8c5;
@@ -577,19 +581,25 @@ body, .home-root {
   border: 2px solid #fff;
   background: transparent;
   color: #fff;
+  /* push button to the bottom of the pricing card so buttons align */
+  margin-top: auto;
 }
 .pricing-btn-outline {
-  background: transparent;
+  /* Make the outline button match the filled (purchase) button visually */
+  background: var(--pricing-btn-base, #374151);
   color: #fff;
+  border: 2px solid var(--pricing-btn-base, #374151);
 }
 .pricing-btn-outline:hover {
   background: #fff;
   color: #181b23;
+  border: 2px solid #fff;
 }
 .pricing-btn-filled {
-  background: #374151;
+  --pricing-btn-base: #374151;
+  background: var(--pricing-btn-base);
   color: #fff;
-  border: 2px solid #374151;
+  border: 2px solid var(--pricing-btn-base);
 }
 .pricing-btn-filled:hover {
   background: #fff;
