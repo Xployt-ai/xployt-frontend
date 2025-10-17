@@ -355,30 +355,55 @@ body, .home-root {
   max-width: 1200px;
 }
 .howit-card {
-  background: radial-gradient(ellipse at 50% 40%, rgba(60, 65, 80, 0.1) 60%, rgba(36, 39, 48, 0.75) 100%);
-  border-radius: 16px;
-  box-shadow: 0 4px 32px 0 rgba(0,0,0,0.18);
-  padding: 2.5rem 2rem 2rem 2rem;
-  flex: 1 1 0;
+  /* Match feature/pricing card styles for consistent interactivity */
   min-width: 260px;
   max-width: 340px;
+  margin: 0 1.25rem;
+  background: linear-gradient(120deg,rgba(255,255,255,0.02) 60%,rgba(255,255,255,0.005));
+  border-radius: 1.5rem;
+  padding: 2.25rem 1.75rem;
+  color: #fff;
+  box-shadow: 0 2px 24px 0 rgba(0,0,0,0.12);
+  border: 2px solid transparent;
+  transition: transform 0.2s ease, box-shadow 0.25s ease, border 0.3s;
+  cursor: pointer;
+  will-change: transform, box-shadow;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: flex-start;
   text-align: center;
-  transition: box-shadow 0.2s;
-
 }
-.howit-card:hover {
-  box-shadow: 0 8px 40px 0 rgba(0,0,0,0.28);
+.howit-card:hover,
+.howit-card:focus-visible {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.30);
+  border-color: rgba(255,255,255,0.08);
+}
+.howit-card:active {
+  transform: translateY(-2px) scale(0.997);
+}
+
+/* Respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .howit-card,
+  .feature-card,
+  .pricing-card {
+    transition: none !important;
+    transform: none !important;
+  }
 }
 .howit-icon {
   width: 72px;
   height: 72px;
-  margin-bottom: 1.5rem;
+  margin: 0 auto 1.5rem;
   border-radius: 12px;
   background: #374151;
   object-fit: contain;
+  object-position: center center;
+  display: block;
+  box-sizing: border-box;
+  padding: 10px;
+  background-size: cover;
 }
 .howit-step {
   color: #6b7280;
