@@ -17,11 +17,12 @@ const SelectScanType: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground p-8 flex flex-col justify-center items-center">
-      <div className="max-w-3xl w-full">
+      
         <h1 className="text-3xl font-bold mb-2 text-center">Select Scan Type</h1>
         <p className="text-muted-foreground mb-6 text-center">
           Choose the type of scan to run on your repository
         </p>
+        <div className="max-w-5xl w-full border border-gray-300 p-6">
 
         <div className="grid md:grid-cols-2 gap-4 mb-6">
           <ScanOptionCard

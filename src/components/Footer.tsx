@@ -2,7 +2,7 @@ import { FaInstagram, FaFacebookF, FaLinkedinIn, FaDiscord, FaEnvelope, FaPhone 
 
 const Footer = () => {
   return (
-    <footer className="bg-transparent border-t border-[#23262F] pt-8 pb-4 px-4 md:px-0 mt-12">
+    <footer className="bg-background border-t border-[#23262F] pt-8 pb-4 px-4 md:px-0 ">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-8 md:gap-0">
         {/* Left: Logo and Socials */}
         <div className="flex flex-col items-center md:items-start w-full md:w-1/3">

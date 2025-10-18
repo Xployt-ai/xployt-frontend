@@ -20,7 +20,7 @@ import GitHubCallback from './pages/GitHubCallback';
 import Navbar from '@/components/Navbar.tsx';
 import Footer from "@/components/Footer.tsx";
 import CodeViewer from '@/pages/CodeViewerPage.tsx';
-
+import BillPage from "@/pages/BillPage";
 
 
 function App() {
@@ -39,13 +39,14 @@ function App() {
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/successful" element={<Successful />} />
           <Route path="/repo-import" element={<RepoImport />} />
-          <Route path="/issuedetail" element={<IssueDetail />} />
+          <Route path="/issuedetail/:issueId" element={<IssueDetail />} />
           <Route path="/scanning/:scan_id" element={<ScanningPage />} />
           <Route path="/bill" element={<Bill />} />
           <Route path="/securitydashboard/:scan_id" element={<SecurityDashboardPage />} />
           <Route path="/callback" element={<GitHubCallback />} />
           <Route path="/usage" element={<Usage />} />
           <Route path="/codeviewer" element={<CodeViewer />} />
+           <Route path="/billing" element={<BillPage />} />
 
         </Routes>
       </main>
