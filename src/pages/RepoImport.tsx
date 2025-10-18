@@ -80,17 +80,16 @@ const RepoImport = () => {
         </div>
 
         {/* ✅ Added filter dropdown */}
-        <div className="flex justify-between items-center">
-          <div className="w-full max-w-md">
+        <div className="flex justify-between  items-center">
+          <div className="w-full max-w mr-8 ">
             <SearchBar  
-          className="w-full max-w-md"
             placeholder="Search repositories"
             onChange={e => setSearch(e.target.value)}
             isLoading={loading}
           />
           </div>
           <select
-            className="bg-transparent border border-gray-600 rounded-md px-3 py-2 text-sm text-gray-300 focus:outline-none"
+            className="bg-background border border-gray-600 rounded-md px-3 py-2 text-sm text-gray-300 focus:outline-none"
             value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
           >
@@ -115,13 +114,14 @@ const RepoImport = () => {
           <div className="text-gray-500">No repositories found in your GitHub account.</div>
         )}
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 ">
           {/* ✅ Pagination applied here */}
           {currentRepos.map((repo, index) => (
+            <div className="border border-gray-600 rounded-lg p-2 hover:bg-gray-800 transition">
             <RepositoryCard
               key={repo.github_repo_id || index}
               repo={repo}
-            />
+            /></div>
           ))}
         </div>
 

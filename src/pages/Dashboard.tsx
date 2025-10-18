@@ -105,12 +105,12 @@ const Dashboard: React.FC = () => {
         </div>
 
                   <h2 className="text-xl font-semibold mb-4">Recent Scans</h2>
+<div className="mb-8"><SearchBar
 
-        <SearchBar
           placeholder={"Search repositories"}
           onChange={handleSearch}
           isLoading={searchLoading}
-          />
+        /></div>
         <div className="w-full space-y-4 ">
           {!isLoading && repositories.map(project => (
             <ProjectCard key={project.github_repo_id} project={project}/>
