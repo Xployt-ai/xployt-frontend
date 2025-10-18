@@ -73,7 +73,7 @@ const Dashboard: React.FC = () => {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {metrics.map((metric, index) => (
               <Card key={index} className="transition-all hover:shadow-lg">
-                <CardContent className="p-6">
+                <CardContent >
                   <div className="flex items-start justify-between">
                     <div className="space-y-2">
                       <p className="text-sm text-muted-foreground">{metric.title}</p>
@@ -103,6 +103,9 @@ const Dashboard: React.FC = () => {
             ))}
           </div>
         </div>
+
+                  <h2 className="text-xl font-semibold mb-4">Recent Scans</h2>
+
         <SearchBar
           placeholder={"Search repositories"}
           onChange={handleSearch}
