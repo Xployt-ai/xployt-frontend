@@ -19,7 +19,7 @@ export const SearchBar = ({
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <div className="mb-8 flex items-center gap-4">
+    <div className="mb-0 flex items-center gap-4">
       <div className="flex flex-1 items-center rounded-xl border border-gray-600 px-3 py-2">
         <Search className="mr-2 h-4 w-4 text-gray-600" />
         <Input

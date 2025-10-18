@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-// Import the refresh icon from public folder
-// No import needed for public assets, use /refresh-icon.png in <img>
 import RepositoryCard from "@/components/RepositoryCard.tsx";
 import { SearchBar } from "@/components/SearchBar.tsx";
 import { repoEndpoints } from "@/data/network/repo.ts";
@@ -14,6 +12,11 @@ const RepoImport = () => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // ✅ new states for pagination & filters
+  const [currentPage, setCurrentPage] = useState(1);
+  const [reposPerPage] = useState(6);
+  const [filterType, setFilterType] = useState("all"); // 'all' | 'public' | 'private'
 
   const fetchRepositories = async () => {
     setLoading(true);
@@ -33,12 +36,25 @@ const RepoImport = () => {
     fetchRepositories();
   }, []);
 
-  const filteredRepos = repositories.filter((repo) =>
-    repo.name.toLowerCase().includes(search.toLowerCase())
-  );
+  // ✅ Apply search + filter
+  const filteredRepos = repositories
+    .filter((repo) =>
+      repo.name.toLowerCase().includes(search.toLowerCase())
+    )
+    .filter((repo) => {
+      if (filterType === "public") return !repo.private;
+      if (filterType === "private") return repo.private;
+      return true;
+    });
+
+  // ✅ Pagination logic
+  const indexOfLastRepo = currentPage * reposPerPage;
+  const indexOfFirstRepo = indexOfLastRepo - reposPerPage;
+  const currentRepos = filteredRepos.slice(indexOfFirstRepo, indexOfLastRepo);
+  const totalPages = Math.ceil(filteredRepos.length / reposPerPage);
 
   return (
-    <div className="min-h-screen bg-black p-12 flex flex-col items-center relative font-sans space-y-6">
+    <div className="min-h-screen bg-background p-12 flex flex-col items-center relative font-sans space-y-6">
       {/* Header */}
       <div className="text-center max-w-xl mb-8">
         <h1 className="text-4xl font-bold">Select a repository to scan</h1>
@@ -63,11 +79,25 @@ const RepoImport = () => {
           </button>
         </div>
 
-        <SearchBar
-          placeholder="Search repositories"
-          onChange={e => setSearch(e.target.value)}
-          isLoading={loading}
-        />
+        {/* ✅ Added filter dropdown */}
+        <div className="flex justify-between  items-center">
+          <div className="w-full max-w mr-8 ">
+            <SearchBar  
+            placeholder="Search repositories"
+            onChange={e => setSearch(e.target.value)}
+            isLoading={loading}
+          />
+          </div>
+          <select
+            className="bg-background border border-gray-600 rounded-md px-3 py-2 text-sm text-gray-300 focus:outline-none"
+            value={filterType}
+            onChange={(e) => setFilterType(e.target.value)}
+          >
+            <option value="all">All</option>
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+          </select>
+        </div>
 
         {loading && <div className="text-gray-400">Loading repositories...</div>}
         {error && (
@@ -84,15 +114,39 @@ const RepoImport = () => {
           <div className="text-gray-500">No repositories found in your GitHub account.</div>
         )}
 
-        <div className="flex flex-col gap-4">
-          {/*TODO: add pagination*/}
-          {filteredRepos.map((repo, index) => (
+        <div className="flex flex-col gap-4 ">
+          {/* ✅ Pagination applied here */}
+          {currentRepos.map((repo, index) => (
+            <div className="border border-gray-600 rounded-lg p-2 hover:bg-gray-800 transition">
             <RepositoryCard
               key={repo.github_repo_id || index}
               repo={repo}
-            />
+            /></div>
           ))}
         </div>
+
+        {/* ✅ Pagination Controls */}
+        {filteredRepos.length > reposPerPage && (
+          <div className="flex justify-center items-center gap-4 mt-6">
+            <button
+              className="px-4 py-2 text-sm border border-gray-600 rounded hover:bg-gray-800 disabled:opacity-50"
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            <span className="text-gray-400 text-sm">
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              className="px-4 py-2 text-sm border border-gray-600 rounded hover:bg-gray-800 disabled:opacity-50"
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
