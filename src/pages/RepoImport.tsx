@@ -117,7 +117,7 @@ const RepoImport = () => {
         <div className="flex flex-col gap-4 ">
           {/* ✅ Pagination applied here */}
           {currentRepos.map((repo, index) => (
-            <div className="border border-gray-600 rounded-lg p-2 hover:bg-gray-800 transition">
+            <div className=" rounded-lg p-2 hover:bg-gray-800 transition">
             <RepositoryCard
               key={repo.github_repo_id || index}
               repo={repo}

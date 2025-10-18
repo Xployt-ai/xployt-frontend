@@ -104,25 +104,23 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
-                  <h2 className="text-xl font-semibold mb-4">Recent Scans</h2>
-<div className="mb-8"><SearchBar
-
+      <h2 className="text-xl font-semibold mb-4">Recent Scans</h2>
+      <div className="mb-8"><SearchBar
           placeholder={"Search repositories"}
           onChange={handleSearch}
           isLoading={searchLoading}
         /></div>
-        <div className="w-full space-y-4 ">
-          {!isLoading && repositories.map(project => (
-            <ProjectCard key={project.github_repo_id} project={project}/>
-          ))}
-          {
-            isLoading && (
-              <div className="flex items-center justify-center py-12">
-                <Loader2 className="h-8 w-8 animate-spin text-gray-500"/>
-              </div>
-            )
-          }
-        </div>
+<div className="w-full grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  {!isLoading && repositories.map(project => (
+    <ProjectCard key={project.github_repo_id} project={project}/>
+  ))}
+  {isLoading && (
+    <div className="flex items-center justify-center col-span-full py-12">
+      <Loader2 className="h-8 w-8 animate-spin text-gray-500"/>
+    </div>
+  )}
+</div>
+
         {!searchLoading && repositories.length === 0 && searchQuery && (
           <div className="py-12 text-center">
             <p className="text-lg text-gray-500">No projects found matching "{searchQuery}"</p>
