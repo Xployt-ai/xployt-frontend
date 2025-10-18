@@ -37,25 +37,22 @@ const RepoImport = () => {
   return (
     <div className="min-h-screen bg-black p-12 flex flex-col items-center relative font-sans space-y-6">
       {/* Header */}
-      <div className="text-center max-w-xl mb-8 ">
+      <div className="text-center max-w-xl mb-8">
         <h1 className="text-4xl font-bold">Select a repository to scan</h1>
         <p className="text-gray-400 mt-2 text-sm">
           {user ? `Signed in as ${user.username}` : 'Connect your GitHub account to import repositories.'}
         </p>
       </div>
 
-      {/* Card */}
-      <div className="bg-[#1c1c1e] p-8 rounded-xl shadow-lg space-y-6 border border-gray-700 w-full max-w-4xl">
+      <div className="w-full max-w-4xl space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold mb-4">Import Git Repository</h2>
-          <div>
-            <button
-              className="text-sm text-gray-400 hover:text-white"
-              onClick={() => fetchRepositories()}
-            >
-              Refresh
-            </button>
-          </div>
+          <h2 className="text-2xl font-bold">Import Git Repository</h2>
+          <button
+            className="text-sm text-gray-400 hover:text-white"
+            onClick={() => fetchRepositories()}
+          >
+            Refresh
+          </button>
         </div>
 
         <SearchBar
@@ -66,7 +63,7 @@ const RepoImport = () => {
 
         {loading && <div className="text-gray-400">Loading repositories...</div>}
         {error && (
-          <div className="bg-red-900 p-3 rounded text-red-100">
+          <div className="text-red-400">
             <div className="font-bold">Failed to load repositories</div>
             <div className="text-sm">{error}</div>
             <div className="mt-2">

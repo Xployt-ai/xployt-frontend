@@ -28,11 +28,11 @@ const RepositoryCard = ({repo, date}: RepositoryCardProps) => {
 
   return (
     <div
-      className="bg-[#121212] p-4 border border-gray-800 rounded-md flex justify-between items-center w-full"
+      className="p-4 flex justify-between items-center w-full"
       onClick={() => handleCardClick()}
     >
       <div className="flex items-center gap-3">
-        <img src="/Folder.png" alt="folder" className="w-6 h-6" />
+        <img src="/FolderNoBG.png" alt="Folder icon representing a code repository" className="w-6 -6" />
         <div>
           <strong>{repo.name}</strong>
           {date && <div className="text-sm text-gray-500">{date}</div>}
