@@ -38,21 +38,14 @@ const RepoImport = () => {
   );
 
   return (
-    <motion.div
-      className="min-h-screen bg-black p-12 flex flex-col items-center relative font-sans space-y-6"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-    >
+    <div className="min-h-screen bg-black p-12 flex flex-col items-center relative font-sans space-y-6">
       {/* Header */}
       <div className="text-center max-w-xl mb-8">
         <h1 className="text-4xl font-bold">Select a repository to scan</h1>
         <p className="text-gray-400 mt-2 text-sm">
-          {user
-            ? `Signed in as ${user.username}`
-            : "Connect your GitHub account to import repositories."}
+          {user ? `Signed in as ${user.username}` : 'Connect your GitHub account to import repositories.'}
         </p>
-      </motion.div>
+      </div>
 
       <div className="w-full max-w-4xl space-y-6">
         <div className="flex items-center justify-between">
@@ -70,54 +63,38 @@ const RepoImport = () => {
           </button>
         </div>
 
-        {/* Search */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
-          <SearchBar
-            placeholder="Search repositories"
-            onChange={(e) => setSearch(e.target.value)}
-            isLoading={loading}
-          />
-        </motion.div>
+        <SearchBar
+          placeholder="Search repositories"
+          onChange={e => setSearch(e.target.value)}
+          isLoading={loading}
+        />
 
-        {/* Loading / Error */}
         {loading && <div className="text-gray-400">Loading repositories...</div>}
         {error && (
           <div className="text-red-400">
             <div className="font-bold">Failed to load repositories</div>
             <div className="text-sm">{error}</div>
             <div className="mt-2">
-              <button className="underline" onClick={fetchRepositories}>
-                Try again
-              </button>
+              <button className="underline" onClick={() => fetchRepositories()}>Try again</button>
             </div>
           </div>
         )}
 
         {!loading && !error && filteredRepos.length === 0 && (
-          <div className="text-gray-500">
-            No repositories found in your GitHub account.
-          </div>
+          <div className="text-gray-500">No repositories found in your GitHub account.</div>
         )}
 
-        {/* Repository list */}
         <div className="flex flex-col gap-4">
+          {/*TODO: add pagination*/}
           {filteredRepos.map((repo, index) => (
-            <motion.div
+            <RepositoryCard
               key={repo.github_repo_id || index}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.05 }}
-            >
-              <RepositoryCard repo={repo} />
-            </motion.div>
+              repo={repo}
+            />
           ))}
         </div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 };
 
