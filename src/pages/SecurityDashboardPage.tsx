@@ -462,8 +462,9 @@ import {
                 <div className="bg-gray-700 px-4 py-3 grid grid-cols-4 gap-4 text-sm font-medium text-gray-300">
                   <TypographySmall>Issue</TypographySmall>
                   <TypographySmall>Severity</TypographySmall>
-                  <TypographySmall>Status</TypographySmall>
                   <TypographySmall>File</TypographySmall>
+                  <TypographySmall>Status</TypographySmall>
+                  
                 </div>
 
                 {currentItems.length === 0 ? (
@@ -489,14 +490,15 @@ import {
                             {issue.severity}
                           </span>
                         </div>
+
+                        <TypographyMuted className="truncate text-xs">
+                          {issue.location.endpoint + " : " + issue.location.line || "Unknown File"}
+                        </TypographyMuted>
                         <TypographySmall
                           className={getStatusColor(issue.status ? issue.status : "Open")}
                         >
                           {issue.status ? issue.status : "Open"}
                         </TypographySmall>
-                        <TypographyMuted className="truncate text-xs">
-                          {issue.location.endpoint + " : " + issue.location.line || "Unknown File"}
-                        </TypographyMuted>
                       </div>
                     </Link>
                   ))

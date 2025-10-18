@@ -7,7 +7,7 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
 
 export function Input({ label, className, ...props }: InputProps) {
   return (
-    <div className="mb-4">
+    <div >
       {label && <label className="block text-sm font-semibold mb-1">{label}</label>}
       <input
         {...props}
