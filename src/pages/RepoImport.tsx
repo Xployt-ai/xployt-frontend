@@ -38,7 +38,7 @@ const RepoImport = () => {
   );
 
   return (
-    <div className="min-h-screen bg-black p-12 flex flex-col items-center relative font-sans space-y-6">
+    <div className="min-h-screen bg-background p-12 flex flex-col items-center relative font-sans space-y-6">
       {/* Header */}
       <div className="text-center max-w-xl mb-8">
         <h1 className="text-4xl font-bold">Select a repository to scan</h1>
