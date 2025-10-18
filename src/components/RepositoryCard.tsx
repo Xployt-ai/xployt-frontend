@@ -32,10 +32,7 @@ const RepositoryCard = ({repo, date}: RepositoryCardProps) => {
       onClick={() => handleCardClick()}
     >
       <div className="flex items-center gap-3">
-        {/*  TODO: add lucide react icons*/}
-        <span role="img" aria-label="folder" className="text-xl">
-        📁
-      </span>
+        <img src="/Folder.png" alt="folder" className="w-6 h-6" />
         <div>
           <strong>{repo.name}</strong>
           {date && <div className="text-sm text-gray-500">{date}</div>}
