@@ -21,6 +21,7 @@ import Navbar from '@/components/Navbar.tsx';
 import Footer from "@/components/Footer.tsx";
 import CodeViewer from '@/pages/CodeViewerPage.tsx';
 import BillPage from "@/pages/BillPage";
+import Topup from "@/pages/Topup.tsx";
 
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
           <Route path="/usage" element={<Usage />} />
           <Route path="/codeviewer" element={<CodeViewer />} />
            <Route path="/billing" element={<BillPage />} />
+            <Route path="/topup" element={<Topup />} />
 
         </Routes>
       </main>
