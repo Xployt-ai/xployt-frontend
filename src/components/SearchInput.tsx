@@ -6,7 +6,7 @@ const SearchInput = ({ value, onChange }: { value: string; onChange: (e: React.C
     placeholder="Search Repositories"
     value={value}
     onChange={onChange}
-    className="mb-6"
+    className="mb-6 "
   />
 );
 

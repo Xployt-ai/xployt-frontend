@@ -373,15 +373,15 @@ import {
             <div className="mb-6">
               <TypographyH3 className="mb-4">Issue Summary</TypographyH3>
               <div className="grid grid-cols-3 gap-4">
-                <Card>
-                  <TypographySmall className="text-gray-400">Critical</TypographySmall>
+                <Card className="p-4">
+                  <TypographySmall className="text-gray-400 ">Critical</TypographySmall>
                   <TypographyH2>{counts.critical}</TypographyH2>
                 </Card>
-                <Card>
+                <Card className="p-4">
                   <TypographySmall className="text-gray-400">High</TypographySmall>
                   <TypographyH2>{counts.high}</TypographyH2>
                 </Card>
-                <Card>
+                <Card className="p-4" >
                   <TypographySmall className="text-gray-400">Medium</TypographySmall>
                   <TypographyH2>{counts.medium}</TypographyH2>
                 </Card>
