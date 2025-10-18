@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+// Import the refresh icon from public folder
+// No import needed for public assets, use /refresh-icon.png in <img>
 import RepositoryCard from "@/components/RepositoryCard.tsx";
 import { SearchBar } from "@/components/SearchBar.tsx";
 import { repoEndpoints } from "@/data/network/repo.ts";
 import type { Repo } from "@/data/models/repo.ts";
 import { useAuth } from "@/contexts/AuthContext";
+import NETWORK from "@/data/network/index.ts";
 
 const RepoImport = () => {
   const { user } = useAuth();
@@ -48,10 +51,15 @@ const RepoImport = () => {
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold">Import Git Repository</h2>
           <button
-            className="text-sm text-gray-400 hover:text-white"
-            onClick={() => fetchRepositories()}
+            className="flex items-center gap-2 text-sm text-gray-400 hover:text-white bg-transparent focus:outline-none"
+            onClick={() => { NETWORK.invalidateCache('/repositories'); fetchRepositories(); }}
+            aria-label="Refresh"
+            style={{ minWidth: '100px', background: 'transparent', border: 'none', borderRadius: 0, boxShadow: 'none' }}
           >
-            Refresh
+            <span>Refresh</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+              <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.13-.37 2.17-1 3.03l1.46 1.46A7.932 7.932 0 0020 12c0-4.42-3.58-8-8-8zm-6.41.59L4.59 6.41A7.932 7.932 0 004 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3c-3.31 0-6-2.69-6-6 0-1.13.37-2.17 1-3.03z"/>
+            </svg>
           </button>
         </div>
 
