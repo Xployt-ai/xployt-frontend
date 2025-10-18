@@ -13,6 +13,7 @@ import {
   import type { ScanResult } from "@/data/models/scan.ts";
   import { scanEndpoints } from "@/data/network/scan.ts";
 
+
   // Dummy data for development/testing
   const DUMMY_SCAN_RESULTS: ScanResult[] = [
     {
@@ -407,7 +408,7 @@ import {
                   <select
                     value={selectedSeverity}
                     onChange={(e) => setSelectedSeverity(e.target.value)}
-                    className="px-4 py-2 bg-background border rounded"
+                    className="px-4 py-2 bg-background border rounded "
                   >
                     <option value="All">All Severities</option>
                     <option value="Critical">Critical</option>
