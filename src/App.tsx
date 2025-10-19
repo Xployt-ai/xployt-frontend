@@ -24,6 +24,7 @@ import BillPage from '@/pages/BillPage';
 import Privacy from '@/pages/Privacy.tsx';
 import Statement from '@/pages/Statement.tsx';
 import Topup from '@/pages/Topup.tsx';
+import Help from '@/pages/Help.tsx';
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/statement" element={<Statement />} />
           <Route path="/topup" element={<Topup />} />
+           <Route path="/help" element={<Help />} />
         </Routes>
       </main>
       <Footer />
