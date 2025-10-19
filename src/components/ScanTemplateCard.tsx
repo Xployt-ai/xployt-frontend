@@ -11,6 +11,7 @@ type ScanTemplateCardProps = {
   badge?: string;
   features?: string[];
   onSelect?: () => void;
+  selected?: boolean;
 };
 
 export default function ScanTemplateCard({
@@ -19,9 +20,18 @@ export default function ScanTemplateCard({
   badge,
   features = [],
   onSelect,
+  selected = false,
 }: ScanTemplateCardProps) {
   return (
-    <div className="hover:bg-gray-900 border border-gray-700 rounded-xl shadow-lg transition p-6 bg-transparent">
+    <div
+      onClick={onSelect}
+      className={
+        "cursor-pointer transition p-6 rounded-xl shadow-lg border border-gray-700 " +
+        (selected
+          ? "bg-gray-800 border-gray-400"
+          : "hover:bg-gray-900 bg-transparent")
+      }
+    >
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-gray-200 text-xl font-semibold">{title}</h3>
         {badge ? (

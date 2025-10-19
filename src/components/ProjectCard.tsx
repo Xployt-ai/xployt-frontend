@@ -80,7 +80,7 @@ export const ProjectCard = ({ project }: { project: Repo }) => {
         {/* Action Button */}
         <Button
           onClick={() => {
-            navigate(`/new-scan/${formatRepoName(project.name)}`);
+            navigate(`/selectscan/${formatRepoName(project.name)}`);
             setScanningProject(project.name);
           }}
           disabled={scanningProject === project.name}
