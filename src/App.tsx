@@ -54,9 +54,7 @@ function App() {
            <Route path="/billing" element={<BillPage />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/statement" element={<Statement />} />
-            
             <Route path="/help" element={<Help />} />
-
             <Route path="/topup" element={<Topup />} />
              <Route path="/settings" element={<Settings />} />
 
