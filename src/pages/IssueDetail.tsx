@@ -467,8 +467,8 @@ app.use(cors({
 
         {/* Issue Details */}
         <div className="mb-12">
-          <TypographyH2 className="mb-6 text-gray-300">Issue Details</TypographyH2>
-          <div className="flex flex-wrap items-center gap-8 p-6 bg-gray-950 border border-gray-800 rounded">
+          <TypographyH2 className="mb-6 text-gray-300 ">Issue Details</TypographyH2>
+          <div className="flex flex-wrap items-center gap-8 p-6  border border-gray-800 rounded">
             <div className="flex-1 min-w-[120px]">
               <TypographySmall className="text-gray-500 uppercase mb-1">Status</TypographySmall>
               <TypographyP className={cn("font-medium", getStatusColor(issue.status || "Open"))}>
@@ -498,7 +498,7 @@ app.use(cors({
         {/* Description */}
         <div className="mb-12">
           <TypographyH2 className="mb-6 text-gray-300">Description</TypographyH2>
-          <div className="p-6 bg-gray-950 border border-gray-800 rounded">
+          <div className="">
             <TypographyP className="text-gray-300 leading-relaxed">
               {issue.description}
             </TypographyP>
