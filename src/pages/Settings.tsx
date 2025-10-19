@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { User, CreditCard, Activity, Bell, Shield, Key, Trash2, LogOut } from 'lucide-react';
+import Bill from "./Bill";
+import Usage from './Usage';
 
 interface UserType {
   name: string;
@@ -55,19 +57,20 @@ export default function SettingsPage() {
         </nav>
       </aside>
 
-      <main className="flex-1 p-8 overflow-y-auto">
-        {activeSection === 'profile' && <ProfileSection user={user} />}
-        {activeSection === 'subscription' && <SubscriptionSection user={user} />}
-        {activeSection === 'usage' && <UsageSection user={user} />}
-        {activeSection === 'notifications' && <NotificationsSection />}
-        {activeSection === 'security' && <SecuritySection />}
-        {activeSection === 'api' && <APIKeysSection />}
-        {activeSection === 'delete' && <DeleteAccountSection />}
+      <main className="flex-1 overflow-y-auto p-8">
+        {activeSection === "profile" && <ProfileSection user={user} />}
+        {activeSection === "subscription" && <Bill />}
+        {activeSection === "usage" && <Usage />}
+        {activeSection === "notifications" && <div className="text-white">Notifications Section</div>}
+        {activeSection === "security" && <div className="text-white">Security Section</div>}
+        {activeSection === "api" && <div className="text-white">API Keys Section</div>}
+        {activeSection === "delete" && <div className="text-red-400">Delete Account Section</div>}
       </main>
     </div>
   );
 }
 
+// NavItem component
 interface NavItemProps {
   icon: React.ReactNode;
   label: string;
@@ -94,80 +97,18 @@ function NavItem({ icon, label, active, onClick, danger }: NavItemProps) {
   );
 }
 
-interface SectionProps {
-  title: string;
-  children: React.ReactNode;
-}
-
-function Section({ title, children }: SectionProps) {
-  return (
-    <div className="mb-8 pb-8 border-b border-slate-800 last:border-0">
-      <h3 className="text-white text-xl font-semibold mb-4">{title}</h3>
-      {children}
-    </div>
-  );
-}
-
-interface FieldProps {
-  label: string;
-  value: string;
-  textarea?: boolean;
-}
-
-function Field({ label, value, textarea }: FieldProps) {
-  return (
-    <div className="mb-4">
-      <label className="block text-gray-400 text-sm mb-2">{label}</label>
-      {textarea ? (
-        <textarea
-          defaultValue={value}
-          className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
-          rows={3}
-        />
-      ) : (
-        <input
-          type="text"
-          defaultValue={value}
-          className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
-        />
-      )}
-    </div>
-  );
-}
-
+// ProfileSection component (as you already defined)
 interface ProfileSectionProps {
   user: UserType;
 }
-
 function ProfileSection({ user }: ProfileSectionProps) {
   return (
     <div className="max-w-3xl">
       <h2 className="text-white text-3xl font-bold mb-8">Profile</h2>
-      
-      <Section title="Basic Information">
-        <Field label="Name" value={user.name} />
-        <Field label="Username" value={`@${user.username}`} />
-        <Field label="Email" value={user.email} />
-        <Field label="Bio" value="Full-stack developer passionate about security" textarea />
-      </Section>
-
-      <Section title="Avatar">
-        <div className="flex items-center gap-4">
-          <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-2xl">
-            {user.avatar}
-          </div>
-          <button className="px-4 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-colors">
-            Upload New
-          </button>
-        </div>
-      </Section>
-
-      <button className="mt-6 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
-        Save Changes
-      </button>
+      <div className="mb-8 pb-8 border-b border-slate-800 last:border-0">
+        <label className="block text-gray-400 text-sm mb-2">Name</label>
+        <input type="text" defaultValue={user.name} className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500" />
+      </div>
     </div>
   );
 }
-
-// -- Continue the rest similarly: SubscriptionSection, UsageSection, NotificationsSection, SecuritySection, APIKeysSection, DeleteAccountSection
-// Ensure all props are typed and optional props are handled (like time in SessionItem)
