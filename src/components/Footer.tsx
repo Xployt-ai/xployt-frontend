@@ -2,7 +2,7 @@ import { FaInstagram, FaFacebookF, FaLinkedinIn, FaDiscord, FaEnvelope, FaPhone 
 
 const Footer = () => {
   return (
-    <footer className="bg-transparent border-t border-[#23262F] pt-8 pb-4 px-4 md:px-0 mt-12">
+    <footer className="bg-background border-t border-[#23262F] pt-8 pb-4 px-4 md:px-0 ">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-8 md:gap-0">
         {/* Left: Logo and Socials */}
         <div className="flex flex-col items-center md:items-start w-full md:w-1/3">
@@ -19,11 +19,11 @@ const Footer = () => {
         </div>
         {/* Center: Links */}
         <div className="flex flex-col items-center md:items-start w-full md:w-1/3 mt-4 md:mt-0">
-          <a href="#" className="text-white font-semibold mb-4 hover:underline">Validator Applications</a>
-          <a href="#" className="text-white font-semibold mb-4 hover:underline">Terms and Policy</a>
-          <a href="#" className="text-white font-semibold mb-4 hover:underline">Privacy Statement</a>
-          <a href="#" className="text-white font-semibold mb-4 hover:underline">Help Center</a>
-          <a href="#" className="text-white font-semibold hover:underline">Sitemap</a>
+      
+          <a href="/privacy" className="text-white font-semibold mb-4 hover:underline">Privacy Policy</a>
+          <a href="/statement" className="text-white font-semibold mb-4 hover:underline">Privacy Statement</a>
+          <a href="/help" className="text-white font-semibold mb-4 hover:underline">Help Center</a>
+          
         </div>
         {/* Right: Contact Info */}
         <div className="flex flex-col items-center md:items-start w-full md:w-1/3 mt-4 md:mt-0">
