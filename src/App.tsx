@@ -22,6 +22,7 @@ import Footer from "@/components/Footer.tsx";
 import CodeViewer from '@/pages/CodeViewerPage.tsx';
 import BillPage from "@/pages/BillPage";
 import Privacy from "@/pages/Privacy.tsx";
+import Help from "@/pages/Help.tsx";
 import Statement from "@/pages/Statement.tsx";
 import Topup from '@/pages/topup.tsx';
 
@@ -51,6 +52,9 @@ function App() {
            <Route path="/billing" element={<BillPage />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/statement" element={<Statement />} />
+            
+            <Route path="/help" element={<Help />} />
+
             <Route path="/topup" element={<Topup />} />
 
         </Routes>
