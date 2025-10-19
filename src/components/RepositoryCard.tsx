@@ -3,7 +3,7 @@ import type { Repo } from "@/data/models/repo.ts";
 import { repoEndpoints } from "@/data/network/repo.ts";
 import { useNavigate } from "react-router-dom";
 import { formatRepoName } from "@/lib/utils.ts";
-import { Folder } from "lucide-react"; // ✅ added Lucide icon
+import { Folder } from "lucide-react"; // ✅ Lucide icon
 
 interface RepositoryCardProps {
   repo: Repo;
@@ -30,21 +30,12 @@ const RepositoryCard = ({ repo, date }: RepositoryCardProps) => {
 
   return (
     <div
-<<<<<<< HEAD
-      className="p-4 flex justify-between items-center w-full"
-      onClick={() => handleCardClick()}
-    >
-      <div className="flex items-center gap-3">
-        <img src="/FolderNoBG.png" alt="Folder icon representing a code repository" className="w-6 -6" />
-=======
       className="bg-[#121212] p-4 border border-gray-800 rounded-md flex justify-between items-center w-full cursor-pointer hover:bg-[#1a1a1a] transition"
       onClick={handleCardClick}
     >
       <div className="flex items-center gap-3">
-        {/* ✅ Replaced folder emoji with Lucide icon */}
+        {/* ✅ Lucide folder icon for cleaner look */}
         <Folder className="w-6 h-6 text-yellow-400" />
-
->>>>>>> to-do
         <div>
           <strong className="text-white">{repo.name}</strong>
           {date && <div className="text-sm text-gray-500">{date}</div>}
@@ -53,7 +44,8 @@ const RepositoryCard = ({ repo, date }: RepositoryCardProps) => {
 
       {!repo.is_linked && (
         <Button
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation(); // ✅ Prevent triggering card click when pressing Import
             importRepo(repo).then(() => {
               console.log(`Repository ${repo.name} imported successfully.`);
               navigate("/new-scan/" + formatRepoName(repo.name));
