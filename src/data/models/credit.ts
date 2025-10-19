@@ -1,8 +1,9 @@
 export interface CreditTopup {
 
-    transaction_id: number;
+    transaction_id: string;
     amount: number;
     new_balance: number;
+    message: string;
 
 }
 
@@ -23,6 +24,5 @@ export interface CreditTransaction {
       user_id: number;
       created_at: string;
       status: string;
-
 
   }
