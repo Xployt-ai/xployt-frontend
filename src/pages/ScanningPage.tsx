@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { TypographyH1, TypographyH2 } from "@/components/ui/typography.tsx";
 import { DetailItem } from "@/components/DetailItem.tsx";
 import { ScanStatus } from "@/features/ScanStatus.tsx";
@@ -29,9 +29,15 @@ const ScanningPage = () => {
   const { collection_id } = useParams();
   console.log("Collection ID:", collection_id); // Debug log
 
+  const navigate = useNavigate()
+
   // Poll scan progress
   useEffect(() => {
     const handleProgressUpdate = (data: ScanProgressAggStream) => {
+      if (data.collection.progress_percent >= 100) {
+        console.log("Scan completed — closing SSE connection.");
+        navigate(`/securitydashboard/${collection_id}`)
+      }
       console.log("New update received:", data);
       setScanProgressOverall(data)
     }
