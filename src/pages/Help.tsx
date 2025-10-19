@@ -12,6 +12,8 @@ export default function HelpCenter() {
     { id: 'troubleshooting', label: 'Troubleshooting', icon: <AlertCircle size={20} /> },
     { id: 'practices', label: 'Best Practices', icon: <Lightbulb size={20} /> },
     { id: 'billing', label: 'Account & Billing', icon: <CreditCard size={20} /> },
+    { id: 'support', label: 'Contact Support', icon: <Mail size={20} /> },
+    { id: 'status', label: 'System Status', icon: <Activity size={20} /> }
   ];
 
   return (
@@ -47,6 +49,7 @@ export default function HelpCenter() {
               onClick={() => setActiveSection(section.id)}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm border transition-all ${
                 activeSection === section.id 
+                  ? 'bg-blue-500 text-white border-blue-500' 
                   ? ' from-slate-900 text-white  from-slate-900' 
                   : 'bg-white/5 text-gray-300 border-white/10 hover:bg-white/10'
               }`}
@@ -156,6 +159,26 @@ function PlatformSection() {
         />
       </HelpCard>
 
+      <HelpCard title="Understanding Scan Results">
+        <SubSection title="Severity Levels">
+          <div className="space-y-2">
+            <SeverityBadge level="Critical" color="red" desc="Immediate exploitation risk—patch now" />
+            <SeverityBadge level="High" color="orange" desc="Serious vulnerability—fix within 7 days" />
+            <SeverityBadge level="Medium" color="yellow" desc="Moderate risk—schedule fix soon" />
+            <SeverityBadge level="Low" color="gray" desc="Minor issue—fix when convenient" />
+          </div>
+        </SubSection>
+
+        <SubSection title="Report Sections">
+          <ul className="space-y-2 mt-3">
+            <ListItem text="Secrets Detection: Exposed API keys, tokens, database credentials" />
+            <ListItem text="Injection Flaws: SQL injection, NoSQL injection, command injection" />
+            <ListItem text="XSS Vulnerabilities: Reflected, stored, and DOM-based XSS" />
+            <ListItem text="Authentication Issues: Weak JWT, insecure sessions, missing rate limits" />
+            <ListItem text="Dependency Risks: Outdated packages with known CVEs" />
+          </ul>
+        </SubSection>
+      </HelpCard>
  
 
       <HelpCard title="Fixing Vulnerabilities">
@@ -346,6 +369,78 @@ function BillingSection() {
   );
 }
 
+function SupportSection() {
+  return (
+    <div className="space-y-6">
+      <div className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-2xl p-8 text-center">
+        <h3 className="text-white text-2xl font-bold mb-6">Get in Touch</h3>
+        <div className="space-y-4 text-left max-w-md mx-auto">
+          <ContactOption 
+            icon="📧"
+            title="Email Support"
+            value="support@xploit.ai"
+            note="Response time: 24-48 hours"
+          />
+          <ContactOption 
+            icon="🚨"
+            title="Critical Issues"
+            value="urgent@xploit.ai"
+            note="Response time: 4-8 hours (Pro/Team only)"
+          />
+          <ContactOption 
+            icon="💬"
+            title="Live Chat"
+            value="Available in dashboard"
+            note="Mon-Fri, 9 AM - 6 PM EST"
+          />
+          <ContactOption 
+            icon="🐛"
+            title="Bug Reports"
+            value="bugs@xploit.ai"
+            note="Include scan ID and screenshots"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StatusSection() {
+  return (
+    <div className="space-y-6">
+      <HelpCard title="System Status">
+        <div className="space-y-3">
+          <StatusItem service="Scan Engine" status="operational" />
+          <StatusItem service="GitHub Integration" status="operational" />
+          <StatusItem service="AI Analysis" status="operational" />
+          <StatusItem service="Dashboard" status="operational" />
+        </div>
+        <p className="text-gray-400 text-sm mt-4">
+          Last updated: 2 minutes ago · <a href="#" className="text-blue-400 hover:underline">View full status page</a>
+        </p>
+      </HelpCard>
+
+      <HelpCard title="Scheduled Maintenance">
+        <p className="text-gray-300 leading-relaxed">
+          No maintenance scheduled. We'll notify users via email 48 hours before any planned downtime.
+        </p>
+      </HelpCard>
+
+      <HelpCard title="Latest Updates">
+        <UpdateItem version="v2.3.0" date="Oct 15, 2025" changes={[
+          'Added support for Next.js 15 vulnerability detection',
+          'Improved AI scan accuracy by 12%',
+          'Fixed false positives in React component scanning'
+        ]} />
+        <UpdateItem version="v2.2.1" date="Oct 1, 2025" changes={[
+          'Enhanced MongoDB injection detection',
+          'Added export to PDF for scan reports',
+          'Performance improvements for large repos'
+        ]} />
+      </HelpCard>
+    </div>
+  );
+}
 
 // Helper Components
 function HelpCard({ title, children }) {
@@ -371,6 +466,7 @@ function Steps({ items }) {
     <div className="space-y-4">
       {items.map((item, i) => (
         <div key={i} className="flex gap-4">
+          <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">
           <div className="w-8 h-8  from-slate-900 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">
             {item.num}
           </div>
