@@ -25,6 +25,13 @@ import Privacy from '@/pages/Privacy.tsx';
 import Statement from '@/pages/Statement.tsx';
 import Topup from '@/pages/Topup.tsx';
 import Help from '@/pages/Help.tsx';
+import BillPage from "@/pages/BillPage";
+import Privacy from "@/pages/Privacy.tsx";
+import Help from "@/pages/Help.tsx";
+import Statement from "@/pages/Statement.tsx";
+import Topup from '@/pages/topup.tsx';
+import Settings from '@/pages/Settings.tsx';
+
 
 function App() {
   return (
@@ -37,13 +44,13 @@ function App() {
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/docs" element={<Documentation />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/selectscan" element={<Selectscan />} />
+          <Route path="/selectscan/:repo_name" element={<Selectscan />} />
           <Route path="/new-scan/:repo_name" element={<NewScan />} />
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/successful" element={<Successful />} />
           <Route path="/repo-import" element={<RepoImport />} />
           <Route path="/issuedetail/:issueId" element={<IssueDetail />} />
-          <Route path="/scanning/:scan_id" element={<ScanningPage />} />
+          <Route path="/scanning/:collection_id" element={<ScanningPage />} />
           <Route path="/bill" element={<Bill />} />
           <Route path="/securitydashboard/:scan_id" element={<SecurityDashboardPage />} />
           <Route path="/callback" element={<GitHubCallback />} />
@@ -54,6 +61,13 @@ function App() {
           <Route path="/statement" element={<Statement />} />
           <Route path="/topup" element={<Topup />} />
            <Route path="/help" element={<Help />} />
+           <Route path="/billing" element={<BillPage />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/statement" element={<Statement />} />
+            <Route path="/help" element={<Help />} />
+            <Route path="/topup" element={<Topup />} />
+             <Route path="/settings" element={<Settings />} />
+
         </Routes>
       </main>
       <Footer />

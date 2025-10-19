@@ -19,11 +19,11 @@ const Footer = () => {
         </div>
         {/* Center: Links */}
         <div className="flex flex-col items-center md:items-start w-full md:w-1/3 mt-4 md:mt-0">
-          <a href="#" className="text-white font-semibold mb-4 hover:underline">Validator Applications</a>
+      
           <a href="/privacy" className="text-white font-semibold mb-4 hover:underline">Privacy Policy</a>
           <a href="/statement" className="text-white font-semibold mb-4 hover:underline">Privacy Statement</a>
           <a href="/help" className="text-white font-semibold mb-4 hover:underline">Help Center</a>
-          <a href="#" className="text-white font-semibold hover:underline">Sitemap</a>
+          
         </div>
         {/* Right: Contact Info */}
         <div className="flex flex-col items-center md:items-start w-full md:w-1/3 mt-4 md:mt-0">

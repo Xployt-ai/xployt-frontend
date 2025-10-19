@@ -71,3 +71,19 @@ This project uses [Prettier](https://prettier.io) for code formatting. Config is
 ```bash
 npx prettier --write .
 ```
+
+---
+
+## Docker
+
+Build the image:
+
+```bash
+docker build -t xployt-frontend:latest .
+```
+
+Run the container (maps port 8080 on host to 80 in container):
+
+```bash
+docker run -p 8080:80 xployt-frontend:latest
+```

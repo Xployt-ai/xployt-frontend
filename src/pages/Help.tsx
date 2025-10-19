@@ -50,6 +50,7 @@ export default function HelpCenter() {
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm border transition-all ${
                 activeSection === section.id 
                   ? 'bg-blue-500 text-white border-blue-500' 
+                  ? ' from-slate-900 text-white  from-slate-900' 
                   : 'bg-white/5 text-gray-300 border-white/10 hover:bg-white/10'
               }`}
             >
@@ -178,6 +179,7 @@ function PlatformSection() {
           </ul>
         </SubSection>
       </HelpCard>
+ 
 
       <HelpCard title="Fixing Vulnerabilities">
         <p className="text-gray-300 leading-relaxed mb-4">
@@ -465,6 +467,7 @@ function Steps({ items }) {
       {items.map((item, i) => (
         <div key={i} className="flex gap-4">
           <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">
+          <div className="w-8 h-8  from-slate-900 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">
             {item.num}
           </div>
           <div>
