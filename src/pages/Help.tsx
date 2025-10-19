@@ -15,7 +15,7 @@ export default function HelpCenter() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br to-slate-800 font-sans">
+    <div className="min-h-screen  to-slate-800 font-sans">
       <div className="w-full py-16 px-6 flex flex-col items-center">
         
         {/* Header */}

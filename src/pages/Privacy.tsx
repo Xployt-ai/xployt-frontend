@@ -4,7 +4,7 @@ export default function TermsAndPolicy() {
   const [activeTab, setActiveTab] = useState('terms');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 font-sans">
+    <div className="min-h-screenfont-sans">
       <div className="w-full py-16 px-6 flex flex-col items-center">
         {/* Header */}
         <div className="text-center max-w-3xl mb-12">
@@ -20,7 +20,7 @@ export default function TermsAndPolicy() {
           <button
             onClick={() => setActiveTab('terms')}
             className={`px-8 py-3 rounded-lg font-semibold text-base border border-white/10 transition-all ${
-              activeTab === 'terms' ? 'bg-blue-500 text-white' : 'bg-white/5 text-white hover:bg-white/10'
+              activeTab === 'terms' ? ' from-slate-900 text-white' : 'bg-white/5 text-white hover:bg-white/10'
             }`}
           >
             Terms of Service
@@ -28,7 +28,7 @@ export default function TermsAndPolicy() {
           <button
             onClick={() => setActiveTab('privacy')}
             className={`px-8 py-3 rounded-lg font-semibold text-base border border-white/10 transition-all ${
-              activeTab === 'privacy' ? 'bg-blue-500 text-white' : 'bg-white/5 text-white hover:bg-white/10'
+              activeTab === 'privacy' ? ' from-slate-900 text-white' : 'bg-white/5 text-white hover:bg-white/10'
             }`}
           >
             Privacy Policy
@@ -249,7 +249,7 @@ export default function TermsAndPolicy() {
 
 function Card({ title, children }) {
   return (
-    <div className="bg-gradient-to-br from-white/[0.02] to-white/[0.005] rounded-2xl p-9 border border-white/[0.04] shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all">
+    <div className="bg-gradient-to-brrounded-2xl p-9  border-white/[0.5] shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all">
       <h2 className="text-white text-3xl font-bold mb-3">{title}</h2>
       <p className="text-gray-300 text-lg leading-relaxed">{children}</p>
     </div>
