@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Loader2, Calendar, BarChart3, CheckCircle2, FolderGit2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -80,7 +80,7 @@ export const ProjectCard = ({ project }: { project: Repo }) => {
         {/* Action Button */}
         <Button
           onClick={() => {
-            navigate(`/new-scan/${formatRepoName(project.name)}`);
+            navigate(`/selectscan/${formatRepoName(project.name)}`);
             setScanningProject(project.name);
           }}
           disabled={scanningProject === project.name}

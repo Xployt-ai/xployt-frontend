@@ -37,13 +37,13 @@ function App() {
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/docs" element={<Documentation />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/selectscan" element={<Selectscan />} />
+          <Route path="/selectscan/:repo_name" element={<Selectscan />} />
           <Route path="/new-scan/:repo_name" element={<NewScan />} />
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/successful" element={<Successful />} />
           <Route path="/repo-import" element={<RepoImport />} />
           <Route path="/issuedetail/:issueId" element={<IssueDetail />} />
-          <Route path="/scanning/:scan_id" element={<ScanningPage />} />
+          <Route path="/scanning/:collection_id" element={<ScanningPage />} />
           <Route path="/bill" element={<Bill />} />
           <Route path="/securitydashboard/:scan_id" element={<SecurityDashboardPage />} />
           <Route path="/callback" element={<GitHubCallback />} />

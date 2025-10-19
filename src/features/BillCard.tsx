@@ -1,4 +1,4 @@
-import { Card } from "@/components/ui/Card";
+import { Card } from "@/components/ui/card";
 import {TypographyH1 , TypographyP ,TypographyH4, TypographySmall} from '@/components/ui/typography'
 import card from "@/assets/card.svg"; 
 import { Button } from "@/components/ui/Button";
