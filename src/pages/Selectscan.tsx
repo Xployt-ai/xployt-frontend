@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import ScanTemplateCard from "@/components/ScanTemplateCard";
 import ScanOptionCard from "@/components/ScanOptionCard";
 
+
 // import templates and options from data file
 import { templates as templateData, options as optionData } from "@/data/types/scan_types";
 import { scanCollectionEndpoints } from "@/data/network/scan_collection.ts";
@@ -102,7 +103,7 @@ export default function SecurityScanUI() {
   }
 
   return (
-    <div className="min-h-screen p-12 flex flex-col items-center font-sans bg-gray-950">
+    <div className="min-h-screen p-12 flex flex-col items-center font-sans ">
       <div className="w-full max-w-6xl space-y-10">
         {/* Header */}
         <div className="text-center">
@@ -135,7 +136,7 @@ export default function SecurityScanUI() {
         <section className="space-y-4">
           <h2 className="text-lg font-semibold text-gray-200 mb-2">Individual Scan Options</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {optionData.map((o) => (
               <ScanOptionCard
                 key={o.title}
@@ -159,11 +160,7 @@ export default function SecurityScanUI() {
             </Button>
           </div>
 
-          {/* small readout of scanners that will be sent */}
-          <div className="text-sm text-gray-400">
-            <strong className="text-gray-200">Scanners to be sent:</strong>{" "}
-            {scannersList.length ? scannersList.join(", ") : "(none selected)"}
-          </div>
+
         </div>
       </div>
     </div>

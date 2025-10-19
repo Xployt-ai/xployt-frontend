@@ -50,12 +50,6 @@ export default function ScanTemplateCard({
           </div>
         ))}
 
-        <Button
-          onClick={onSelect}
-          className="w-full bg-gray-300 text-gray-900 hover:bg-gray-100 mt-4 rounded-md font-semibold transition"
-        >
-          Select Template
-        </Button>
       </div>
     </div>
   );

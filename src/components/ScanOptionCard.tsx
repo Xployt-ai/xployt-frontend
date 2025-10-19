@@ -3,6 +3,7 @@
 import React from "react";
 import { Card } from "@/components/ui/card.tsx";
 import { cn } from "@/lib/utils.ts";
+import { Check, Clock, Zap } from "lucide-react";
 
 type ScanOptionCardProps = {
   title: string;
@@ -29,11 +30,11 @@ const ScanOptionCard = ({
     <Card
       onClick={onClick}
       className={cn(
-        "cursor-pointer transition border hover:border-primary hover:shadow-md flex flex-col justify-between h-full",
+        "cursor-pointer transition border hover:border-primary hover:shadow-md flex flex-col justify-between h-full bg-background",
         selected ? "border-primary bg-muted" : "bg-card"
       )}
     >
-      <div className="p-5 space-y-2">
+      <div className="px-5 space-y-2">
         <div className="pb-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             {Icon ? (
@@ -58,12 +59,23 @@ const ScanOptionCard = ({
           ) : null}
         </div>
 
-        <div className="space-y-3 pt-0">
-          {details.map((d) => (
-            <div key={d} className="flex items-center text-gray-400 text-sm">
-              {d}
-            </div>
-          ))}
+        <div className="space-y-3 ">
+          {details.map((d) => {
+            const label = d ?? "";
+            const lower = label.toLowerCase();
+
+            const IconFor =
+              lower.includes("duration") ? Clock :
+              lower.includes("resource") || lower.includes("resources") ? Zap :
+              Check;
+
+            return (
+              <div key={d} className="flex items-center text-gray-400 text-sm">
+          <IconFor className="w-4 h-4 mr-2 text-gray-300" />
+          {label}
+              </div>
+            );
+          })}
         </div>
       </div>
     </Card>
