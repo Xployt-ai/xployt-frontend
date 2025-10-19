@@ -1,6 +1,6 @@
 import NETWORK from "@/data/network/index.ts";
 import type { ScanProgressAggStream } from "@/data/models/scan.ts";
-import type { ScanCollection } from "@/data/models/scan_collection.ts";
+import type { CollectionResults, ScanCollection } from "@/data/models/scan_collection.ts";
 
 export const scanCollectionEndpoints = {
   BASE_URL: '/scan-collections',
@@ -67,4 +67,9 @@ export const scanCollectionEndpoints = {
 
     return source;
   },
+
+  async getCollectionResults(collection_id: string): Promise<CollectionResults>{
+    const response = await NETWORK.get(`${this.BASE_URL}/${collection_id}/results`);
+    return response.data as CollectionResults;
+  }
 }
