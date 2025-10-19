@@ -18,11 +18,12 @@ import SecurityDashboardPage from './pages/SecurityDashboardPage';
 import GitHubCallback from './pages/GitHubCallback';
 
 import Navbar from '@/components/Navbar.tsx';
-import Footer from "@/components/Footer.tsx";
+import Footer from '@/components/Footer.tsx';
 import CodeViewer from '@/pages/CodeViewerPage.tsx';
-import BillPage from "@/pages/BillPage";
-import Privacy from "@/pages/Privacy.tsx";
-import Statement from "@/pages/Statement.tsx";
+import BillPage from '@/pages/BillPage';
+import Privacy from '@/pages/Privacy.tsx';
+import Statement from '@/pages/Statement.tsx';
+import Topup from '@/pages/Topup.tsx';
 
 function App() {
   return (
@@ -47,10 +48,10 @@ function App() {
           <Route path="/callback" element={<GitHubCallback />} />
           <Route path="/usage" element={<Usage />} />
           <Route path="/codeviewer" element={<CodeViewer />} />
-           <Route path="/billing" element={<BillPage />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/statement" element={<Statement />} />
-
+          <Route path="/billing" element={<BillPage />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/statement" element={<Statement />} />
+          <Route path="/topup" element={<Topup />} />
         </Routes>
       </main>
       <Footer />
