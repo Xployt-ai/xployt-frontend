@@ -53,6 +53,14 @@ export interface ScanResult {
   status?: string;
 }
 
+export interface ScanProgressAggStream {
+  collection: {
+    status: string,
+    progress_percent: number
+  };
+  vulnerabilities: Vulnerability[]
+}
+
 // "type": "string",
 //   "severity": "string",
 //   "description": "string",
@@ -102,7 +110,6 @@ export interface ScanIndicator {
 ////////////////// New Vulnerability Interface /////////////////////////
 
 export interface Vulnerability {
-  vuln: string;
   relative_file_path: string;
   line: number[];
   description: string;
