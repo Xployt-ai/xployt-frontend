@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Loader2, Search } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 interface SearchBarProps {
@@ -19,18 +19,18 @@ export const SearchBar = ({
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <div className="mb-8 flex items-center gap-4">
-      <div className="flex flex-1 items-center rounded-xl border border-gray-600 px-3 py-2">
-        <Search className="mr-2 h-4 w-4 text-gray-600" />
+    <div className="flex items-center gap-4 ">
+      <div className="relative flex-1 rounded-md border border-input bg-background ">
+        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
-          type="text"
+          type="search"
           placeholder={placeholder}
           value={searchQuery}
           onChange={(e) => {
             setSearchQuery(e.target.value);
             onChange(e);
           }}
-          className="w-full border-none bg-transparent outline-none"
+          className="pl-9 "
         />
       </div>
       <Button
