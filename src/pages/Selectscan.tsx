@@ -88,14 +88,14 @@ export default function SecurityScanUI() {
     });
   }
 
-  function handleStartScan() {
+  async function handleStartScan() {
     // Placeholder: send scannersList to endpoint
     console.log("Starting scan with scanners:", scannersList);
     if (!repo_name) return;
 
     try {
-      const scan_id = scanCollectionEndpoints.createScanCollection(repo_name, scannersList);
-      navigate(`/scanning/${scan_id}`);
+      const collection = await scanCollectionEndpoints.createScanCollection(repo_name, scannersList);
+      navigate(`/scanning/${collection.collection_id}`);
     } catch (error) {
       console.error("Error starting scan:", error);
     }
