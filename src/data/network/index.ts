@@ -202,6 +202,112 @@ class Network {
     return this.handleRequest('DELETE', url, {}, options);
   }
 
+  /**
+   * Open a Server-Sent Events (SSE) connection to the given path.
+   * - Accepts either an absolute URL or a path that will be appended to this.baseURL
+   * - Will automatically append a token query param if one exists in localStorage
+   * - Returns the raw EventSource so callers can attach listeners as needed
+   *
+   * @param {string} pathOrUrl - Absolute URL or path (e.g. '/scan-collections/:id/stream')
+   * @param {{[key:string]:string}} [queryParams] - Additional query params to add to the URL
+   * @param {{onOpen?:()=>void, onMessage?:(e:MessageEvent)=>void, onError?:(e:any)=>void, events?: {[eventName:string]:(e:MessageEvent)=>void}}} [handlers]
+   * @param {number} [idleTimeoutMs] - If set, will close the connection when no messages are received for this interval (ms)
+   * @returns {EventSource}
+   */
+  public openEventSource(
+    pathOrUrl: string,
+    queryParams: { [key: string]: string } = {},
+    handlers: {
+      onOpen?: () => void;
+      onMessage?: (e: MessageEvent) => void;
+      onError?: (e: any) => void;
+      events?: { [eventName: string]: (e: MessageEvent) => void };
+    } = {},
+    idleTimeoutMs: number = 60_000
+  ): EventSource {
+    // Build base URL
+    const isAbsolute = /^https?:\/\//i.test(pathOrUrl);
+    let url = isAbsolute ? pathOrUrl : this.baseURL + pathOrUrl;
+
+    // Prefer tokens used elsewhere in the app; include as query param because EventSource cannot set headers
+    const token = localStorage.getItem('access_token') || localStorage.getItem('xployt_token');
+
+    const params = new URLSearchParams(queryParams as Record<string, string>);
+    if (token && !params.has('token')) {
+      params.set('token', token);
+    }
+
+    const separator = url.includes('?') ? '&' : '?';
+    url = params.toString() ? `${url}${separator}${params.toString()}` : url;
+
+    const source = new EventSource(url);
+
+    // Watchdog to close connection if idle for too long
+    let lastMessageTime = Date.now();
+    let checkInterval: number | undefined;
+
+    if (idleTimeoutMs > 0) {
+      checkInterval = window.setInterval(() => {
+        if (Date.now() - lastMessageTime > idleTimeoutMs) {
+          console.warn('SSE idle timeout reached — closing connection for', url);
+          try {
+            source.close();
+          } catch (e) {
+            // ignore
+          }
+          if (checkInterval) clearInterval(checkInterval);
+        }
+      }, Math.max(10_000, Math.floor(idleTimeoutMs / 6)));
+    }
+
+    source.onopen = () => {
+      lastMessageTime = Date.now();
+      handlers.onOpen?.();
+    };
+
+    const handleMessage = (e: MessageEvent) => {
+      lastMessageTime = Date.now();
+      handlers.onMessage?.(e);
+    };
+
+    source.onmessage = handleMessage;
+
+    // attach any custom named events
+    if (handlers.events) {
+      Object.keys(handlers.events).forEach((ev) => {
+        source.addEventListener(ev, (e: MessageEvent) => {
+          lastMessageTime = Date.now();
+          handlers.events![ev](e);
+        });
+      });
+    }
+
+    source.onerror = (err) => {
+      handlers.onError?.(err);
+      // Close if server closed connection
+      if (source.readyState === EventSource.CLOSED) {
+        try {
+          source.close();
+        } catch (e) {
+          // ignore
+        }
+        if (checkInterval) clearInterval(checkInterval);
+      }
+    };
+
+    // When closed explicitly by caller, clear watchdog
+    const originalClose = source.close.bind(source);
+    (source as any).close = () => {
+      try {
+        originalClose();
+      } finally {
+        if (checkInterval) clearInterval(checkInterval);
+      }
+    };
+
+    return source;
+  }
+
   invalidateCache(url: string): void {
     console.log('invalidating cache for', url);
     try {

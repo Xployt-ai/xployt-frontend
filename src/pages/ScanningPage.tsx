@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { TypographyH1, TypographyH2 } from "@/components/ui/typography.tsx";
 import { DetailItem } from "@/components/DetailItem.tsx";
 import { ScanStatus } from "@/features/ScanStatus.tsx";
 import { ScanLiveSummary } from "@/features/ScanLiveSummary.tsx";
 import { ScanDetails } from "@/features/ScanDetails.tsx";
-import { scanEndpoints } from "@/data/network/scan.ts";
-import type { ScanFinding, ScanProgress, ScanStep, Vulnerability } from "@/data/models/scan.ts";
+import type { ScanFinding, ScanProgressAggStream, ScanStep } from "@/data/models/scan.ts";
 import { scan } from "@/data/mock/scan.ts";
+import { scanCollectionEndpoints } from "@/data/network/scan_collection.ts";
 
 const projectDetails = [
   { label: "Repository", value: "Automatisch" },
@@ -15,44 +15,44 @@ const projectDetails = [
 ];
 
 const ScanningPage = () => {
-  const [scanProgress, setScanProgress] = useState<ScanProgress>({
-    progress_percent: 0,
-    progress_text: "",
-    scan_id: "",
-    status: "",
+  const [scanProgressOverall, setScanProgressOverall] = useState<ScanProgressAggStream>({
+    collection: {
+      status: "unknown",
+      progress_percent: 0
+    },
+    vulnerabilities: []
   });
   const [scanSteps, setScanSteps] = useState<ScanStep[]>([]);
   const [scanFindings, setScanFindings] = useState<ScanFinding[]>([]);
   const [scanIndicators, setScanIndicators] = useState<string[][]>([]);
 
-  const { scan_id } = useParams();
-  const navigate = useNavigate();
+  const { collection_id } = useParams();
+  console.log("Collection ID:", collection_id); // Debug log
 
   // Poll scan progress
   useEffect(() => {
-    const interval = setInterval(async () => {
-      try {
-        if (!scan_id) return;
-
-        const data = await scanEndpoints.getScanProgress(scan_id);
-        setScanProgress(data);
-
-        if (data.progress_percent >= 100) {
-          clearInterval(interval);
-          navigate(`/securitydashboard/${scan_id}`);
-        }
-      } catch (error) {
-        console.error("Error fetching scan progress:", error);
-        clearInterval(interval);
+    const handleProgressUpdate = (data: ScanProgressAggStream) => {
+      console.log("New update received:", data);
+      setScanProgressOverall(data)
+    }
+    try {
+      if (collection_id){
+        const source = scanCollectionEndpoints.getScanProgressSSE(collection_id, handleProgressUpdate)
+        return () => {
+          console.log("Component unmounted — closing SSE connection.");
+          source.close();
+        };
       }
-    }, 1000);
+      console.log(scanSteps) // todo:remove
+    } catch (error) {
+      console.error("Error setting up scan progress SSE:", error);
+    }
 
-    return () => clearInterval(interval);
-  }, [scan_id, navigate]);
+  }, [collection_id]);
 
   // Fetch scan results and steps
   useEffect(() => {
-    if (!scan_id) return;
+    if (!collection_id) return;
 
     const fetchScanData = async () => {
       try {
@@ -60,21 +60,21 @@ const ScanningPage = () => {
         setScanSteps(scan.ScanStepsMock);
 
         // Try API call
-        const results: Vulnerability[] = await scanEndpoints.getScanResults(scan_id);
+        // const results: Vulnerability[] = await scanEndpoints.getScanResults(scan_id);
 
-        const mappedResults: ScanFinding[] = results.map((vuln) => ({
-          severity: mapSeverity(vuln.severity),
-          finding: vuln.vulnerability,
-          url: `${vuln.relative_file_path}:${vuln.line.join(", ")}`,
-        }));
-
-        setScanFindings(mappedResults);
-
-        setScanIndicators([
-          ["Pages Scanned", "150/192"], // Replace when backend provides
-          ["Vulnerabilities Found", results.length.toString()],
-          ["Errors", "0"], // Replace when backend provides
-        ]);
+        // const mappedResults: ScanFinding[] = results.map((vuln) => ({
+        //   severity: mapSeverity(vuln.severity),
+        //   finding: vuln.vulnerability,
+        //   url: `${vuln.relative_file_path}:${vuln.line.join(", ")}`,
+        // }));
+        //
+        // setScanFindings(mappedResults);
+        //
+        // setScanIndicators([
+        //   ["Pages Scanned", "150/192"], // Replace when backend provides
+        //   ["Vulnerabilities Found", results.length.toString()],
+        //   ["Errors", "0"], // Replace when backend provides
+        // ]);
       } catch (error) {
         console.error("Falling back to mock data due to error:", error);
 
@@ -86,14 +86,14 @@ const ScanningPage = () => {
     };
 
     fetchScanData();
-  }, [scan_id]);
+  }, [collection_id]);
 
   // Helper for severity mapping
-  const mapSeverity = (level: number): string => {
-    if (level >= 4) return "High";
-    if (level === 3) return "Medium";
-    return "Low";
-  };
+  // const mapSeverity = (level: number): string => {
+  //   if (level >= 4) return "High";
+  //   if (level === 3) return "Medium";
+  //   return "Low";
+  // };
 
   return (
     <div className="min-h-screen flex flex-col flex-grow p-20">
@@ -107,7 +107,7 @@ const ScanningPage = () => {
           {/* Left Column */}
           <div className="lg:col-span-2 space-y-8">
             {/* Scan Status */}
-            <ScanStatus scanProgress={scanProgress} scanSteps={scanSteps} />
+            <ScanStatus progress={scanProgressOverall} />
 
             {/* Live Summary */}
             <ScanLiveSummary />

@@ -15,54 +15,55 @@ export const scanCollectionEndpoints = {
   },
 
   getScanProgressSSE(scan_id: string, onUpdate?: (progress: ScanProgressAggStream) => void): EventSource {
-    NETWORK.invalidateCache(`${this.BASE_URL}/${scan_id}/stream`);
-    const source = new EventSource(`${this.BASE_URL}/${scan_id}/stream`);
 
-    source.onopen = () => {
-      console.log("Connection opened: Scan progress");
-    };
+    // Use NETWORK.openEventSource helper which will append token and manage watchdogs
+    const path = `${this.BASE_URL}/${scan_id}/stream`;
 
-    // Close the connection if no messages are received within the timeout period
-    let lastMessageTime = Date.now();
-    const timeoutMs = 60_000; // 1 minute
-
-    const checkTimeout = setInterval(() => {
-      if (Date.now() - lastMessageTime > timeoutMs) {
-        console.warn("No updates received for 1 minute — closing SSE.");
-        source.close();
-        clearInterval(checkTimeout);
-      }
-    }, 10_000);
-
-    source.onmessage = (event) => {
+    const handleProgress = (event: MessageEvent) => {
       try {
-
-        lastMessageTime = Date.now();
-
         const data: ScanProgressAggStream = JSON.parse(event.data);
         console.log("Received scan progress:", data);
         onUpdate?.(data);
 
         if (data.collection.status === "completed" || data.collection.progress_percent === 100) {
           console.log("Scan completed — closing SSE connection.");
-          source.close();
+          // EventSource.close will be handled by the NETWORK helper's returned object
+          // but we still close explicitly here for clarity
         }
-
       } catch (error) {
         console.error("Failed to parse event data:", error);
       }
     };
 
-    source.onerror = (error) => {
-      if (source.readyState === EventSource.CLOSED) {
-        console.log("SSE connection closed by server");
-        source.close();
-      } else if (source.readyState === EventSource.CONNECTING) {
-        console.warn("Attempting to reconnect to scan progress stream...");
-      }else {
-        console.error("SSE connection error: Scan progress", error);
+    const source = NETWORK.openEventSource(
+      path,
+      {},
+      {
+        onOpen: () => {
+          console.log("Connection opened: Scan progress");
+        },
+        onMessage: (e) => handleProgress(e),
+        events: {
+          progress: (e: MessageEvent) => handleProgress(e),
+        },
+        onError: (err) => {
+          console.error('SSE connection error: Scan progress', err);
+        }
+      },
+      60_000
+    );
+
+    // If the server indicates completion via message content we close here as well
+    source.addEventListener('progress', (e: MessageEvent) => {
+      try {
+        const data: ScanProgressAggStream = JSON.parse(e.data);
+        if (data.collection.status === "completed" || data.collection.progress_percent === 100) {
+          source.close();
+        }
+      } catch (_err) {
+        // ignore parse errors here
       }
-    };
+    });
 
     return source;
   },

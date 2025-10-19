@@ -1,13 +1,13 @@
 import { TypographyH2, TypographyMonospace, TypographySmall } from "@/components/ui/typography.tsx";
 import { Progress } from "@/components/ui/progress.tsx";
-import type { ScanProgress, ScanStep } from "@/data/models/scan.ts";
+import type { ScanProgressAggStream } from "@/data/models/scan.ts";
 
 interface scanStatusProps {
-  scanProgress: ScanProgress,
-  scanSteps: ScanStep[]
+  progress: ScanProgressAggStream
 }
 
-export const ScanStatus = ({scanProgress, scanSteps}: scanStatusProps) => {
+export const ScanStatus = ({progress}: scanStatusProps) => {
+  const {status, progress_percent} = progress.collection;
   return (
     <div className="space-y-6">
       <TypographyH2>Scan Status</TypographyH2>
@@ -16,25 +16,25 @@ export const ScanStatus = ({scanProgress, scanSteps}: scanStatusProps) => {
       <div className="space-y-2">
         <div className="flex justify-between items-center">
           <TypographySmall>Overall Progress</TypographySmall>
-          <TypographySmall>{scanProgress.progress_percent}</TypographySmall>
+          <TypographySmall>{progress_percent}</TypographySmall>
         </div>
-        <Progress value={scanProgress.progress_percent} className="bg-gray-800 h-1"/>
-        <TypographyMonospace>{scanProgress.progress_text}</TypographyMonospace>
+        <Progress value={progress_percent} className="bg-gray-800 h-1"/>
+        <TypographyMonospace>{status}</TypographyMonospace>
       </div>
       {/*Scan Steps*/}
       <div className="space-y-4">
-        {scanSteps.map((step, index) => (
+        {progress.vulnerabilities.map((vuln, index) => (
           <div
-            key={step.label}
+            key={index}
             className={`flex justify-between items-center py-3 ${
               index !== 0 ? "border-t border-gray-700" : ""
             }`}
           >
-            <TypographySmall>{step.label}</TypographySmall>
+            <TypographySmall>{vuln.vulnerability}</TypographySmall>
             <div className="flex items-center gap-2">
-              <div className={`w-2 h-2 bg-${step.color}-500 rounded-full`}/>
+              <div className={`w-2 h-2 bg-${vuln.severity}-500 rounded-full`}/>
               <TypographySmall className={`text-muted-foreground text-sm`}>
-                {step.status}
+                {vuln.severity}
               </TypographySmall>
             </div>
           </div>
