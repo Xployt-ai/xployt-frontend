@@ -1,4 +1,5 @@
 import { useMemo, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { GitBranch, Calendar, ChevronRight, Clock } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Card } from "@/components/ui/card";
@@ -74,15 +75,16 @@ type RepoSummary = {
 
 type RepoType = {
   name: string;
+  scanId: string; // Add scanId for navigation
   issues: ScanResult[];
   summary: RepoSummary;
 };
 
 export default function Reports() {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [severityFilter, setSeverityFilter] = useState("all");
   const [selectedRepo, setSelectedRepo] = useState<RepoType | null>(null);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [scans, setScans] = useState<Scan[]>([]);
   const [scanResults, setScanResults] = useState<Map<string, ScanResult[]>>(new Map());
@@ -91,9 +93,16 @@ export default function Reports() {
   useEffect(() => {
     const fetchScans = async () => {
       try {
-        setLoading(true);
         setError(null);
-        const scansData = await scanEndpoints.listScans();
+        
+        let scansData: Scan[] = [];
+        try {
+          scansData = await scanEndpoints.listScans();
+        } catch (apiError) {
+          console.error("API error fetching scans:", apiError);
+          // Continue with empty array if API fails
+          scansData = [];
+        }
         
         // Always include mock data alongside real data
         const finalScans = [...scansData, ...MOCK_SCANS];
@@ -103,17 +112,20 @@ export default function Reports() {
         const resultsMap = new Map<string, ScanResult[]>();
         
         // Fetch results for real scans
-        await Promise.all(
-          scansData.map(async (scan) => {
-            try {
-              const results = await scanEndpoints.getScanResults(scan.id);
-              resultsMap.set(scan.id, results.length > 0 ? results : []);
-            } catch (err) {
-              console.error(`Failed to fetch results for scan ${scan.id}:`, err);
-              resultsMap.set(scan.id, []);
-            }
-          })
-        );
+        if (scansData.length > 0) {
+          await Promise.allSettled(
+            scansData.map(async (scan) => {
+              try {
+                const results = await scanEndpoints.getScanResults(scan.id);
+                resultsMap.set(scan.id, results.length > 0 ? results : []);
+              } catch (err) {
+                console.error(`Failed to fetch results for scan ${scan.id}:`, err);
+                // Set empty array for failed scans so they don't break the UI
+                resultsMap.set(scan.id, []);
+              }
+            })
+          );
+        }
         
         // Always add mock scan results
         MOCK_SCANS.forEach(scan => {
@@ -133,8 +145,6 @@ export default function Reports() {
         });
         setScanResults(resultsMap);
         setError("Failed to load scan reports. Showing demo data.");
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -143,6 +153,7 @@ export default function Reports() {
 
   const repos = useMemo<RepoType[]>(() => {
     const map = new Map<string, ScanResult[]>();
+    const scanIdMap = new Map<string, string>(); // Track the latest scan_id for each repo
     
     // Group results by repository name from scans
     scans.forEach((scan) => {
@@ -151,6 +162,7 @@ export default function Reports() {
       
       if (!map.has(repoName)) {
         map.set(repoName, []);
+        scanIdMap.set(repoName, scan.id); // Store the first (or latest) scan_id
       }
       map.get(repoName)!.push(...results);
     });
@@ -166,6 +178,7 @@ export default function Reports() {
 
       return {
         name,
+        scanId: scanIdMap.get(name) || "", // Add scanId to the return object
         issues,
         summary: {
           total: issues.length,
@@ -219,16 +232,8 @@ export default function Reports() {
           <p className="text-gray-400">Overview of security scans and vulnerabilities across all repositories</p>
         </div>
 
-        {/* Loading State */}
-        {loading && (
-          <Card className="p-12 text-center bg-background border-0 ">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-500 mx-auto mb-4"></div>
-            <TypographyP className="text-gray-400">Loading scan reports...</TypographyP>
-          </Card>
-        )}
-
         {/* Error State */}
-        {error && !loading && (
+        {error && (
           <Card className="p-12 text-center bg-background border border-red-900">
             <div className="text-red-500 text-5xl mb-4">⚠</div>
             <TypographyH2 className="mb-2 text-red-400">Error Loading Reports</TypographyH2>
@@ -242,9 +247,6 @@ export default function Reports() {
           </Card>
         )}
 
-        {/* Content - Only show when not loading and no error */}
-        {!loading && !error && (
-          <>
         {/* Filters */}
         <div className="mb-8">
           <div className="flex flex-col md:flex-row gap-4">
@@ -523,7 +525,10 @@ export default function Reports() {
               </div>
               
               <div className="flex gap-2">
-                <button className="flex-1 bg-gray-900 hover:bg-gray-800 text-white px-3 py-2 rounded-md transition-colors font-medium text-sm">
+                <button 
+                  onClick={() => navigate(`/securitydashboard/${selectedRepo.scanId}`)}
+                  className="flex-1 bg-gray-900 hover:bg-gray-800 text-white px-3 py-2 rounded-md transition-colors font-medium text-sm"
+                >
                   View All Issues
                 </button>
                 <button className="flex-1 border border-gray-600 hover:bg-background text-white px-3 py-2 rounded-md transition-colors font-medium text-sm">
@@ -532,8 +537,6 @@ export default function Reports() {
               </div>
             </Card>
           </div>
-        )}
-        </>
         )}
       </div>
       
