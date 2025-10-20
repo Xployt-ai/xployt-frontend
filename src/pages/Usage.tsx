@@ -10,8 +10,17 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { UsageLineChart } from '@/components/usage-line-chart.tsx';
 import { format, subDays, isSameDay, parseISO } from 'date-fns';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts';
 
 const TIME_WINDOWS = [
   { label: '7 days', value: 7 },
@@ -156,7 +165,57 @@ export default function Usage() {
             </Button>
           ))}
         </div>
-        <UsageLineChart data={chartData} />
+        
+        {/* Chart Visualization */}
+        <div className="bg-card rounded-lg p-6 border border-border shadow-sm mt-6">
+          <h3 className="text-lg font-semibold mb-4">Usage & Topups Overview</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+              <XAxis 
+                dataKey="date" 
+                stroke="#9ca3af"
+                style={{ fontSize: '12px' }}
+              />
+              <YAxis 
+                stroke="#9ca3af"
+                style={{ fontSize: '12px' }}
+                label={{ value: 'Tokens', angle: -90, position: 'insideLeft', style: { fill: '#9ca3af' } }}
+              />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: '#1f2937', 
+                  border: '1px solid #374151',
+                  borderRadius: '8px',
+                  color: '#fff'
+                }}
+                labelStyle={{ color: '#9ca3af' }}
+              />
+              <Legend 
+                wrapperStyle={{ paddingTop: '20px' }}
+                iconType="line"
+              />
+              <Line 
+                type="monotone" 
+                dataKey="topup" 
+                stroke="#22c55e" 
+                strokeWidth={2}
+                name="Topups"
+                dot={{ fill: '#22c55e', r: 4 }}
+                activeDot={{ r: 6 }}
+              />
+              <Line 
+                type="monotone" 
+                dataKey="usage" 
+                stroke="#ef4444" 
+                strokeWidth={2}
+                name="Usage"
+                dot={{ fill: '#ef4444', r: 4 }}
+                activeDot={{ r: 6 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
         
         {/* Daily Totals Summary */}
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
