@@ -1,46 +1,277 @@
 import { useMemo, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Calendar, ChevronRight, Clock } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { TypographyH2, TypographyP, TypographySmall } from "@/components/ui/typography.tsx";
 import type { ScanResult, Scan } from "@/data/models/scan";
-import { scanEndpoints } from "@/data/network/scan";
+import { scanCollectionEndpoints } from "@/data/network/scan_collection.ts";
+import type { ScanCollection } from "@/data/models/scan_collection.ts";
 
 // Mock data for fallback when API returns empty or fails
 const MOCK_SCAN_RESULTS: ScanResult[] = [
   // Automatisch Repository (demo-scan-1) - All 4 severity levels
-  { id: "1", description: "SQL Injection vulnerability in login endpoint", severity: "Critical", status: "Open", location: { endpoint: "/api/auth/login", line: 45 }, scan_id: "demo-scan-1", created_at: "2024-07-15T10:30:00Z", type: "sast", metadata: {} },
-  { id: "2", description: "Cross-Site Scripting (XSS) in user profile", severity: "Critical", status: "Open", location: { endpoint: "/api/users/profile", line: 128 }, scan_id: "demo-scan-1", created_at: "2024-07-14T14:20:00Z", type: "sast", metadata: {} },
-  { id: "5", description: "CSRF token not validated", severity: "High", status: "Open", location: { endpoint: "/api/payment/process", line: 67 }, scan_id: "demo-scan-1", created_at: "2024-07-16T09:15:00Z", type: "sast", metadata: {} },
-  { id: "9", description: "Vulnerable lodash version detected", severity: "High", status: "Open", location: { endpoint: "package.json", line: 12 }, scan_id: "demo-scan-1", created_at: "2024-07-14T09:30:00Z", type: "dependency", metadata: {} },
-  { id: "11", description: "AWS Access Key exposed in config file", severity: "Medium", status: "Open", location: { endpoint: "config/aws.js", line: 8 }, scan_id: "demo-scan-1", created_at: "2024-07-15T11:45:00Z", type: "secret", metadata: {} },
-  { id: "16", description: "Exposed sensitive port in container", severity: "Medium", status: "Open", location: { endpoint: "docker-compose.yml", line: 34 }, scan_id: "demo-scan-1", created_at: "2024-07-15T16:10:00Z", type: "container", metadata: {} },
-  { id: "8", description: "Missing rate limiting on API endpoints", severity: "Low", status: "Open", location: { endpoint: "/api/search", line: 203 }, scan_id: "demo-scan-1", created_at: "2024-07-11T13:20:00Z", type: "sast", metadata: {} },
-  { id: "17", description: "Deprecated API method usage", severity: "Low", status: "Open", location: { endpoint: "/utils/helpers.js", line: 89 }, scan_id: "demo-scan-1", created_at: "2024-07-15T14:25:00Z", type: "sast", metadata: {} },
-  
+  {
+    id: "1",
+    description: "SQL Injection vulnerability in login endpoint",
+    severity: "Critical",
+    status: "Open",
+    location: {endpoint: "/api/auth/login", line: 45},
+    scan_id: "demo-scan-1",
+    created_at: "2024-07-15T10:30:00Z",
+    type: "sast",
+    metadata: {}
+  },
+  {
+    id: "2",
+    description: "Cross-Site Scripting (XSS) in user profile",
+    severity: "Critical",
+    status: "Open",
+    location: {endpoint: "/api/users/profile", line: 128},
+    scan_id: "demo-scan-1",
+    created_at: "2024-07-14T14:20:00Z",
+    type: "sast",
+    metadata: {}
+  },
+  {
+    id: "5",
+    description: "CSRF token not validated",
+    severity: "High",
+    status: "Open",
+    location: {endpoint: "/api/payment/process", line: 67},
+    scan_id: "demo-scan-1",
+    created_at: "2024-07-16T09:15:00Z",
+    type: "sast",
+    metadata: {}
+  },
+  {
+    id: "9",
+    description: "Vulnerable lodash version detected",
+    severity: "High",
+    status: "Open",
+    location: {endpoint: "package.json", line: 12},
+    scan_id: "demo-scan-1",
+    created_at: "2024-07-14T09:30:00Z",
+    type: "dependency",
+    metadata: {}
+  },
+  {
+    id: "11",
+    description: "AWS Access Key exposed in config file",
+    severity: "Medium",
+    status: "Open",
+    location: {endpoint: "config/aws.js", line: 8},
+    scan_id: "demo-scan-1",
+    created_at: "2024-07-15T11:45:00Z",
+    type: "secret",
+    metadata: {}
+  },
+  {
+    id: "16",
+    description: "Exposed sensitive port in container",
+    severity: "Medium",
+    status: "Open",
+    location: {endpoint: "docker-compose.yml", line: 34},
+    scan_id: "demo-scan-1",
+    created_at: "2024-07-15T16:10:00Z",
+    type: "container",
+    metadata: {}
+  },
+  {
+    id: "8",
+    description: "Missing rate limiting on API endpoints",
+    severity: "Low",
+    status: "Open",
+    location: {endpoint: "/api/search", line: 203},
+    scan_id: "demo-scan-1",
+    created_at: "2024-07-11T13:20:00Z",
+    type: "sast",
+    metadata: {}
+  },
+  {
+    id: "17",
+    description: "Deprecated API method usage",
+    severity: "Low",
+    status: "Open",
+    location: {endpoint: "/utils/helpers.js", line: 89},
+    scan_id: "demo-scan-1",
+    created_at: "2024-07-15T14:25:00Z",
+    type: "sast",
+    metadata: {}
+  },
+
   // Webhook Service (demo-scan-2) - All 4 severity levels
-  { id: "15", description: "Outdated base image with vulnerabilities", severity: "Critical", status: "Open", location: { endpoint: "Dockerfile", line: 1 }, scan_id: "demo-scan-2", created_at: "2024-07-09T08:45:00Z", type: "container", metadata: {} },
-  { id: "7", description: "Insecure direct object reference in file download", severity: "High", status: "Open", location: { endpoint: "/api/files/download", line: 156 }, scan_id: "demo-scan-2", created_at: "2024-07-10T08:45:00Z", type: "sast", metadata: {} },
-  { id: "12", description: "Database password hardcoded in source", severity: "High", status: "Open", location: { endpoint: "db/connection.js", line: 23 }, scan_id: "demo-scan-2", created_at: "2024-07-10T10:15:00Z", type: "secret", metadata: {} },
-  { id: "3", description: "Outdated dependency with known vulnerabilities", severity: "Medium", status: "Resolved", location: { endpoint: "package.json", line: 34 }, scan_id: "demo-scan-2", created_at: "2024-07-07T12:25:00Z", type: "dependency", metadata: {} },
-  { id: "18", description: "Insecure HTTP connection detected", severity: "Medium", status: "Open", location: { endpoint: "/services/api.js", line: 45 }, scan_id: "demo-scan-2", created_at: "2024-07-10T11:30:00Z", type: "sast", metadata: {} },
-  { id: "19", description: "Missing input validation on webhook endpoint", severity: "Low", status: "Open", location: { endpoint: "/api/webhook", line: 78 }, scan_id: "demo-scan-2", created_at: "2024-07-10T13:15:00Z", type: "sast", metadata: {} },
-  
+  {
+    id: "15",
+    description: "Outdated base image with vulnerabilities",
+    severity: "Critical",
+    status: "Open",
+    location: {endpoint: "Dockerfile", line: 1},
+    scan_id: "demo-scan-2",
+    created_at: "2024-07-09T08:45:00Z",
+    type: "container",
+    metadata: {}
+  },
+  {
+    id: "7",
+    description: "Insecure direct object reference in file download",
+    severity: "High",
+    status: "Open",
+    location: {endpoint: "/api/files/download", line: 156},
+    scan_id: "demo-scan-2",
+    created_at: "2024-07-10T08:45:00Z",
+    type: "sast",
+    metadata: {}
+  },
+  {
+    id: "12",
+    description: "Database password hardcoded in source",
+    severity: "High",
+    status: "Open",
+    location: {endpoint: "db/connection.js", line: 23},
+    scan_id: "demo-scan-2",
+    created_at: "2024-07-10T10:15:00Z",
+    type: "secret",
+    metadata: {}
+  },
+  {
+    id: "3",
+    description: "Outdated dependency with known vulnerabilities",
+    severity: "Medium",
+    status: "Resolved",
+    location: {endpoint: "package.json", line: 34},
+    scan_id: "demo-scan-2",
+    created_at: "2024-07-07T12:25:00Z",
+    type: "dependency",
+    metadata: {}
+  },
+  {
+    id: "18",
+    description: "Insecure HTTP connection detected",
+    severity: "Medium",
+    status: "Open",
+    location: {endpoint: "/services/api.js", line: 45},
+    scan_id: "demo-scan-2",
+    created_at: "2024-07-10T11:30:00Z",
+    type: "sast",
+    metadata: {}
+  },
+  {
+    id: "19",
+    description: "Missing input validation on webhook endpoint",
+    severity: "Low",
+    status: "Open",
+    location: {endpoint: "/api/webhook", line: 78},
+    scan_id: "demo-scan-2",
+    created_at: "2024-07-10T13:15:00Z",
+    type: "sast",
+    metadata: {}
+  },
+
   // API Gateway (demo-scan-3) - All 4 severity levels
-  { id: "10", description: "Critical security vulnerability in axios < 0.21.1", severity: "Critical", status: "Open", location: { endpoint: "package.json", line: 18 }, scan_id: "demo-scan-3", created_at: "2024-07-13T14:20:00Z", type: "dependency", metadata: {} },
-  { id: "4", description: "Missing authentication on admin endpoint", severity: "High", status: "Open", location: { endpoint: "/api/admin/users", line: 23 }, scan_id: "demo-scan-3", created_at: "2024-07-12T16:45:00Z", type: "sast", metadata: {} },
-  { id: "14", description: "Running container as root user", severity: "High", status: "Open", location: { endpoint: "Dockerfile", line: 12 }, scan_id: "demo-scan-3", created_at: "2024-07-12T13:20:00Z", type: "container", metadata: {} },
-  { id: "6", description: "Weak password policy implementation", severity: "Medium", status: "Open", location: { endpoint: "/api/auth/register", line: 89 }, scan_id: "demo-scan-3", created_at: "2024-07-13T11:30:00Z", type: "sast", metadata: {} },
-  { id: "13", description: "API key found in environment file", severity: "Medium", status: "Open", location: { endpoint: ".env.example", line: 5 }, scan_id: "demo-scan-3", created_at: "2024-07-12T15:30:00Z", type: "secret", metadata: {} },
-  { id: "20", description: "Logging sensitive data to console", severity: "Low", status: "Open", location: { endpoint: "/middleware/logger.js", line: 34 }, scan_id: "demo-scan-3", created_at: "2024-07-12T17:20:00Z", type: "sast", metadata: {} },
+  {
+    id: "10",
+    description: "Critical security vulnerability in axios < 0.21.1",
+    severity: "Critical",
+    status: "Open",
+    location: {endpoint: "package.json", line: 18},
+    scan_id: "demo-scan-3",
+    created_at: "2024-07-13T14:20:00Z",
+    type: "dependency",
+    metadata: {}
+  },
+  {
+    id: "4",
+    description: "Missing authentication on admin endpoint",
+    severity: "High",
+    status: "Open",
+    location: {endpoint: "/api/admin/users", line: 23},
+    scan_id: "demo-scan-3",
+    created_at: "2024-07-12T16:45:00Z",
+    type: "sast",
+    metadata: {}
+  },
+  {
+    id: "14",
+    description: "Running container as root user",
+    severity: "High",
+    status: "Open",
+    location: {endpoint: "Dockerfile", line: 12},
+    scan_id: "demo-scan-3",
+    created_at: "2024-07-12T13:20:00Z",
+    type: "container",
+    metadata: {}
+  },
+  {
+    id: "6",
+    description: "Weak password policy implementation",
+    severity: "Medium",
+    status: "Open",
+    location: {endpoint: "/api/auth/register", line: 89},
+    scan_id: "demo-scan-3",
+    created_at: "2024-07-13T11:30:00Z",
+    type: "sast",
+    metadata: {}
+  },
+  {
+    id: "13",
+    description: "API key found in environment file",
+    severity: "Medium",
+    status: "Open",
+    location: {endpoint: ".env.example", line: 5},
+    scan_id: "demo-scan-3",
+    created_at: "2024-07-12T15:30:00Z",
+    type: "secret",
+    metadata: {}
+  },
+  {
+    id: "20",
+    description: "Logging sensitive data to console",
+    severity: "Low",
+    status: "Open",
+    location: {endpoint: "/middleware/logger.js", line: 34},
+    scan_id: "demo-scan-3",
+    created_at: "2024-07-12T17:20:00Z",
+    type: "sast",
+    metadata: {}
+  },
 ];
 
 const MOCK_SCANS: Scan[] = [
-  { id: "demo-scan-1", repository_name: "automatisch", scanner_name: "secret_scanner", configurations: {}, progress_percent: 100, progress_text: "Completed", user_id: "demo-user", created_at: "2024-07-15T10:00:00Z", finished_at: "2024-07-15T10:30:00Z" },
-  { id: "demo-scan-2", repository_name: "webhook-service", scanner_name: "secret_scanner", configurations: {}, progress_percent: 100, progress_text: "Completed", user_id: "demo-user", created_at: "2024-07-10T08:00:00Z", finished_at: "2024-07-10T09:00:00Z" },
-  { id: "demo-scan-3", repository_name: "api-gateway", scanner_name: "secret_scanner", configurations: {}, progress_percent: 100, progress_text: "Completed", user_id: "demo-user", created_at: "2024-07-12T16:00:00Z", finished_at: "2024-07-12T17:00:00Z" },
+  {
+    id: "demo-scan-1",
+    repository_name: "automatisch",
+    scanner_name: "secret_scanner",
+    configurations: {},
+    progress_percent: 100,
+    progress_text: "Completed",
+    user_id: "demo-user",
+    created_at: "2024-07-15T10:00:00Z",
+    finished_at: "2024-07-15T10:30:00Z"
+  },
+  {
+    id: "demo-scan-2",
+    repository_name: "webhook-service",
+    scanner_name: "secret_scanner",
+    configurations: {},
+    progress_percent: 100,
+    progress_text: "Completed",
+    user_id: "demo-user",
+    created_at: "2024-07-10T08:00:00Z",
+    finished_at: "2024-07-10T09:00:00Z"
+  },
+  {
+    id: "demo-scan-3",
+    repository_name: "api-gateway",
+    scanner_name: "secret_scanner",
+    configurations: {},
+    progress_percent: 100,
+    progress_text: "Completed",
+    user_id: "demo-user",
+    created_at: "2024-07-12T16:00:00Z",
+    finished_at: "2024-07-12T17:00:00Z"
+  },
 ];
 
 const SEVERITY_COLORS = {
@@ -55,7 +286,7 @@ const formatDate = (dateStr?: string) => {
   const date = new Date(dateStr);
   const now = new Date();
   const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-  
+
   if (diffDays === 0) return "Today";
   if (diffDays === 1) return "Yesterday";
   if (diffDays < 7) return `${diffDays} days ago`;
@@ -86,63 +317,97 @@ export default function Reports() {
   const [severityFilter, setSeverityFilter] = useState("all");
   const [selectedRepo, setSelectedRepo] = useState<RepoType | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [scans, setScans] = useState<Scan[]>([]);
+  const [scans, setScans] = useState<ScanCollection[]>([]);
   const [scanResults, setScanResults] = useState<Map<string, ScanResult[]>>(new Map());
+
+  useParams();
 
   // Fetch all scans on mount
   useEffect(() => {
     const fetchScans = async () => {
       try {
         setError(null);
-        
-        let scansData: Scan[] = [];
+
+        let scansData: ScanCollection[];
         try {
-          scansData = await scanEndpoints.listScans();
+          scansData = await scanCollectionEndpoints.getUserCollections();
         } catch (apiError) {
           console.error("API error fetching scans:", apiError);
           // Continue with empty array if API fails
           scansData = [];
         }
-        
-        // Always include mock data alongside real data
-        const finalScans = [...scansData, ...MOCK_SCANS];
-        setScans(finalScans);
 
-        // Fetch results for each scan
+        // Group collections by repository_name and keep only the latest collection per repository
+        const latestMap = new Map<string, ScanCollection>();
+        scansData.forEach((c) => {
+          const repo = c.repository_name || "Unknown Repository";
+          const existing = latestMap.get(repo);
+          const curTime = c.created_at ? new Date(c.created_at).getTime() : 0;
+          const existingTime = existing && existing.created_at ? new Date(existing.created_at).getTime() : 0;
+          if (!existing || curTime > existingTime) {
+            latestMap.set(repo, c);
+          }
+        });
+
+        const latestScans = Array.from(latestMap.values());
+        // Keep only the latest scan collections per repository
+        setScans(latestScans);
+
+        // Fetch results for each latest collection
         const resultsMap = new Map<string, ScanResult[]>();
-        
-        // Fetch results for real scans
-        if (scansData.length > 0) {
-          await Promise.allSettled(
-            scansData.map(async (scan) => {
-              try {
-                const results = await scanEndpoints.getScanResults(scan.id);
-                resultsMap.set(scan.id, results.length > 0 ? results : []);
-              } catch (err) {
-                console.error(`Failed to fetch results for scan ${scan.id}:`, err);
-                // Set empty array for failed scans so they don't break the UI
-                resultsMap.set(scan.id, []);
+
+        await Promise.allSettled(
+          latestScans.map(async (scan) => {
+            try {
+              // scan.id is the collection_id
+              const res = await scanCollectionEndpoints.getCollectionResults(scan.id);
+
+              // Normalize response shapes. Support:
+              // - array of vulnerabilities
+              // - { vulnerabilities: [] }
+              // - { data: [] }
+              // - { success: true, data: { vulnerabilities: [] } }
+              let payload: any = res;
+              if (payload && typeof payload === 'object' && payload.success && payload.data) {
+                payload = payload.data;
               }
-            })
-          );
-        }
-        
-        // Always add mock scan results
+
+              let vulnerabilities: ScanResult[] = [];
+              if (Array.isArray(payload)) {
+                vulnerabilities = payload as ScanResult[];
+              } else if (payload && Array.isArray(payload.vulnerabilities)) {
+                vulnerabilities = payload.vulnerabilities as ScanResult[];
+              } else if (payload && Array.isArray(payload.data)) {
+                vulnerabilities = payload.data as ScanResult[];
+              } else if (res && Array.isArray((res as any).vulnerabilities)) {
+                vulnerabilities = (res as any).vulnerabilities as ScanResult[];
+              }
+
+              resultsMap.set(scan.id, vulnerabilities || []);
+            } catch (err) {
+              console.error(`Failed to fetch results for collection ${scan.id}:`, err);
+              resultsMap.set(scan.id, []);
+            }
+          })
+        );
+
+        // Always add mock scan results (demo) so the UI has something to show
         MOCK_SCANS.forEach(scan => {
           const mockResults = MOCK_SCAN_RESULTS.filter(r => r.scan_id === scan.id);
           resultsMap.set(scan.id, mockResults);
         });
-        
+
         setScanResults(resultsMap);
       } catch (err) {
         console.error("Failed to fetch scans:", err);
         // Use mock data on error
-        setScans(MOCK_SCANS);
         const resultsMap = new Map<string, ScanResult[]>();
         MOCK_SCANS.forEach(scan => {
           const mockResults = MOCK_SCAN_RESULTS.filter(r => r.scan_id === scan.id);
           resultsMap.set(scan.id, mockResults);
         });
+        // setScans to empty or mock fallback (typed as ScanCollection[])
+        setScans([]);
         setScanResults(resultsMap);
         setError("Failed to load scan reports. Showing demo data.");
       }
@@ -154,12 +419,12 @@ export default function Reports() {
   const repos = useMemo<RepoType[]>(() => {
     const map = new Map<string, ScanResult[]>();
     const scanIdMap = new Map<string, string>(); // Track the latest scan_id for each repo
-    
+
     // Group results by repository name from scans
     scans.forEach((scan) => {
-      const repoName = scan.repository_name;
+      const repoName = scan.repository_name || "Unknown Repository";
       const results = scanResults.get(scan.id) || [];
-      
+
       if (!map.has(repoName)) {
         map.set(repoName, []);
         scanIdMap.set(repoName, scan.id); // Store the first (or latest) scan_id
@@ -168,12 +433,20 @@ export default function Reports() {
     });
 
     return Array.from(map.entries()).map(([name, issues]) => {
-      const critical = issues.filter((i) => i.severity === "Critical").length;
-      const high = issues.filter((i) => i.severity === "High").length;
-      const medium = issues.filter((i) => i.severity === "Medium").length;
-      const low = issues.filter((i) => i.severity === "Low").length;
-      const open = issues.filter((i) => i.status === "Open").length;
-      const resolved = issues.filter((i) => i.status === "Resolved").length;
+      // normalize severity casing and count
+      let critical = 0;
+      let high = 0;
+      let medium = 0;
+      let low = 0;
+      issues.forEach((i) => {
+        const sev = (i.severity || "").toString().trim().toLowerCase();
+        if (sev === "critical") critical += 1;
+        else if (sev === "high") high += 1;
+        else if (sev === "medium") medium += 1;
+        else if (sev === "low") low += 1;
+      });
+      const open = issues.filter((i) => (i.status || "").toString().toLowerCase() === "open").length;
+      const resolved = issues.filter((i) => (i.status || "").toString().toLowerCase() === "resolved").length;
       const lastScan = issues[0]?.created_at;
 
       return {
@@ -197,7 +470,7 @@ export default function Reports() {
   const filteredRepos = useMemo(() => {
     return repos.filter(repo => {
       const matchesSearch = repo.name.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesSeverity = severityFilter === "all" || 
+      const matchesSeverity = severityFilter === "all" ||
         (severityFilter === "critical" && repo.summary.critical > 0) ||
         (severityFilter === "high" && repo.summary.high > 0) ||
         (severityFilter === "medium" && repo.summary.medium > 0) ||
@@ -215,12 +488,26 @@ export default function Reports() {
   };
 
   const getSeverityData = (summary: RepoSummary) => {
-    const data = [];
-    if (summary.critical > 0) data.push({ name: 'Critical', value: summary.critical, color: SEVERITY_COLORS.Critical });
-    if (summary.high > 0) data.push({ name: 'High', value: summary.high, color: SEVERITY_COLORS.High });
-    if (summary.medium > 0) data.push({ name: 'Medium', value: summary.medium, color: SEVERITY_COLORS.Medium });
-    if (summary.low > 0) data.push({ name: 'Low', value: summary.low, color: SEVERITY_COLORS.Low });
-    return data;
+    // Return all severities in a fixed order with numeric values so charts render consistently
+    const critical = Number(summary.critical || 0);
+    const high = Number(summary.high || 0);
+    const medium = Number(summary.medium || 0);
+    const low = Number(summary.low || 0);
+
+    const data = [
+      { name: 'Critical', value: critical, color: SEVERITY_COLORS.Critical },
+      { name: 'High', value: high, color: SEVERITY_COLORS.High },
+      { name: 'Medium', value: medium, color: SEVERITY_COLORS.Medium },
+      { name: 'Low', value: low, color: SEVERITY_COLORS.Low },
+    ];
+
+    const total = critical + high + medium + low;
+    // If there are no vulnerabilities, return a single 'Clean' slice so the chart renders.
+    if (total === 0) {
+      return [{ name: 'Clean', value: 1, color: SEVERITY_COLORS.Low }];
+    }
+
+    return data; // return all severities (values may be zero)
   };
 
   return (
@@ -238,7 +525,7 @@ export default function Reports() {
             <div className="text-red-500 text-5xl mb-4">⚠</div>
             <TypographyH2 className="mb-2 text-red-400">Error Loading Reports</TypographyH2>
             <TypographyP className="text-gray-400 mb-4">{error}</TypographyP>
-            <button 
+            <button
               onClick={() => window.location.reload()}
               className="px-6 py-3 bg-background hover:bg-gray-800 text-white rounded-md transition-colors font-medium"
             >
@@ -259,7 +546,7 @@ export default function Reports() {
                 className="border-gray-600  text-white"
               />
             </div>
-            
+
             <select
               value={severityFilter}
               onChange={(e) => setSeverityFilter(e.target.value)}
@@ -279,12 +566,12 @@ export default function Reports() {
           {filteredRepos.map((repo, index) => {
             const highestSeverity = getHighestSeverity(repo.summary);
             const severityData = getSeverityData(repo.summary);
-            
+
             return (
               <Card
                 key={repo.name}
                 className="p-6 bg-background border border-gray-600 hover:border-primary/50 transition-all duration-300 cursor-pointer hover:shadow-2xl hover:shadow-primary/10 hover:scale-[1.03] group animate-fade-in"
-                style={{ animationDelay: `${index * 150}ms` }}
+                style={{animationDelay: `${index * 150}ms`}}
                 onClick={() => setSelectedRepo(repo)}
               >
                 {/* Header */}
@@ -292,21 +579,25 @@ export default function Reports() {
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       <div className="flex-shrink-0 w-5 h-5">
-                        <img 
-                          src="/FolderNoBG.png" 
-                          alt="Repository folder icon" 
+                        <img
+                          src="/FolderNoBG.png"
+                          alt="Repository folder icon"
                           className="w-full h-full object-contain group-hover:scale-110 transition-all duration-300"
-                          onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                          }}
                         />
                       </div>
-                      <h2 className="text-2xl font-semibold group-hover:text-primary transition-colors duration-300">{repo.name}</h2>
+                      <h2
+                        className="text-2xl font-semibold group-hover:text-primary transition-colors duration-300">{repo.name}</h2>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-gray-400">
-                      <Calendar className="w-3 h-3 group-hover:scale-110 transition-transform duration-300" />
+                      <Calendar className="w-3 h-3 group-hover:scale-110 transition-transform duration-300"/>
                       <span>{formatDate(repo.summary.lastScan)}</span>
                     </div>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-gray-500 group-hover:text-primary group-hover:translate-x-2 transition-all duration-300" />
+                  <ChevronRight
+                    className="w-5 h-5 text-gray-500 group-hover:text-primary group-hover:translate-x-2 transition-all duration-300"/>
                 </div>
 
                 {/* Severity Chart with Legend */}
@@ -314,7 +605,7 @@ export default function Reports() {
                   <div className="text-xs font-medium text-gray-400 mb-3 text-center">SEVERITY DISTRIBUTION</div>
                   <div className="flex items-center gap-6">
                     {/* Pie Chart - Left Side */}
-                    <div className="flex-shrink-0" style={{ width: '180px', height: '180px' }}>
+                    <div className="flex-shrink-0" style={{width: '180px', height: '180px'}}>
                       <ResponsiveContainer width="100%" height="100%">
                         <PieChart>
                           <Pie
@@ -327,7 +618,7 @@ export default function Reports() {
                             dataKey="value"
                           >
                             {severityData.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={entry.color} />
+                              <Cell key={`cell-${index}`} fill={entry.color}/>
                             ))}
                           </Pie>
                         </PieChart>
@@ -337,42 +628,55 @@ export default function Reports() {
                     {/* Legend Details - Right Side */}
                     <div className="flex-1 space-y-3">
                       <div className="text-center mb-4">
-                        <div className="text-3xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{repo.summary.total}</div>
+                        <div
+                          className="text-3xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{repo.summary.total}</div>
                         <TypographySmall className="text-gray-400">Total Issues</TypographySmall>
                       </div>
-                      
+
                       <div className="space-y-2">
                         {repo.summary.critical > 0 && (
-                          <div className="flex items-center justify-between p-2 rounded bg-red-950/20 border border-red-900/30 hover:bg-red-950/40 hover:border-red-800/50 transition-all duration-300 hover:scale-105">
+                          <div
+                            className="flex items-center justify-between p-2 rounded bg-red-950/20 border border-red-900/30 hover:bg-red-950/40 hover:border-red-800/50 transition-all duration-300 hover:scale-105">
                             <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 rounded-full group-hover:scale-125 transition-transform duration-300" style={{ backgroundColor: SEVERITY_COLORS.Critical }} />
+                              <div
+                                className="w-3 h-3 rounded-full group-hover:scale-125 transition-transform duration-300"
+                                style={{backgroundColor: SEVERITY_COLORS.Critical}}/>
                               <span className="text-sm font-medium text-gray-200">Critical</span>
                             </div>
                             <span className="text-lg font-bold text-white">{repo.summary.critical}</span>
                           </div>
                         )}
                         {repo.summary.high > 0 && (
-                          <div className="flex items-center justify-between p-2 rounded bg-orange-950/20 border border-orange-900/30 hover:bg-orange-950/40 hover:border-orange-800/50 transition-all duration-300 hover:scale-105">
+                          <div
+                            className="flex items-center justify-between p-2 rounded bg-orange-950/20 border border-orange-900/30 hover:bg-orange-950/40 hover:border-orange-800/50 transition-all duration-300 hover:scale-105">
                             <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 rounded-full group-hover:scale-125 transition-transform duration-300" style={{ backgroundColor: SEVERITY_COLORS.High }} />
+                              <div
+                                className="w-3 h-3 rounded-full group-hover:scale-125 transition-transform duration-300"
+                                style={{backgroundColor: SEVERITY_COLORS.High}}/>
                               <span className="text-sm font-medium text-gray-200">High</span>
                             </div>
                             <span className="text-lg font-bold text-white">{repo.summary.high}</span>
                           </div>
                         )}
                         {repo.summary.medium > 0 && (
-                          <div className="flex items-center justify-between p-2 rounded bg-yellow-950/20 border border-yellow-900/30 hover:bg-yellow-950/40 hover:border-yellow-800/50 transition-all duration-300 hover:scale-105">
+                          <div
+                            className="flex items-center justify-between p-2 rounded bg-yellow-950/20 border border-yellow-900/30 hover:bg-yellow-950/40 hover:border-yellow-800/50 transition-all duration-300 hover:scale-105">
                             <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 rounded-full group-hover:scale-125 transition-transform duration-300" style={{ backgroundColor: SEVERITY_COLORS.Medium }} />
+                              <div
+                                className="w-3 h-3 rounded-full group-hover:scale-125 transition-transform duration-300"
+                                style={{backgroundColor: SEVERITY_COLORS.Medium}}/>
                               <span className="text-sm font-medium text-gray-200">Medium</span>
                             </div>
                             <span className="text-lg font-bold text-white">{repo.summary.medium}</span>
                           </div>
                         )}
                         {repo.summary.low > 0 && (
-                          <div className="flex items-center justify-between p-2 rounded bg-gray-900/30 border border-gray-700/30 hover:bg-gray-900/60 hover:border-gray-600/50 transition-all duration-300 hover:scale-105">
+                          <div
+                            className="flex items-center justify-between p-2 rounded bg-gray-900/30 border border-gray-700/30 hover:bg-gray-900/60 hover:border-gray-600/50 transition-all duration-300 hover:scale-105">
                             <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 rounded-full group-hover:scale-125 transition-transform duration-300" style={{ backgroundColor: SEVERITY_COLORS.Low }} />
+                              <div
+                                className="w-3 h-3 rounded-full group-hover:scale-125 transition-transform duration-300"
+                                style={{backgroundColor: SEVERITY_COLORS.Low}}/>
                               <span className="text-sm font-medium text-gray-200">Low</span>
                             </div>
                             <span className="text-lg font-bold text-white">{repo.summary.low}</span>
@@ -386,12 +690,12 @@ export default function Reports() {
                 {/* Status Badge */}
                 <div className="flex items-center justify-between pt-3 border-t border-gray-600">
                   <div className="flex items-center gap-2 text-xs text-gray-400">
-                    <Clock className="w-3 h-3" />
+                    <Clock className="w-3 h-3"/>
                     <span>Needs Review</span>
                   </div>
-                    <div className="px-3 py-1 bg-gray-800 text-white text-xs font-medium rounded-full">
-                      {highestSeverity}
-                    </div>
+                  <div className="px-3 py-1 bg-gray-800 text-white text-xs font-medium rounded-full">
+                    {highestSeverity}
+                  </div>
                 </div>
               </Card>
             );
@@ -401,11 +705,13 @@ export default function Reports() {
         {filteredRepos.length === 0 && (
           <Card className="p-12 text-center bg-background border border-gray-600">
             <div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center">
-              <img 
-                src="/FolderNoBG.png" 
-                alt="Repository folder icon" 
+              <img
+                src="/FolderNoBG.png"
+                alt="Repository folder icon"
                 className="w-full h-full object-contain opacity-50"
-                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                }}
               />
             </div>
             <TypographyH2 className="mb-2 text-gray-300">No repositories found</TypographyH2>
@@ -415,11 +721,11 @@ export default function Reports() {
 
         {/* Repository Detail Modal */}
         {selectedRepo && (
-          <div 
+          <div
             className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50"
             onClick={() => setSelectedRepo(null)}
           >
-            <Card 
+            <Card
               className="p-6 max-w-3xl w-full bg-background border border-gray-600 max-h-[90vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
@@ -427,21 +733,23 @@ export default function Reports() {
                 <div>
                   <div className="flex items-center gap-3 mb-1">
                     <div className="flex-shrink-0 w-5 h-5">
-                      <img 
-                        src="/FolderNoBG.png" 
-                        alt="Repository folder icon" 
+                      <img
+                        src="/FolderNoBG.png"
+                        alt="Repository folder icon"
                         className="w-full h-full object-contain"
-                        onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                        }}
                       />
                     </div>
                     <TypographyH2 className="mb-0 text-2xl">{selectedRepo.name}</TypographyH2>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-gray-400">
-                    <Calendar className="w-4 h-4" />
+                    <Calendar className="w-4 h-4"/>
                     <span>Last scanned {formatDate(selectedRepo.summary.lastScan)}</span>
                   </div>
                 </div>
-                <button 
+                <button
                   onClick={() => setSelectedRepo(null)}
                   className="text-gray-400 hover:text-white text-2xl"
                 >
@@ -452,10 +760,11 @@ export default function Reports() {
               {/* Charts in Modal */}
               <div className="mb-4">
                 <Card className="p-4 bg-background border border-gray-600">
-                  <TypographySmall className="font-semibold text-gray-300 mb-3 text-xs">SEVERITY DISTRIBUTION</TypographySmall>
+                  <TypographySmall className="font-semibold text-gray-300 mb-3 text-xs">SEVERITY
+                    DISTRIBUTION</TypographySmall>
                   <div className="flex items-center gap-6">
                     {/* Pie Chart - Left Side */}
-                    <div className="flex-shrink-0" style={{ width: '200px', height: '200px' }}>
+                    <div className="flex-shrink-0" style={{width: '200px', height: '200px'}}>
                       <ResponsiveContainer width="100%" height="100%">
                         <PieChart>
                           <Pie
@@ -468,7 +777,7 @@ export default function Reports() {
                             dataKey="value"
                           >
                             {getSeverityData(selectedRepo.summary).map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={entry.color} />
+                              <Cell key={`cell-${index}`} fill={entry.color}/>
                             ))}
                           </Pie>
                         </PieChart>
@@ -481,39 +790,47 @@ export default function Reports() {
                         <div className="text-4xl font-bold text-white">{selectedRepo.summary.total}</div>
                         <TypographyP className="text-gray-400 text-sm mt-1">Total Vulnerabilities</TypographyP>
                       </div>
-                      
+
                       <div className="space-y-2">
                         {selectedRepo.summary.critical > 0 && (
-                          <div className="flex items-center justify-between p-2 rounded bg-red-950/30 border border-red-900/50 hover:bg-red-950/50 hover:border-red-800/70 hover:scale-105 transition-all duration-300 cursor-pointer">
+                          <div
+                            className="flex items-center justify-between p-2 rounded bg-red-950/30 border border-red-900/50 hover:bg-red-950/50 hover:border-red-800/70 hover:scale-105 transition-all duration-300 cursor-pointer">
                             <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 rounded-full hover:scale-125 transition-transform duration-300" style={{ backgroundColor: SEVERITY_COLORS.Critical }} />
+                              <div className="w-3 h-3 rounded-full hover:scale-125 transition-transform duration-300"
+                                   style={{backgroundColor: SEVERITY_COLORS.Critical}}/>
                               <span className="text-sm font-semibold text-gray-100">Critical</span>
                             </div>
                             <span className="text-xl font-bold text-white">{selectedRepo.summary.critical}</span>
                           </div>
                         )}
                         {selectedRepo.summary.high > 0 && (
-                          <div className="flex items-center justify-between p-2 rounded bg-orange-950/30 border border-orange-900/50 hover:bg-orange-950/50 hover:border-orange-800/70 hover:scale-105 transition-all duration-300 cursor-pointer">
+                          <div
+                            className="flex items-center justify-between p-2 rounded bg-orange-950/30 border border-orange-900/50 hover:bg-orange-950/50 hover:border-orange-800/70 hover:scale-105 transition-all duration-300 cursor-pointer">
                             <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 rounded-full hover:scale-125 transition-transform duration-300" style={{ backgroundColor: SEVERITY_COLORS.High }} />
+                              <div className="w-3 h-3 rounded-full hover:scale-125 transition-transform duration-300"
+                                   style={{backgroundColor: SEVERITY_COLORS.High}}/>
                               <span className="text-sm font-semibold text-gray-100">High</span>
                             </div>
                             <span className="text-xl font-bold text-white">{selectedRepo.summary.high}</span>
                           </div>
                         )}
                         {selectedRepo.summary.medium > 0 && (
-                          <div className="flex items-center justify-between p-2 rounded bg-yellow-950/30 border border-yellow-900/50 hover:bg-yellow-950/50 hover:border-yellow-800/70 hover:scale-105 transition-all duration-300 cursor-pointer">
+                          <div
+                            className="flex items-center justify-between p-2 rounded bg-yellow-950/30 border border-yellow-900/50 hover:bg-yellow-950/50 hover:border-yellow-800/70 hover:scale-105 transition-all duration-300 cursor-pointer">
                             <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 rounded-full hover:scale-125 transition-transform duration-300" style={{ backgroundColor: SEVERITY_COLORS.Medium }} />
+                              <div className="w-3 h-3 rounded-full hover:scale-125 transition-transform duration-300"
+                                   style={{backgroundColor: SEVERITY_COLORS.Medium}}/>
                               <span className="text-sm font-semibold text-gray-100">Medium</span>
                             </div>
                             <span className="text-xl font-bold text-white">{selectedRepo.summary.medium}</span>
                           </div>
                         )}
                         {selectedRepo.summary.low > 0 && (
-                          <div className="flex items-center justify-between p-2 rounded bg-gray-900/40 border border-gray-700/50 hover:bg-gray-900/70 hover:border-gray-600/70 hover:scale-105 transition-all duration-300 cursor-pointer">
+                          <div
+                            className="flex items-center justify-between p-2 rounded bg-gray-900/40 border border-gray-700/50 hover:bg-gray-900/70 hover:border-gray-600/70 hover:scale-105 transition-all duration-300 cursor-pointer">
                             <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 rounded-full hover:scale-125 transition-transform duration-300" style={{ backgroundColor: SEVERITY_COLORS.Low }} />
+                              <div className="w-3 h-3 rounded-full hover:scale-125 transition-transform duration-300"
+                                   style={{backgroundColor: SEVERITY_COLORS.Low}}/>
                               <span className="text-sm font-semibold text-gray-100">Low</span>
                             </div>
                             <span className="text-xl font-bold text-white">{selectedRepo.summary.low}</span>
@@ -527,32 +844,37 @@ export default function Reports() {
 
               {/* Summary Stats */}
               <div className="grid grid-cols-4 gap-3 mb-4">
-                <Card className="p-3 bg-background border border-gray-600 hover:border-primary/50 hover:scale-105 transition-all duration-300">
+                <Card
+                  className="p-3 bg-background border border-gray-600 hover:border-primary/50 hover:scale-105 transition-all duration-300">
                   <TypographySmall className="text-gray-400 mb-0.5 text-xs">Total Issues</TypographySmall>
                   <div className="text-xl font-bold text-white">{selectedRepo.summary.total}</div>
                 </Card>
-                <Card className="p-3 bg-background border border-gray-600 hover:border-red-500/50 hover:scale-105 transition-all duration-300">
+                <Card
+                  className="p-3 bg-background border border-gray-600 hover:border-red-500/50 hover:scale-105 transition-all duration-300">
                   <TypographySmall className="text-gray-400 mb-0.5 text-xs">Critical</TypographySmall>
                   <div className="text-xl font-bold text-white">{selectedRepo.summary.critical}</div>
                 </Card>
-                <Card className="p-3 bg-background border border-gray-600 hover:border-blue-500/50 hover:scale-105 transition-all duration-300">
+                <Card
+                  className="p-3 bg-background border border-gray-600 hover:border-blue-500/50 hover:scale-105 transition-all duration-300">
                   <TypographySmall className="text-gray-400 mb-0.5 text-xs">Open</TypographySmall>
                   <div className="text-xl font-bold text-white">{selectedRepo.summary.open}</div>
                 </Card>
-                <Card className="p-3 bg-background border border-gray-600 hover:border-green-500/50 hover:scale-105 transition-all duration-300">
+                <Card
+                  className="p-3 bg-background border border-gray-600 hover:border-green-500/50 hover:scale-105 transition-all duration-300">
                   <TypographySmall className="text-gray-400 mb-0.5 text-xs">Resolved</TypographySmall>
                   <div className="text-xl font-bold text-white">{selectedRepo.summary.resolved}</div>
                 </Card>
               </div>
-              
+
               <div className="flex gap-2">
-                <button 
+                <button
                   onClick={() => navigate(`/securitydashboard/${selectedRepo.scanId}`)}
                   className="flex-1 bg-gray-900 hover:bg-primary hover:scale-105 text-white px-3 py-2 rounded-md transition-all duration-300 font-medium text-sm"
                 >
                   View All Issues
                 </button>
-                <button className="flex-1 border border-gray-600 hover:bg-background hover:border-primary/50 hover:scale-105 text-white px-3 py-2 rounded-md transition-all duration-300 font-medium text-sm">
+                <button
+                  className="flex-1 border border-gray-600 hover:bg-background hover:border-primary/50 hover:scale-105 text-white px-3 py-2 rounded-md transition-all duration-300 font-medium text-sm">
                   Download Report
                 </button>
               </div>
@@ -560,7 +882,7 @@ export default function Reports() {
           </div>
         )}
       </div>
-      
+
       <style>{`
         @keyframes fade-in {
           from {
@@ -581,3 +903,4 @@ export default function Reports() {
     </div>
   );
 }
+

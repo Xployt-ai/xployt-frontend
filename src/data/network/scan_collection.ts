@@ -1,17 +1,17 @@
 import NETWORK from "@/data/network/index.ts";
 import type { ScanProgressAggStream } from "@/data/models/scan.ts";
-import type { CollectionResults, ScanCollection } from "@/data/models/scan_collection.ts";
+import type { CollectionResults, ScanCollection, ScanCollectionId } from "@/data/models/scan_collection.ts";
 
 export const scanCollectionEndpoints = {
   BASE_URL: '/scan-collections',
 
-  async createScanCollection(repository_name: string, scanners: string[]): Promise<ScanCollection> {
+  async createScanCollection(repository_name: string, scanners: string[]): Promise<ScanCollectionId> {
     const response = await NETWORK.post(`${this.BASE_URL}`, {
       repository_name,
       scanners,
-      configurations: {"mock": true}
+      // configurations: {"mock": true}
     })
-    return response.data as ScanCollection;
+    return response.data as ScanCollectionId;
   },
 
   getScanProgressSSE(scan_id: string, onUpdate?: (progress: ScanProgressAggStream) => void): EventSource {
@@ -71,5 +71,10 @@ export const scanCollectionEndpoints = {
   async getCollectionResults(collection_id: string): Promise<CollectionResults>{
     const response = await NETWORK.get(`${this.BASE_URL}/${collection_id}/results`);
     return response.data as CollectionResults;
+  },
+
+  async getUserCollections(): Promise<ScanCollection[]>{
+    const response = await NETWORK.get(`${this.BASE_URL}`);
+    return response.data as ScanCollection[];
   }
 }
