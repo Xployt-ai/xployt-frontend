@@ -26,6 +26,7 @@ import Help from "@/pages/Help.tsx";
 import Statement from "@/pages/Statement.tsx";
 import Topup from '@/pages/topup.tsx';
 import Settings from '@/pages/Settings.tsx';
+import Reports from '@/pages/Reports.tsx';
 
 
 function App() {
@@ -57,6 +58,7 @@ function App() {
             <Route path="/help" element={<Help />} />
             <Route path="/topup" element={<Topup />} />
              <Route path="/settings" element={<Settings />} />
+             <Route path="/reports" element={<Reports />} />
 
         </Routes>
       </main>

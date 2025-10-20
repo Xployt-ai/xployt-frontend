@@ -10,7 +10,6 @@ const RepoImport = () => {
   const { user } = useAuth();
   const [repositories, setRepositories] = useState<Repo[]>([]);
   const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   // ✅ new states for pagination & filters
@@ -19,7 +18,6 @@ const RepoImport = () => {
   const [filterType, setFilterType] = useState("all"); // 'all' | 'public' | 'private'
 
   const fetchRepositories = async () => {
-    setLoading(true);
     setError(null);
     try {
       const repos = await repoEndpoints.getRepos();
@@ -27,8 +25,6 @@ const RepoImport = () => {
     } catch (err: any) {
       console.error("Error fetching repositories:", err);
       setError(err?.message || "Failed to load repositories");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -85,7 +81,7 @@ const RepoImport = () => {
             <SearchBar  
             placeholder="Search repositories"
             onChange={e => setSearch(e.target.value)}
-            isLoading={loading}
+            isLoading={false}
           />
           </div>
           <select
@@ -99,7 +95,6 @@ const RepoImport = () => {
           </select>
         </div>
 
-        {loading && <div className="text-gray-400">Loading repositories...</div>}
         {error && (
           <div className="text-red-400">
             <div className="font-bold">Failed to load repositories</div>
@@ -110,7 +105,7 @@ const RepoImport = () => {
           </div>
         )}
 
-        {!loading && !error && filteredRepos.length === 0 && (
+        {!error && filteredRepos.length === 0 && (
           <div className="text-gray-500">No repositories found in your GitHub account.</div>
         )}
 

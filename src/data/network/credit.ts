@@ -5,21 +5,21 @@ import type { CreditTopup ,CreditBalance ,CreditTransaction} from '../models/cre
 export const creditEndpoints = {
 
   async creditTopup(amount: number): Promise<CreditTopup> {
-    const response = await NETWORK.post('/credit/topup', { amount });
+    const response = await NETWORK.post('/credits/topup', { amount });
     return response.data;
   },
 
   async getCreditBalance(): Promise<CreditBalance> {
-    const response = await NETWORK.get('/credit/balance');
+    const response = await NETWORK.get('/credits/balance');
     return response.data;
   },
 
   async getCreditTransactions(): Promise<CreditTransaction[]> {
-    const response = await NETWORK.get('/credit/transactions');
+    const response = await NETWORK.get('/credits/transactions');
     return response.data;
   },
-  async getCreditTransactionsById(transaction_id: string): Promise<CreditTransaction[]> {
-    const response = await NETWORK.get(`/credit/transactions/${transaction_id}`);
+  async getCreditTransactionsById(transaction_id: string): Promise<CreditTransaction> {
+    const response = await NETWORK.get(`/credits/transactions/${transaction_id}`);
     return response.data;
   },
 
