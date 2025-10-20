@@ -27,11 +27,12 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 font-sans flex">
-      <aside className="w-72 bg-slate-950 border-r border-slate-800 p-6">
+    <div className="justify-center  items-center flex bg-background ">
+    <div className="min-h-[80vh]  w-6xl font-sans flex   justify-center">
+      <aside className="w-72  border-r border-slate-800 p-6 flex flex-col">
         <div className="mb-8">
           <h1 className="text-white text-2xl font-bold">Settings</h1>
-          <div className="flex items-center gap-3 mt-4 p-3 bg-slate-800/50 rounded-lg">
+          <div className="flex items-center gap-3 mt-4 p-3  rounded-lg">
             <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold">
               {user.avatar}
             </div>
@@ -42,30 +43,26 @@ export default function SettingsPage() {
           </div>
         </div>
 
-        <nav className="space-y-1">
+        <nav className="space-y-1 flex-grow">
+          
           <NavItem icon={<User size={18} />} label="Profile" active={activeSection === 'profile'} onClick={() => setActiveSection('profile')} />
           <NavItem icon={<CreditCard size={18} />} label="Subscription" active={activeSection === 'subscription'} onClick={() => setActiveSection('subscription')} />
           <NavItem icon={<Activity size={18} />} label="Usage" active={activeSection === 'usage'} onClick={() => setActiveSection('usage')} />
-          <NavItem icon={<Bell size={18} />} label="Notifications" active={activeSection === 'notifications'} onClick={() => setActiveSection('notifications')} />
-          <NavItem icon={<Shield size={18} />} label="Security" active={activeSection === 'security'} onClick={() => setActiveSection('security')} />
-          <NavItem icon={<Key size={18} />} label="API Keys" active={activeSection === 'api'} onClick={() => setActiveSection('api')} />
 
-          <div className="pt-4 mt-4 border-t border-slate-800">
-            <NavItem icon={<Trash2 size={18} />} label="Delete Account" active={activeSection === 'delete'} onClick={() => setActiveSection('delete')} danger />
-            <NavItem icon={<LogOut size={18} />} label="Sign Out" onClick={() => alert('Signing out...')} />
-          </div>
         </nav>
+
+        <div className="pt-4 mt-4 border-t border-slate-800">
+          <NavItem icon={<Trash2 size={18} />} label="Delete Account" active={activeSection === 'delete'} onClick={() => setActiveSection('delete')} danger />
+          <NavItem icon={<LogOut size={18} />} label="Sign Out" onClick={() => alert('Signing out...')} />
+        </div>
       </aside>
 
       <main className="flex-1 overflow-y-auto p-8">
         {activeSection === "profile" && <ProfileSection user={user} />}
         {activeSection === "subscription" && <Bill />}
         {activeSection === "usage" && <Usage />}
-        {activeSection === "notifications" && <div className="text-white">Notifications Section</div>}
-        {activeSection === "security" && <div className="text-white">Security Section</div>}
-        {activeSection === "api" && <div className="text-white">API Keys Section</div>}
-        {activeSection === "delete" && <div className="text-red-400">Delete Account Section</div>}
       </main>
+    </div>
     </div>
   );
 }
@@ -103,7 +100,7 @@ interface ProfileSectionProps {
 }
 function ProfileSection({ user }: ProfileSectionProps) {
   return (
-    <div className="max-w-3xl">
+    <div className="max-w-3xl min-h-[80vh]">
       <h2 className="text-white text-3xl font-bold mb-8">Profile</h2>
       <div className="mb-8 pb-8 border-b border-slate-800 last:border-0">
         <label className="block text-gray-400 text-sm mb-2">Name</label>

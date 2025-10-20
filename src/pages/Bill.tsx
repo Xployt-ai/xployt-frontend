@@ -3,12 +3,10 @@ import BillCard from "@/features/BillCard";
 
 const Bill = () => {
   return (
-    <div className='bg-black min-h-screen'>
-      <div className="w-full max-w-4xl mx-auto py-6 px-0 bg-transparent min-h-screen">
-        <div className="flex flex-col items-start justify-start ">
-          <TypographyH1>
-            Billing
-          </TypographyH1>
+    
+      <div className="w-full max-w-4xl bg-transparent min-h-[80vh]">
+              <h2 className="text-white text-3xl font-bold mb-8">Subscription</h2>
+    <div>
           <TypographyP className="text-slate-400">
             Manage your Xployt.ai subscription and payment history.
           </TypographyP>
@@ -17,7 +15,6 @@ const Bill = () => {
         <BillCard />
 
       </div>
-    </div>
   );
 };
 

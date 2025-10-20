@@ -33,7 +33,7 @@ type Transaction = { id: number; type: string; amount: number; date: string };
 export default function Usage() {
   const [windowDays, setWindowDays] = useState<number>(7);
   const [page, setPage] = useState(1);
-  const pageSize = 10;
+  const pageSize = 5;
 
   // live balance & transactions
   const [tokens, setTokens] = useState<number | null>(null);
@@ -120,7 +120,7 @@ export default function Usage() {
   };
 
   return (
-    <div className="px-4 py-8 max-w-5xl mx-auto space-y-10">
+    <div className="px-4 py-8 max-w-5xl mx-auto space-y-10 min-h-[80vh]">
       {/* Usage History */}
       <section>
         <h2 className="text-xl font-semibold mb-4">Usage history</h2>
@@ -178,24 +178,7 @@ export default function Usage() {
         </div>
       </section>
 
-      <Separator />
 
-      {/* Token Top-up */}
-      <section>
-        <h2 className="text-xl font-semibold mb-4">Token top-up</h2>
-        <p className="mb-2">Current tokens: <span className="font-medium">{tokens ?? '...'}</span></p>
-        <div className="flex gap-2 items-center">
-          <input
-            type="number"
-            min={1}
-            value={topupAmount}
-            onChange={(e) => setTopupAmount(e.target.value === '' ? '' : Number(e.target.value))}
-            className="w-32 p-2 rounded-md bg-background border border-input text-foreground"
-            placeholder="Amount"
-          />
-          <Button onClick={handleTopup}>Top-up</Button>
-        </div>
-      </section>
     </div>
   );
 }

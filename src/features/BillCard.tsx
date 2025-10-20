@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/Button";
 
 const BillCard = () => {
   return (
-    <Card className="flex flex-row max-w-full justify-between">
+    <Card className="flex flex-row max-w-full justify-between p-4">
       <div >
       <TypographyH1>Standard Plan</TypographyH1>
       <TypographyH4 className="text-green-500">$5/month</TypographyH4>
