@@ -76,5 +76,10 @@ export const scanCollectionEndpoints = {
   async getUserCollections(): Promise<ScanCollection[]>{
     const response = await NETWORK.get(`${this.BASE_URL}`);
     return response.data as ScanCollection[];
+  },
+
+  async getScanCollection(collection_id: string): Promise<ScanCollection>{
+    const response = await NETWORK.get(`${this.BASE_URL}/${collection_id}`);
+    return response.data as ScanCollection;
   }
 }
