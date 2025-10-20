@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { User, CreditCard, Activity, DollarSign, Trash2, LogOut } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { User, CreditCard, Activity, DollarSign } from 'lucide-react';
 import Bill from "./Bill";
 import Usage from './Usage';
 import Topup from './topup';
 import Profile from './Profile';
+import PaymentModal from '@/components/PaymentModal';
 import { authEndpoints } from '@/data/network/auth';
+import { subscriptionEndpoints } from '@/data/network/subscription';
 import type { User as UserModel } from '@/data/models/user';
 
 interface UserType {
@@ -18,46 +20,88 @@ interface UserType {
 }
 
 export default function SettingsPage() {
-  const [activeSection, setActiveSection] = useState<'profile' | 'subscription' | 'usage' | 'topup' | 'notifications' | 'security' | 'api' | 'delete'>('profile');
+  const [activeSection, setActiveSection] = useState<'profile' | 'subscription' | 'usage' | 'topup'>('profile');
   const [user, setUser] = useState<UserType>({
     name: 'Loading...',
     username: 'loading',
     email: 'loading@example.com',
     avatar: 'L',
-    plan: 'Pro',
+    plan: 'Free',
     scansUsed: 47,
     scansLimit: 100
   });
 
+  const [paymentOpen, setPaymentOpen] = useState(false);
+  const [topupRefreshKey, setTopupRefreshKey] = useState(0);
+  const [billRefreshKey, setBillRefreshKey] = useState(0);
+
+  // Trigger refresh when topup section becomes active
   useEffect(() => {
-    const fetchUser = async () => {
+    if (activeSection === 'topup') {
+      setTopupRefreshKey(prev => prev + 1);
+    }
+  }, [activeSection]);
+
+  const fetchUser = async () => {
+    try {
+      const userData: UserModel = await authEndpoints.getCurrentUser();
+
+
+      let plan = 'Free';
       try {
-        const userData: UserModel = await authEndpoints.getCurrentUser();
-        setUser({
-          name: userData.username || 'User',
-          username: userData.username || 'user',
-          email: userData.email || 'user@example.com',
-          avatar: userData.username ? userData.username.charAt(0).toUpperCase() : 'U',
-          plan: 'Pro', // Default value, can be fetched from another endpoint if available
-          scansUsed: 47, // Default value, can be fetched from another endpoint if available
-          scansLimit: 100 // Default value, can be fetched from another endpoint if available
-        });
-      } catch (error) {
-        console.error('Failed to fetch user data:', error);
-        // Keep default values on error
-        setUser({
-          name: 'Madushika Marapana',
-          username: 'madushika02',
-          email: 'madushika@example.com',
-          avatar: 'M',
-          plan: 'Pro',
-          scansUsed: 47,
-          scansLimit: 100
-        });
+        const pro = await subscriptionEndpoints.getProStatus();
+        if (pro) {
+          if (pro.is_pro && !pro.is_cancelled) plan = 'Pro';
+          else if (pro.is_cancelled) plan = 'Expired';
+        }
+      } catch (subErr) {
+        console.warn('Could not fetch subscription status, defaulting to Free', subErr);
       }
-    };
+
+      setUser({
+        name: userData.username || 'User',
+        username: userData.username || 'user',
+        email: userData.email || 'user@example.com',
+        avatar: userData.username ? userData.username.charAt(0).toUpperCase() : 'U',
+        plan,
+        scansUsed: 47, // Default value, can be fetched from another endpoint if available
+        scansLimit: 100 // Default value, can be fetched from another endpoint if available
+      });
+    } catch (error) {
+      console.error('Failed to fetch user data:', error);
+      // Keep default values on error
+      setUser({
+        name: 'Madushika Marapana',
+        username: 'madushika02',
+        email: 'madushika@example.com',
+        avatar: 'M',
+        plan: 'Free',
+        scansUsed: 47,
+        scansLimit: 100
+      });
+    }
+  };
+
+  useEffect(() => {
     fetchUser();
   }, []);
+
+  const handleSubscriptionChange = async () => {
+    // Keep user on subscription tab and refresh data
+    // Small delay to ensure backend has processed the change
+    await new Promise(resolve => setTimeout(resolve, 500));
+    await fetchUser();
+    setBillRefreshKey(prev => prev + 1);
+  };
+
+  const handlePaymentSuccess = async () => {
+    // Keep user on subscription tab and refresh data
+    setPaymentOpen(false);
+    // Small delay to ensure backend has processed the payment
+    await new Promise(resolve => setTimeout(resolve, 500));
+    await fetchUser();
+    setBillRefreshKey(prev => prev + 1);
+  };
 
   return (
     <div className="justify-center  items-center flex bg-background ">
@@ -77,25 +121,32 @@ export default function SettingsPage() {
         </div>
 
         <nav className="space-y-1 flex-grow">
-          
           <NavItem icon={<User size={18} />} label="Profile" active={activeSection === 'profile'} onClick={() => setActiveSection('profile')} />
           <NavItem icon={<CreditCard size={18} />} label="Subscription" active={activeSection === 'subscription'} onClick={() => setActiveSection('subscription')} />
           <NavItem icon={<Activity size={18} />} label="Usage" active={activeSection === 'usage'} onClick={() => setActiveSection('usage')} />
           <NavItem icon={<DollarSign size={18} />} label="Top Up" active={activeSection === 'topup'} onClick={() => setActiveSection('topup')} />
-
         </nav>
-
-        <div className="pt-4 mt-4 border-t border-gray-600">
-          <NavItem icon={<Trash2 size={18} />} label="Delete Account" active={activeSection === 'delete'} onClick={() => setActiveSection('delete')} danger />
-          <NavItem icon={<LogOut size={18} />} label="Sign Out" onClick={() => alert('Signing out...')} />
-        </div>
       </aside>
 
       <main className="flex-1 overflow-y-auto p-8">
         {activeSection === "profile" && <Profile user={user} />}
-        {activeSection === "subscription" && <Bill />}
+        {activeSection === "subscription" && (
+          <div>
+            <Bill 
+              key={`${user.plan}-${billRefreshKey}`}
+              plan={user.plan} 
+              onUpgrade={() => setPaymentOpen(true)}
+              onStatusChange={handleSubscriptionChange}
+            />
+            <PaymentModal 
+              open={paymentOpen} 
+              onClose={() => setPaymentOpen(false)} 
+              onSuccess={handlePaymentSuccess} 
+            />
+          </div>
+        )}
         {activeSection === "usage" && <Usage />}
-        {activeSection === "topup" && <Topup />}
+        {activeSection === "topup" && <Topup key={topupRefreshKey} />}
       </main>
     </div>
     </div>

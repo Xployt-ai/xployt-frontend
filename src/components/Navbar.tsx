@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/contexts/AuthContext';
-import logo from '../../public/logo.png';
 import { useNavigate, useLocation } from "react-router-dom";
 
 interface NavItem {
@@ -64,7 +63,7 @@ const Navbar: React.FC = () => {
         <div className="mx-auto flex max-w-screen-xl items-center justify-between">
           <div className="flex items-center space-x-8">
             <a href="/">
-              <img src={logo} alt="logo" height={40} className="h-10 w-auto" />
+              <img src="/logo.png" alt="logo" height={40} className="h-10 w-auto" />
             </a>
           </div>
           <div className="flex items-center space-x-4">
@@ -81,7 +80,7 @@ const Navbar: React.FC = () => {
         {/* Left Section */}
         <div className="flex items-center space-x-8">
           <div className="flex items-center space-x-2 cursor-pointer" onClick={() => navigate("/")}>
-            <img src={logo} alt="logo" height={40} className="h-10 w-auto" />
+            <img src="/logo.png" alt="logo" height={40} className="h-10 w-auto" />
           </div>
           <div className="hidden md:flex text-muted-foreground items-center space-x-6 ml-2 text-sm font-medium">
             {(loggedIn ? userNavItems : guestNavItems).map((navItem) => (
