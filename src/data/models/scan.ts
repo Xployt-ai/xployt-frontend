@@ -53,6 +53,14 @@ export interface ScanResult {
   status?: string;
 }
 
+export interface ScanProgressAggStream {
+  collection: {
+    status: string,
+    progress_percent: number
+  };
+  vulnerabilities: Vulnerability[]
+}
+
 // "type": "string",
 //   "severity": "string",
 //   "description": "string",
@@ -77,7 +85,7 @@ export interface newScanProps {
   env_variables?: Array<{ key: string; value: string }>;
 }
 
-export interface ScanFinding{
+export interface ScanFinding {
   severity: string;
   finding: string;
   url: string;
@@ -102,13 +110,15 @@ export interface ScanIndicator {
 ////////////////// New Vulnerability Interface /////////////////////////
 
 export interface Vulnerability {
-  vuln: string;
+  id?: string;
+  scan_id?: string;
+  status?: string;
   relative_file_path: string;
-  line: number[];
+  line: number | number[];
   description: string;
   vulnerability: string;
-  severity: number;
-  confidence_level: number; 
+  severity: string;
+  confidence_level: number;
 }
 
 export interface RepoData {

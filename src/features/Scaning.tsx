@@ -63,7 +63,7 @@ const ScanDashboard = () => {
       try {
         if (!scan_id) return;
 
-        const data = await scanEndpoints.getScanProgress(scan_id);
+        const data = await scanEndpoints.getScanProgressSSE(scan_id);
         setScanProgress(data);
 
         if (data.progress_percent >= 100) {

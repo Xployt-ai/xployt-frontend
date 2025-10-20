@@ -1,3 +1,4 @@
+import type { Vulnerability } from "@/data/models/scan.ts";
 
 export interface ScanCollection {
   collection_id: string;
@@ -13,3 +14,9 @@ export interface ScanCollection {
 //   "message": "Scan collection started",
 //   "timestamp": "2025-10-18T10:00:00Z"
 // }
+
+export interface CollectionResults {
+  collection_id: string;
+  vulnerabilities: Vulnerability[];
+}
+

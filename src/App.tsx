@@ -47,7 +47,7 @@ function App() {
           <Route path="/issuedetail/:issueId" element={<IssueDetail />} />
           <Route path="/scanning/:collection_id" element={<ScanningPage />} />
           <Route path="/bill" element={<Bill />} />
-          <Route path="/securitydashboard/:scan_id" element={<SecurityDashboardPage />} />
+          <Route path="/securitydashboard/:collection_id" element={<SecurityDashboardPage />} />
           <Route path="/callback" element={<GitHubCallback />} />
           <Route path="/usage" element={<Usage />} />
           <Route path="/codeviewer" element={<CodeViewer />} />
