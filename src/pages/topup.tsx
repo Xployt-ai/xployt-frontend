@@ -7,18 +7,39 @@ export default function TopUpAccount() {
   const [tokens, setTokens] = useState<number | null>(null);
 
   // Fetch current token balance
+  const fetchBalance = async () => {
+    try {
+      const balanceData = await creditEndpoints.getCreditBalance();
+      setTokens(balanceData.balance);
+    } catch (error) {
+      console.error('Failed to fetch credit balance:', error);
+      // fallback
+      setTokens(0);
+    }
+  };
+
   useEffect(() => {
-    const fetchBalance = async () => {
-      try {
-        const balanceData = await creditEndpoints.getCreditBalance();
-        setTokens(balanceData.balance);
-      } catch (error) {
-        console.error('Failed to fetch credit balance:', error);
-        // fallback
-        setTokens(250);
-      }
-    };
     fetchBalance();
+  }, []);
+
+  // Listen for credit updates from topup events
+  useEffect(() => {
+    const onCreditsUpdated = () => {
+      fetchBalance();
+    };
+
+    window.addEventListener('credits:updated', onCreditsUpdated as EventListener);
+    
+    // Listen for cross-tab storage changes
+    const onStorage = (ev: StorageEvent) => {
+      if (ev.key === 'credits:updated_at') fetchBalance();
+    };
+    window.addEventListener('storage', onStorage);
+
+    return () => {
+      window.removeEventListener('credits:updated', onCreditsUpdated as EventListener);
+      window.removeEventListener('storage', onStorage);
+    };
   }, []);
 
   const handleTopupSuccess = (newBalance: number) => {
