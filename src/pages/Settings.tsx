@@ -20,7 +20,14 @@ interface UserType {
 }
 
 export default function SettingsPage() {
-  const [activeSection, setActiveSection] = useState<'profile' | 'subscription' | 'usage' | 'topup'>('profile');
+  // Initialize activeSection from localStorage or default to 'profile'
+  const [activeSection, setActiveSection] = useState<'profile' | 'subscription' | 'usage' | 'topup'>(() => {
+    const saved = localStorage.getItem('settings_active_tab');
+    if (saved && ['profile', 'subscription', 'usage', 'topup'].includes(saved)) {
+      return saved as 'profile' | 'subscription' | 'usage' | 'topup';
+    }
+    return 'profile';
+  });
   const [user, setUser] = useState<UserType>({
     name: 'Loading...',
     username: 'loading',
@@ -34,6 +41,11 @@ export default function SettingsPage() {
   const [paymentOpen, setPaymentOpen] = useState(false);
   const [topupRefreshKey, setTopupRefreshKey] = useState(0);
   const [billRefreshKey, setBillRefreshKey] = useState(0);
+
+  // Save active section to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('settings_active_tab', activeSection);
+  }, [activeSection]);
 
   // Trigger refresh when topup section becomes active
   useEffect(() => {
@@ -79,20 +91,30 @@ export default function SettingsPage() {
   }, []);
 
   const handleSubscriptionChange = async () => {
-    // Keep user on subscription tab and refresh data
+    // Save current active section before refresh
+    localStorage.setItem('settings_active_tab', activeSection);
+    
     // Small delay to ensure backend has processed the change
     await new Promise(resolve => setTimeout(resolve, 500));
     await fetchUser();
     setBillRefreshKey(prev => prev + 1);
+    
+    // Refresh the page to ensure all data is updated
+    window.location.reload();
   };
 
   const handlePaymentSuccess = async () => {
-    // Keep user on subscription tab and refresh data
+    // Save current active section before refresh
+    localStorage.setItem('settings_active_tab', activeSection);
+    
     setPaymentOpen(false);
     // Small delay to ensure backend has processed the payment
     await new Promise(resolve => setTimeout(resolve, 500));
     await fetchUser();
     setBillRefreshKey(prev => prev + 1);
+    
+    // Refresh the page to ensure all data is updated
+    window.location.reload();
   };
 
   return (
