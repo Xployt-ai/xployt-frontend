@@ -207,6 +207,7 @@ const Home = () => {
           <PricingCard
             plan="BASIC"
             price="FREE"
+            tokens="500 Tokens"
             features={["Real-time Threat Monitoring", "Community support", "Limited scans per month"]}
             buttonText="Get Started"
           />

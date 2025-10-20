@@ -532,7 +532,7 @@ body, .home-root {
   border-radius: 32px;
   color: #fff;
   font-size: 2.2rem;
-  font-weight: 800;
+  font-weight: 500;
   padding: 0.7rem 3.5rem;
   margin-right: 0.5rem;
   box-shadow: 0 0 24px 0 rgba(120,120,140,0.18);
@@ -545,6 +545,32 @@ body, .home-root {
   color: #b3b8c5;
   font-size: 1.1rem;
   font-weight: 500;
+}
+.pricing-tokens {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  margin-top: -1rem;
+}
+.pricing-tokens-badge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0.5rem 1.5rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  letter-spacing: 0.05em;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  }
+  50% {
+    box-shadow: 0 4px 25px rgba(102, 126, 234, 0.6);
+  }
 }
 .pricing-features {
   list-style: none;
