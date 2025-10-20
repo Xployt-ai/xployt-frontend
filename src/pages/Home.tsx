@@ -5,7 +5,7 @@ import FeatureCard from "@/components/FeatureCard.tsx";
 import PricingCard from "@/components/PricingCard.tsx";
 import { useAuth } from "@/contexts/AuthContext.tsx";
 
-// Feature list
+
 const features = [
   {
     title: "AI-Powered Vulnerability Detection",
@@ -23,7 +23,7 @@ const features = [
     title: "Dependency Vulnerability Detection",
     desc: "Detects vulnerable packages and suggests secure alternatives"
   },
-  // Dummy features for demonstration
+  
   {
     title: "Automated Code Review",
     desc: "Instantly reviews your code for best practices and security compliance."
@@ -50,7 +50,7 @@ const features = [
   }
 ];
 
-const DOT_COUNT = 4; // Number of dots to show
+const DOT_COUNT = 4; 
 
 const Home = () => {
   const navigate = useNavigate();
