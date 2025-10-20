@@ -163,7 +163,7 @@ const Home = () => {
           <p className="about-desc">
             Whether you're a solo developer or building your next startup, we make app security simple, smart, and seamless.
           </p>
-          <button className="about-btn">
+          <button className="about-btn" onClick={() => navigate("/about")}>
             Read More
           </button>
         </div>
