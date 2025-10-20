@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { TypographyP, TypographyMuted, TypographySmall } from "@/components/ui/typography.tsx";
 import { cn } from "@/lib/utils.ts";
 import type { Vulnerability } from "@/data/models/scan.ts";
 
@@ -27,34 +26,34 @@ function getStatusColor(status: string) {
     case "In Progress":
       return "text-blue-400";
     default:
-      return "text-gray-400";
+      return "text-muted-foreground";
   }
 }
 
 export default function IssuesTable({ items }: { items: Vulnerability[] }) {
   return (
-    <div className="bg-background rounded-lg overflow-hidden">
-      <div className="bg-gray-700 px-4 py-3 grid grid-cols-4 gap-4 text-sm font-medium text-gray-300">
-        <TypographySmall>Issue</TypographySmall>
-        <TypographySmall>Severity</TypographySmall>
-        <TypographySmall>File</TypographySmall>
-        <TypographySmall>Status</TypographySmall>
+    <div className="bg-background rounded-lg border overflow-hidden">
+      <div className="bg-muted/50 px-4 py-3 grid grid-cols-4 gap-4 text-sm font-medium">
+        <small className="text-sm font-medium">Issue</small>
+        <small className="text-sm font-medium">Severity</small>
+        <small className="text-sm font-medium">File</small>
+        <small className="text-sm font-medium">Status</small>
       </div>
 
       {items.length === 0 ? (
-        <div className="px-4 py-8 text-center text-gray-400">No issues found matching your filters</div>
+        <div className="px-4 py-8 text-center text-muted-foreground">No issues found matching your filters</div>
       ) : (
         items.map((issue) => (
           <Link key={issue.id} to={`/issuedetail/${issue.id}`} className="block">
-            <div className="px-4 py-3 grid grid-cols-4 gap-4 text-sm border-t border-gray-700 hover:bg-gray-900 cursor-pointer transition-colors">
-              <TypographyP className="hover:text-blue-400">{issue.description}</TypographyP>
+            <div className="px-4 py-3 grid grid-cols-4 gap-4 text-sm border-t hover:bg-muted/50 cursor-pointer transition-colors">
+              <p className="leading-7 hover:text-primary transition-colors">{issue.description}</p>
               <div>
                 <span className={cn("px-2 py-1 rounded text-xs font-medium", getSeverityColor(issue.severity))}>
                   {issue.severity}
                 </span>
               </div>
-              <TypographyMuted className="truncate text-xs">{issue.relative_file_path + " : " + issue.line || "Unknown File"}</TypographyMuted>
-              <TypographySmall className={getStatusColor(issue.status ? issue.status : "Open")}>{issue.status ? issue.status : "Open"}</TypographySmall>
+              <span className="text-sm text-muted-foreground truncate text-xs">{issue.relative_file_path + " : " + issue.line || "Unknown File"}</span>
+              <small className={cn("text-sm font-medium", getStatusColor(issue.status ? issue.status : "Open"))}>{issue.status ? issue.status : "Open"}</small>
             </div>
           </Link>
         ))

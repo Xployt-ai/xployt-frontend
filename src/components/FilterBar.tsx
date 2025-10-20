@@ -1,5 +1,3 @@
-import { TypographySmall } from "@/components/ui/typography.tsx";
-
 export default function FilterBar(props: {
   searchTerm: string;
   setSearchTerm: (s: string) => void;
@@ -23,13 +21,13 @@ export default function FilterBar(props: {
           placeholder="Search issues..."
           value={props.searchTerm}
           onChange={(e) => props.setSearchTerm(e.target.value)}
-          className="px-4 py-2 bg-background border rounded flex-1 min-w-[200px]"
+          className="px-4 py-2 bg-background border border-input rounded-md flex-1 min-w-[200px]"
         />
 
         <select
           value={props.selectedSeverity}
           onChange={(e) => props.setSelectedSeverity(e.target.value)}
-          className="px-4 py-2 bg-background border rounded "
+          className="px-4 py-2 bg-background border border-input rounded-md"
         >
           <option value="All">All Severities</option>
           <option value="Critical">Critical</option>
@@ -41,7 +39,7 @@ export default function FilterBar(props: {
         <select
           value={props.selectedStatus}
           onChange={(e) => props.setSelectedStatus(e.target.value)}
-          className="px-4 py-2 bg-background border rounded"
+          className="px-4 py-2 bg-background border border-input rounded-md"
         >
           <option value="All">All Statuses</option>
           <option value="Open">Open</option>
@@ -52,7 +50,7 @@ export default function FilterBar(props: {
         <select
           value={props.sortBy}
           onChange={(e) => props.setSortBy(e.target.value as any)}
-          className="px-4 py-2 bg-background border rounded"
+          className="px-4 py-2 bg-background border border-input rounded-md"
         >
           <option value="severity">Sort by Severity</option>
           <option value="status">Sort by Status</option>
@@ -60,15 +58,15 @@ export default function FilterBar(props: {
         </select>
 
         {props.hasActiveFilters && (
-          <button onClick={props.clearFilters} className="px-4 py-2 border rounded hover:bg-gray-700">
+          <button onClick={props.clearFilters} className="px-4 py-2 border border-input rounded-md hover:bg-accent hover:text-accent-foreground transition-colors">
             Clear Filters
           </button>
         )}
       </div>
 
-      <TypographySmall className="text-gray-400">
+      <small className="text-sm font-medium text-muted-foreground">
         Showing {props.firstIndex + 1}-{props.lastIndex} of {props.total} issues
-      </TypographySmall>
+      </small>
     </div>
   );
 }

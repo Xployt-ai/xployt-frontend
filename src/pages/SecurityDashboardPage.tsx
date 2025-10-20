@@ -1,4 +1,3 @@
-import { TypographyH1, TypographyH2, TypographyH3, TypographyMuted } from "@/components/ui/typography.tsx";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { Vulnerability } from "@/data/models/scan.ts";
@@ -127,29 +126,24 @@ const SecurityDashboardPage = () => {
     !!searchTerm || selectedSeverity !== "All" || selectedStatus !== "All";
 
   return (
-    <div className="p-8">
-      <div className="max-w-6xl mx-auto">
-        <TypographyH1 className="mb-8">
+    <div className="min-h-screen bg-background p-8">
+      <div className="max-w-4xl mx-auto">
+        <h1 className=" text-white text-4xl font-bold mb-8">
           {collection.repository_name ? `${collection.repository_name} Security Overview` : "Project Security Overview"}
-        </TypographyH1>
+        </h1>
 
         <ProjectDetailsCard repo={collection.repository_name}/>
 
         <div className="mb-8">
-          <TypographyH2>Issues</TypographyH2>
-          <TypographyMuted className="mb-6 block">
+          <h2 className="pb-2 text-white text-2xl font-semibold">Issues</h2>
+          <p className="text-sm text-muted-foreground mb-6">
             View and manage all security issues across your organization.
-          </TypographyMuted>
-
-          {/*<div className="mb-6">*/}
-          {/*  <TypographyH3>Security Posture Score</TypographyH3>*/}
-          {/*  <TypographyH2 className="text-gray-400">75/100</TypographyH2>*/}
-          {/*</div>*/}
+          </p>
 
           <SummaryGrid counts={counts}/>
 
           <div>
-            <TypographyH3 className="mb-4">Recent Issues</TypographyH3>
+            <h3 className="scroll-m-20 text-2xl font-semibold  mb-4">Recent Issues</h3>
 
             <FilterBar
               searchTerm={searchTerm}
