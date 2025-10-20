@@ -3,6 +3,7 @@ import "./Home.css";
 import { useState } from "react";
 import FeatureCard from "@/components/FeatureCard.tsx";
 import PricingCard from "@/components/PricingCard.tsx";
+import { useAuth } from "@/contexts/AuthContext.tsx";
 
 // Feature list
 const features = [
@@ -53,7 +54,18 @@ const DOT_COUNT = 4; // Number of dots to show
 
 const Home = () => {
   const navigate = useNavigate();
+  const { user, login } = useAuth();
   const [active, setActive] = useState(0);
+
+  const handleStartScan = () => {
+    if (user) {
+      // If user is already logged in, go to repo import
+      navigate("/repo-import");
+    } else {
+      // If not logged in, trigger GitHub OAuth login
+      login();
+    }
+  };
 
   const getDotActive = (dotIdx: number) => {
     // Map dot index to feature index
@@ -85,7 +97,7 @@ const Home = () => {
             <p className="hero-desc">Our AI-powered platform analyzes your MERN stack applications for security vulnerabilities providing actionable insights and automated fixes.</p>
             <button
               className="hero-btn"
-              onClick={() => navigate("/login")}
+              onClick={handleStartScan}
             >
               Start Free Scan
             </button>
