@@ -18,8 +18,14 @@ export default function CodeViewer({
   language,
   errors = [],
 }: CodeViewerProps) {
+  // ensure we use a Prism-supported language for highlighting and UI
+  const safeLang = Prism.languages[language] ? language : 'javascript';
   const highlighted = useMemo(() => {
-    const html = Prism.highlight(code, Prism.languages[language], language);
+    // ensure code is a string (Prism expects a string)
+    const codeStr = typeof code === 'string' ? code : JSON.stringify(code, null, 2);
+    // ensure language is available in Prism, fallback to javascript
+    const lang = safeLang;
+    const html = Prism.highlight(codeStr, Prism.languages[lang], lang);
 
     const lines = html.split("\n").map((line, index) => {
       const lineNumber = index + 1;
@@ -39,12 +45,7 @@ export default function CodeViewer({
 
  return (
   <div className=" text-sm rounded-lg shadow-lg overflow-auto h-full min-h-0">
-    {/* Language label */}
-    <div className="px-3 py-1 text-xs font-semibold text-neutral-300 bg-neutral-800 border-b border-neutral-700 rounded-t-lg">
-      {language.charAt(0).toUpperCase() + language.slice(1)}
-    </div>
-
-    <pre className={`language-${language}`}>
+    <pre className={`language-${safeLang}`}>
       <code
         dangerouslySetInnerHTML={{ __html: highlighted }}
       />
@@ -94,4 +95,4 @@ export default function CodeViewer({
   </div>
 );
 
-} 
+}

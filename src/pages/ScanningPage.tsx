@@ -43,6 +43,7 @@ const ScanningPage = () => {
     }
     try {
       if (collection_id){
+        console.log("hehehehehhe stream")
         const source = scanCollectionEndpoints.getScanProgressSSE(collection_id, handleProgressUpdate)
         return () => {
           console.log("Component unmounted — closing SSE connection.");

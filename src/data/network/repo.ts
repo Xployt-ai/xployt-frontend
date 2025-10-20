@@ -1,10 +1,8 @@
 import NETWORK from './index';
 import type {
   Repo,
-  LinkRepoRequest,
-  LinkRepoResponse,
   CloneRepoResponse,
-  PullRepoResponse
+  PullRepoResponse, FileNode
 } from '../models/repo';
 
 export const repoEndpoints = {
@@ -49,6 +47,20 @@ export const repoEndpoints = {
       throw new Error('Validation Error: Invalid repository name');
     }
     
+    return response.data;
+  },
+
+  async getFileTree(repo_name: string): Promise<FileNode | FileNode[]> {
+    const response = await NETWORK.get(`/repositories/${repo_name}/tree`);
+    return response.data;
+  },
+
+  async getFile(repo_name: string, path: string): Promise<string> {
+  //   "/{repo_name:path}/file"
+    const response = await NETWORK.post(`/repositories/file`, {
+      repo_name,
+      path
+    });
     return response.data;
   }
 };
