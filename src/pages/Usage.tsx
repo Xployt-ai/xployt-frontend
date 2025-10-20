@@ -33,35 +33,46 @@ export default function Usage() {
     const dateObj = subDays(new Date(), windowDays - 1 - idx);
     const dateStr = format(dateObj, 'MM/dd');
     
+    // Calculate tokens RECEIVED (positive amounts: topup, pro_monthly, credit)
     const topupValue = transactions
-      .filter(
-        (tx: CreditTransaction) =>
-          (tx.transaction_type.toLowerCase() === 'topup' || tx.transaction_type.toLowerCase() === 'pro_monthly') && 
-          isSameDay(parseISO(tx.created_at), dateObj)
-      )
-      .reduce((sum: number, tx: CreditTransaction) => sum + Math.abs(tx.amount), 0);
+      .filter((tx: CreditTransaction) => {
+        const txDate = parseISO(tx.created_at);
+        const txType = tx.transaction_type.toLowerCase();
+        return isSameDay(txDate, dateObj) && 
+               (txType === 'topup' || txType === 'pro_monthly' || txType === 'credit') &&
+               Number(tx.amount) > 0;
+      })
+      .reduce((sum: number, tx: CreditTransaction) => sum + Number(tx.amount), 0);
     
+    // Calculate tokens SPENT (negative amounts or debit transactions)
     const usageValue = transactions
-      .filter(
-        (tx: CreditTransaction) =>
-          tx.transaction_type.toLowerCase() === 'debit' && 
-          isSameDay(parseISO(tx.created_at), dateObj)
-      )
-      .reduce((sum: number, tx: CreditTransaction) => sum + Math.abs(tx.amount), 0);
+      .filter((tx: CreditTransaction) => {
+        const txDate = parseISO(tx.created_at);
+        const txType = tx.transaction_type.toLowerCase();
+        return isSameDay(txDate, dateObj) && 
+               (txType === 'debit' || Number(tx.amount) < 0);
+      })
+      .reduce((sum: number, tx: CreditTransaction) => sum + Math.abs(Number(tx.amount)), 0);
     
     return {
       date: dateStr,
-      topup: topupValue,
-      usage: usageValue,
+      topup: Number(topupValue),
+      usage: Number(usageValue),
     };
   });
+
+  // Debug: Log chart data
+  useEffect(() => {
+    console.log('Chart Data:', chartData);
+    console.log('Transactions:', transactions);
+  }, [transactions, windowDays]);
 
   // fetch current balance once
   useEffect(() => {
     const fetchBalance = async () => {
       try {
         const balanceData = await creditEndpoints.getCreditBalance();
-        setTokens(balanceData.balance);
+        setTokens(Number(balanceData.balance));
       } catch (error) {
         console.error('Failed to fetch credit balance:', error);
         // fallback
@@ -69,6 +80,19 @@ export default function Usage() {
       }
     };
     fetchBalance();
+
+    // Listen for credit updates from other components
+    const handleCreditUpdate = () => {
+      fetchBalance();
+    };
+
+    window.addEventListener('credits:updated', handleCreditUpdate);
+    window.addEventListener('storage', handleCreditUpdate);
+
+    return () => {
+      window.removeEventListener('credits:updated', handleCreditUpdate);
+      window.removeEventListener('storage', handleCreditUpdate);
+    };
   }, []);
 
   // fetch transactions from API
@@ -84,6 +108,19 @@ export default function Usage() {
       }
     };
     fetchTx();
+
+    // Listen for credit updates to refresh transactions
+    const handleCreditUpdate = () => {
+      fetchTx();
+    };
+
+    window.addEventListener('credits:updated', handleCreditUpdate);
+    window.addEventListener('storage', handleCreditUpdate);
+
+    return () => {
+      window.removeEventListener('credits:updated', handleCreditUpdate);
+      window.removeEventListener('storage', handleCreditUpdate);
+    };
   }, []);
 
   // pagination logic
@@ -120,6 +157,60 @@ export default function Usage() {
           ))}
         </div>
         <UsageLineChart data={chartData} />
+        
+        {/* Daily Totals Summary */}
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-green-400 mb-1">Total Tokens Received</p>
+                <p className="text-2xl font-bold text-green-500">
+                  {chartData.reduce((sum, day) => sum + day.topup, 0).toLocaleString()} TKN
+                </p>
+              </div>
+              <div className="text-green-500 text-3xl">↑</div>
+            </div>
+            <p className="text-xs text-muted-foreground mt-2">
+              Last {windowDays} days
+            </p>
+          </div>
+          
+          <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-red-400 mb-1">Total Tokens Spent</p>
+                <p className="text-2xl font-bold text-red-500">
+                  {chartData.reduce((sum, day) => sum + day.usage, 0).toLocaleString()} TKN
+                </p>
+              </div>
+              <div className="text-red-500 text-3xl">↓</div>
+            </div>
+            <p className="text-xs text-muted-foreground mt-2">
+              Last {windowDays} days
+            </p>
+          </div>
+        </div>
+        
+        {/* Net Change */}
+        <div className="mt-4 bg-slate-800/50 border border-slate-700 rounded-lg p-4">
+          <div className="flex items-center justify-between">
+            <p className="text-sm text-muted-foreground">Net Change</p>
+            <p className={`text-xl font-bold ${
+              (chartData.reduce((sum, day) => sum + day.topup, 0) - 
+               chartData.reduce((sum, day) => sum + day.usage, 0)) >= 0
+                ? 'text-green-500'
+                : 'text-red-500'
+            }`}>
+              {(chartData.reduce((sum, day) => sum + day.topup, 0) - 
+                chartData.reduce((sum, day) => sum + day.usage, 0)) >= 0 ? '+' : ''}
+              {(chartData.reduce((sum, day) => sum + day.topup, 0) - 
+                chartData.reduce((sum, day) => sum + day.usage, 0)).toLocaleString()} TKN
+            </p>
+          </div>
+          <p className="text-xs text-muted-foreground mt-1">
+            Over the last {windowDays} days
+          </p>
+        </div>
       </section>
 
       {/* Transaction History */}
@@ -151,11 +242,11 @@ export default function Usage() {
                 </TableCell>
                 <TableCell className="text-white">{tx.description || '-'}</TableCell>
                 <TableCell className={`text-right font-semibold ${
-                  tx.transaction_type.toLowerCase() === 'topup' || tx.transaction_type.toLowerCase() === 'pro_monthly' 
+                  Number(tx.amount) > 0 
                     ? 'text-green-500' 
                     : 'text-red-500'
                 }`}>
-                  {tx.transaction_type.toLowerCase() === 'credit' ? '-' : '+'}{Math.abs(tx.amount)}
+                  {Number(tx.amount) > 0 ? '+' : ''}{Number(tx.amount)}
                 </TableCell>
               </TableRow>
             ))}

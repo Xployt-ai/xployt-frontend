@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { creditEndpoints } from '@/data/network/credit';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { CheckCircle2, XCircle } from 'lucide-react';
 
 interface TopupCardProps {
   onTopupSuccess?: (newBalance: number) => void;
@@ -8,6 +10,9 @@ interface TopupCardProps {
 export default function TopupCard({ onTopupSuccess }: TopupCardProps) {
   const [amount, setAmount] = useState('1.00');
   const [isLoading, setIsLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const currency = 'USD';
 
   const exchangeRates = {
@@ -21,8 +26,17 @@ export default function TopupCard({ onTopupSuccess }: TopupCardProps) {
     
     setIsLoading(true);
     try {
-      console.log('Initiating top-up for amount:', parseFloat(amount));
-      const topupData = await creditEndpoints.creditTopup(parseFloat(amount));
+      const dollarAmount = parseFloat(amount);
+      const tokenAmountToAdd = dollarAmount * exchangeRates.USD; // Convert to tokens
+      
+      console.log('Initiating top-up for:', {
+        dollarAmount: dollarAmount,
+        tokenAmount: tokenAmountToAdd,
+        exchangeRate: exchangeRates.USD
+      });
+      
+      // Send token amount to backend (not dollar amount)
+      const topupData = await creditEndpoints.creditTopup(tokenAmountToAdd);
       console.log('Top-up response:', topupData);
       
       // Update with the new balance from response
@@ -42,18 +56,68 @@ export default function TopupCard({ onTopupSuccess }: TopupCardProps) {
       }
       
       setAmount('1.00');
-      alert('Top-up successful! Your balance has been updated.');
-    } catch (error) {
+      
+      // Notify other parts of the app that credits have been updated
+      try {
+        const ts = Date.now();
+        localStorage.setItem('credits:updated_at', String(ts));
+        window.dispatchEvent(new CustomEvent('credits:updated', { detail: { updatedAt: ts } }));
+      } catch (e) {
+        console.warn('Failed to notify credit update:', e);
+      }
+      
+      // Show success popup
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 5000);
+    } catch (error: any) {
       console.error('Top-up failed:', error);
-      alert('Top-up failed. Please try again.');
+      
+      // Show error popup
+      setErrorMessage(error?.message || error?.errorDescription || 'Top-up failed. Please try again.');
+      setShowError(true);
+      setTimeout(() => setShowError(false), 5000);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="max-w-md">
+    <div className="max-w-md space-y-4">
+      {/* Success Alert */}
+      {showSuccess && (
+        <Alert className="bg-green-500/10 border-green-500/50">
+          <CheckCircle2 className="h-4 w-4 text-green-500" />
+          <AlertTitle className="text-green-500">Success!</AlertTitle>
+          <AlertDescription className="text-green-400">
+            Top-up successful! Your balance has been updated.
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {/* Error Alert */}
+      {showError && (
+        <Alert variant="destructive">
+          <XCircle className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>
+            {errorMessage}
+          </AlertDescription>
+        </Alert>
+      )}
+
       <div className="bg-card rounded-lg p-6 border border-border shadow-sm">
+        {/* Tokens Section (Top) */}
+        <div className="mb-6">
+          <label className="block text-sm text-muted-foreground mb-2">You'll get</label>
+          <div className="bg-background rounded-md border border-input px-4 py-3 flex items-center justify-between">
+            <span className="text-xl font-semibold">{tokenAmount} TKN</span>
+            <span className="text-sm text-muted-foreground">
+              1 {currency} = {exchangeRates.USD} TKN
+            </span>
+          </div>
+        </div>
+
+        {/* Amount Section (Bottom) */}
         <div className="mb-6">
           <label className="block text-sm text-muted-foreground mb-2">Amount</label>
           <div className="relative">
@@ -68,22 +132,6 @@ export default function TopupCard({ onTopupSuccess }: TopupCardProps) {
               />
               <div className="ml-2 text-muted-foreground">{currency}</div>
             </div>
-          </div>
-        </div>
-
-        <div className="flex justify-center mb-6">
-          <div className="bg-muted rounded-full p-2">
-            <div className="w-6 h-0.5 bg-border"></div>
-          </div>
-        </div>
-
-        <div className="mb-6">
-          <label className="block text-sm text-muted-foreground mb-2">You'll get</label>
-          <div className="bg-background rounded-md border border-input px-4 py-3 flex items-center justify-between">
-            <span className="text-xl font-semibold">{tokenAmount} TKN</span>
-            <span className="text-sm text-muted-foreground">
-              1 {currency} = {exchangeRates.USD} TKN
-            </span>
           </div>
         </div>
 
