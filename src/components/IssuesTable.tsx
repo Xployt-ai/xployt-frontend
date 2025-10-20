@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
 import { TypographyP, TypographyMuted, TypographySmall } from "@/components/ui/typography.tsx";
 import { cn } from "@/lib/utils.ts";
-import type { ScanResult } from "@/data/models/scan.ts";
+import type { Vulnerability } from "@/data/models/scan.ts";
 
 function getSeverityColor(severity: string) {
   switch (severity) {
-    case "Critical":
-      return "bg-red-600 text-white";
     case "High":
-      return "bg-orange-600 text-white";
+      return "bg-red-600 text-white";
     case "Medium":
+      return "bg-orange-600 text-white";
+    case "Low":
       return "bg-yellow-600 text-white";
     default:
       return "bg-gray-600 text-white";
@@ -29,7 +29,7 @@ function getStatusColor(status: string) {
   }
 }
 
-export default function IssuesTable({ items }: { items: ScanResult[] }) {
+export default function IssuesTable({ items }: { items: Vulnerability[] }) {
   return (
     <div className="bg-background rounded-lg overflow-hidden">
       <div className="bg-gray-700 px-4 py-3 grid grid-cols-4 gap-4 text-sm font-medium text-gray-300">
@@ -51,7 +51,7 @@ export default function IssuesTable({ items }: { items: ScanResult[] }) {
                   {issue.severity}
                 </span>
               </div>
-              <TypographyMuted className="truncate text-xs">{issue.location.endpoint + " : " + issue.location.line || "Unknown File"}</TypographyMuted>
+              <TypographyMuted className="truncate text-xs">{issue.relative_file_path + " : " + issue.line || "Unknown File"}</TypographyMuted>
               <TypographySmall className={getStatusColor(issue.status ? issue.status : "Open")}>{issue.status ? issue.status : "Open"}</TypographySmall>
             </div>
           </Link>
