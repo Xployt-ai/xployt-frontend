@@ -30,7 +30,7 @@ export const ProjectCard = ({ project }: { project: Repo }) => {
           <div className="flex h-10 w-10 items-center justify-center rounded-lg border bg-muted flex-shrink-0 transition-all duration-300 group-hover:bg-primary/10 group-hover:border-primary/50">
             <FolderGit2 className="h-5 w-5 text-muted-foreground transition-all duration-300 group-hover:text-primary group-hover:scale-110" />
           </div>
-          <CardTitle className="hover:text-primary transition-colors text-lg">
+          <CardTitle className="hover:text-primary transition-colors text-lg break-words line-clamp-2">
             {project.name}
           </CardTitle>
         </div>
