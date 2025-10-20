@@ -9,11 +9,20 @@ import FilterBar from "@/components/FilterBar";
 import IssuesTable from "@/components/IssuesTable";
 import PaginationControl from "@/components/PaginationControl";
 import { scanCollectionEndpoints } from "@/data/network/scan_collection.ts";
+import type { ScanCollection } from "@/data/models/scan_collection.ts";
 
 // ...existing code continues (SecurityDashboardPage component unchanged) ...
 const SecurityDashboardPage = () => {
   const [results, setResults] = useState<Vulnerability[]>([]);
   const {collection_id} = useParams<{ collection_id: string }>();
+  const [collection, setCollection] = useState<ScanCollection>({
+    id: "",
+    repository_name: "",
+    scanners: [],
+    scan_ids: [],
+    status: "",
+    progress_percent: 0,
+  });
 
   // Filter states
   const [searchTerm, setSearchTerm] = useState("");
@@ -31,7 +40,9 @@ const SecurityDashboardPage = () => {
         // You can use repo parameter to fetch specific repository data
         if (!collection_id) return;
         const data = await scanCollectionEndpoints.getCollectionResults(collection_id)
+        const collection = await scanCollectionEndpoints.getScanCollection(collection_id);
         setResults(data.vulnerabilities);
+        setCollection(collection)
       } catch (error) {
         console.error("Failed to fetch scan results:", error);
       }
@@ -119,10 +130,10 @@ const SecurityDashboardPage = () => {
     <div className="p-8">
       <div className="max-w-6xl mx-auto">
         <TypographyH1 className="mb-8">
-          {collection_id ? `${collection_id} Security Overview` : "Project Security Overview"}
+          {collection.repository_name ? `${collection.repository_name} Security Overview` : "Project Security Overview"}
         </TypographyH1>
 
-        <ProjectDetailsCard repo={collection_id}/>
+        <ProjectDetailsCard repo={collection.repository_name}/>
 
         <div className="mb-8">
           <TypographyH2>Issues</TypographyH2>
