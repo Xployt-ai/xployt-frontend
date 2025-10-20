@@ -1,6 +1,132 @@
 /**
  * Class representing a network service for making HTTP requests.
  */
+let __globalPendingRequests = 0;
+let __spinnerStylesInjected = false;
+
+function __injectSpinnerStyles(): void {
+  if (__spinnerStylesInjected) return;
+  const style = document.createElement('style');
+  style.id = 'xployt-global-spinner-styles';
+  style.textContent = `@keyframes xployt-spin { to { transform: rotate(360deg); } }`;
+  document.head.appendChild(style);
+  __spinnerStylesInjected = true;
+}
+
+function __showGlobalOverlay(): void {
+  if (document.getElementById('xployt-global-loading-overlay')) return;
+  const overlay = document.createElement('div');
+  overlay.id = 'xployt-global-loading-overlay';
+  overlay.setAttribute('style', [
+    'position:fixed',
+    'inset:0',
+    'background:rgba(0,0,0,0.25)',
+    'display:flex',
+    'align-items:center',
+    'justify-content:center',
+    'z-index:2147483647',
+    'pointer-events:all'
+  ].join(';'));
+
+  const spinner = document.createElement('div');
+  spinner.setAttribute('style', [
+    'width:48px',
+    'height:48px',
+    'border:4px solid rgba(255,255,255,0.4)',
+    'border-top-color:#ffffff',
+    'border-radius:50%',
+    'animation:xployt-spin 1s linear infinite'
+  ].join(';'));
+
+  overlay.appendChild(spinner);
+  document.body.appendChild(overlay);
+}
+
+function __hideGlobalOverlay(): void {
+  const overlay = document.getElementById('xployt-global-loading-overlay');
+  if (overlay && overlay.parentNode) {
+    overlay.parentNode.removeChild(overlay);
+  }
+}
+
+function __incrementGlobalSpinner(): void {
+  __globalPendingRequests += 1;
+  if (__globalPendingRequests === 1) {
+    __injectSpinnerStyles();
+    __showGlobalOverlay();
+  }
+}
+
+function __decrementGlobalSpinner(): void {
+  __globalPendingRequests = Math.max(0, __globalPendingRequests - 1);
+  if (__globalPendingRequests === 0) {
+    __hideGlobalOverlay();
+  }
+}
+
+function __ensureErrorBanner(message: string): void {
+  let banner = document.getElementById('xployt-global-error-banner') as HTMLDivElement | null;
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'xployt-global-error-banner';
+    banner.setAttribute('style', [
+      'position:fixed',
+      'top:12px',
+      'left:50%'
+      ,'transform:translateX(-50%)',
+      'background:#ef4444',
+      'color:#ffffff',
+      'padding:6px 10px',
+      'border-radius:6px',
+      'box-shadow:0 2px 6px rgba(0,0,0,0.25)',
+      'font-size:14px',
+      'z-index:2147483647',
+      'display:flex',
+      'align-items:center',
+      'gap:8px',
+      'opacity:0.9',
+      'min-width:400px',
+      'max-width:90%'
+    ].join(';'));
+
+    const text = document.createElement('div');
+    text.id = 'xployt-global-error-banner-text';
+    text.setAttribute('style', 'flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; opacity:0.95');
+
+    const close = document.createElement('button');
+    close.setAttribute('style', [
+      'all:unset',
+      'cursor:pointer',
+      'color:#ffffff',
+      'opacity:0.95',
+      'font-size:16px',
+      'line-height:1',
+      'padding:0 4px'
+    ].join(';'));
+    close.textContent = '✕';
+    close.addEventListener('click', () => {
+      const el = document.getElementById('xployt-global-error-banner');
+      if (el && el.parentNode) el.parentNode.removeChild(el);
+    });
+
+    banner.appendChild(text);
+    banner.appendChild(close);
+    document.body.appendChild(banner);
+  }
+  const textEl = document.getElementById('xployt-global-error-banner-text');
+  if (textEl) textEl.textContent = message;
+}
+
+function __formatErrorMessage(error: any, method: string, url: string): string {
+  if (error && typeof error === 'object') {
+    const parts: string[] = [];
+    if ((error as any).message) parts.push(String((error as any).message));
+    if ((error as any).errorDescription) parts.push(String((error as any).errorDescription));
+    if (parts.length) return parts.join(' - ');
+  }
+  return `${method} ${url} failed`;
+}
+
 class Network {
   baseURL: string;
   private cache: Map<string, { valid: boolean; response: any }> = new Map();
@@ -153,6 +279,11 @@ class Network {
       this.cache.delete(url);
     }
 
+    const shouldShowGlobalLoading = !!normalizedOptions.showLoading;
+    if (shouldShowGlobalLoading) {
+      __incrementGlobalSpinner();
+    }
+
     try {
       const response = await this.sendHttpRequest(
         method,
@@ -167,12 +298,19 @@ class Network {
       return response;
     } catch (error: any) {
       console.error(`Error catched in handleRequest: ${method}:`, error);
+      try {
+        __ensureErrorBanner(__formatErrorMessage(error, method, url));
+      } catch (_) {}
       if (normalizedOptions.handleError) {
         if (normalizedOptions.throwError) {
           throw error;
         }
       } else {
         throw error;
+      }
+    } finally {
+      if (shouldShowGlobalLoading) {
+        __decrementGlobalSpinner();
       }
     }
   }
