@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { authEndpoints } from '@/data/network/auth';
-import { subscriptionEndpoints } from '@/data/network/subscription';
 import type { User } from '@/data/models/user';
 
 interface UserType {
@@ -40,22 +39,8 @@ export default function Profile({ user: initialUser }: ProfileProps) {
         setUsername(userData.username || '');
         setEmail(userData.email || '');
         
-        // Fetch subscription status to determine plan type
-        try {
-          const proStatus = await subscriptionEndpoints.getProStatus();
-          console.log('Pro status:', proStatus);
-          
-          if (proStatus.is_pro) {
-            setPlan(proStatus.is_cancelled ? 'Pro (Cancelled)' : 'Pro');
-          } else {
-            setPlan('Free');
-          }
-        } catch (error) {
-          console.error('Failed to fetch subscription status:', error);
-          setPlan('Free'); // Default to Free if subscription check fails
-        }
-        
-        // TODO: Fetch scans data from appropriate endpoint when available
+        // TODO: Fetch plan and scans data from appropriate endpoint when available
+        setPlan('Pro');
         setScansUsed(47);
         setScansLimit(100);
       } catch (error) {
@@ -152,11 +137,7 @@ export default function Profile({ user: initialUser }: ProfileProps) {
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-card rounded-lg p-4 border border-gray-600">
                 <p className="text-sm text-muted-foreground mb-1">Current Plan</p>
-                <p className={`text-xl font-semibold ${
-                  plan.startsWith('Pro') ? 'text-green-500' : 'text-slate-400'
-                }`}>
-                  {plan}
-                </p>
+                <p className="text-xl font-semibold">{plan}</p>
               </div>
               <div className="bg-card rounded-lg p-4 border border-gray-600">
                 <p className="text-sm text-muted-foreground mb-1">Scans Used</p>
