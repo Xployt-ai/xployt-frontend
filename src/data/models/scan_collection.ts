@@ -1,6 +1,6 @@
 import type { Vulnerability } from "@/data/models/scan.ts";
 
-export interface ScanCollection {
+export interface ScanCollectionId {
   collection_id: string;
   scan_ids: string[];
 }
@@ -20,3 +20,22 @@ export interface CollectionResults {
   vulnerabilities: Vulnerability[];
 }
 
+export interface ScanCollection {
+  id: string;
+  repository_name?: string;
+  scanners: string[];
+  scan_ids: string[];
+  status: string;
+  progress_percent: number;
+  created_at?: string;
+  finished_at?: string;
+}
+
+// id": str(c["_id"]),
+// "repository_name": c.get("repository_name"),
+//   "scanners": c.get("scanners", []),
+//   "scan_ids": c.get("scan_ids", []),
+//   "status": c.get("status", "pending"),
+//   "progress_percent": int(c.get("progress_percent", 0) or 0),
+// "created_at": c.get("created_at"),
+//   "finished_at": c.get("finished_at"),

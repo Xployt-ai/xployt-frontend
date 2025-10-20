@@ -5,12 +5,14 @@ import type { Vulnerability } from "@/data/models/scan.ts";
 
 function getSeverityColor(severity: string) {
   switch (severity) {
-    case "High":
+    case "critical":
       return "bg-red-600 text-white";
-    case "Medium":
+    case "high":
       return "bg-orange-600 text-white";
-    case "Low":
+    case "medium":
       return "bg-yellow-600 text-white";
+    case "low":
+      return "bg-blue-600 text-white";
     default:
       return "bg-gray-600 text-white";
   }
