@@ -6,8 +6,6 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatRepoName(name: string): string {
-  // remove username from the repo name
-  const parts = name.split("/");
-  return parts.slice().join("-");
-
+  // URI-encode the repo identifier (e.g. "user/repo" -> "user%2Frepo")
+  return encodeURIComponent(name);
 }

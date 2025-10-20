@@ -1,12 +1,17 @@
 import NETWORK from "@/data/network/index.ts";
-import type { ScanProgress, ScanResult, Scan, newScanProps, Vulnerability } from "@/data/models/scan.ts";
+import type {
+  ScanResult,
+  Scan,
+  newScanProps,
+  Vulnerability
+} from "@/data/models/scan.ts";
 
 export const scanEndpoints = {
   async startScan(repo_name: string): Promise<string> {
     const response = await NETWORK.post(`/scans`, {
       repository_name: repo_name,
-      scanner_name: "secret_scanner", // Example scanner name, adjust as needed
-      configurations: {}
+      scanner_name: "static_scanner", // Example scanner name, adjust as needed
+      configurations: {"mock": true}
     });
 
     if (response.status === 422) {
@@ -15,19 +20,6 @@ export const scanEndpoints = {
       );
     }
     return response.data.scan_id;
-  },
-
-  async getScanProgress(scan_id: string): Promise<ScanProgress> {
-
-    NETWORK.invalidateCache(`/scans/${scan_id}`);
-    const response = await NETWORK.get(`/scans/${scan_id}`);
-
-    if (response.status === 422) {
-      throw new Error(
-        `Failed to get scan progress: ${response.data.detail.msg}\n${response.data.detail.loc}\n${response.data.detail.type}`
-      );
-    }
-    return response.data as ScanProgress;
   },
 
   async getScanResults(scan_id: string): Promise<ScanResult[]> {
@@ -50,24 +42,21 @@ export const scanEndpoints = {
     return response.data as Scan[];
   },
 
-  async updateScanProps(scanProps: newScanProps): Promise<void>{
+  async updateScanProps(scanProps: newScanProps): Promise<void> {
     console.log("Updating scan props:", scanProps);
   },
 
 ////////////////// New method to get vulnerabilities
 
   async getVulnerabilities(scan_id: string): Promise<Vulnerability[]> {
-  const response = await NETWORK.get(`/scans/${scan_id}/results`);
-  if (response.status === 422) {
-    throw new Error(
-      `Failed to get scan results: ${response.data.detail.msg}\n${response.data.detail.loc}\n${response.data.detail.type}`
-    );
+    const response = await NETWORK.get(`/scans/${scan_id}/results`);
+    if (response.status === 422) {
+      throw new Error(
+        `Failed to get scan results: ${response.data.detail.msg}\n${response.data.detail.loc}\n${response.data.detail.type}`
+      );
+    }
+    return response.data as Vulnerability[];
   }
-  return response.data as Vulnerability[];
-}
-
-
-
 
 
 };
