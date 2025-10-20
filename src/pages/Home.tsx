@@ -176,38 +176,20 @@ const Home = () => {
         </div>
         <div className="howit-steps">
           {/*TODO: add images of the mentioned logos*/}
-          <div
-            className="howit-card"
-            role="button"
-            tabIndex={0}
-            onClick={() => navigate('/documentation')}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') navigate('/documentation'); }}
-          >
+          <div className="howit-card">
             <img src="/github.png" alt="GitHub" className="howit-icon" />
             <div className="howit-step">STEP 01</div>
             <div className="howit-card-title">Connect GitHub</div>
             <div className="howit-card-desc">Securely authorize access to your GitHub repositories. We use OAuth for safe authentication.</div>
           </div>
-          <div
-            className="howit-card"
-            role="button"
-            tabIndex={0}
-            onClick={() => navigate('/documentation')}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') navigate('/documentation'); }}
-          >
+          <div className="howit-card">
             {/* folder.png was missing in public; use an existing decorative asset instead */}
             <img src="/Folder.png" alt="Folder" className="howit-icon" />
             <div className="howit-step">STEP 02</div>
             <div className="howit-card-title">Select Repository</div>
             <div className="howit-card-desc">Choose the specific MERN application repository you want to analyze.</div>
           </div>
-          <div
-            className="howit-card"
-            role="button"
-            tabIndex={0}
-            onClick={() => navigate('/documentation')}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') navigate('/documentation'); }}
-          >
+          <div className="howit-card">
             <img src="/shield-image.png" alt="Shield" className="howit-icon" />
             <div className="howit-step">STEP 03</div>
             <div className="howit-card-title">Get Security Report</div>

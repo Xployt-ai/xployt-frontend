@@ -184,7 +184,6 @@ body, .home-root {
   box-shadow: 0 2px 24px 0 rgba(0,0,0,0.12);
   border: 2px solid transparent;
   transition: transform 0.2s ease, box-shadow 0.25s ease, border 0.3s;
-  cursor: pointer;
   will-change: transform, box-shadow;
   display: flex;
   flex-direction: column;
@@ -195,15 +194,11 @@ body, .home-root {
   border: 2px solid transparent;
   background: linear-gradient(120deg,rgba(255,255,255,0.04) 60%,rgba(255,255,255,0.01));
 }
-/* Hover & focus styles for better affordance */
-.feature-card:hover,
-.feature-card:focus-visible {
+/* Hover styles - cards are hoverable but not clickable */
+.feature-card:hover {
   transform: translateY(-12px) scale(1.04);
   box-shadow: 0 22px 60px rgba(0,0,0,0.46);
   border-color: rgba(255,255,255,0.14);
-}
-.feature-card:active {
-  transform: translateY(-4px) scale(0.995);
 }
 .feature-card h3 {
   font-size: 2rem;
@@ -371,21 +366,16 @@ body, .home-root {
   box-shadow: 0 2px 24px 0 rgba(0,0,0,0.12);
   border: 2px solid transparent;
   transition: transform 0.2s ease, box-shadow 0.25s ease, border 0.3s;
-  cursor: pointer;
   will-change: transform, box-shadow;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   text-align: center;
 }
-.howit-card:hover,
-.howit-card:focus-visible {
+.howit-card:hover {
   transform: translateY(-12px) scale(1.04);
   box-shadow: 0 22px 60px rgba(0,0,0,0.46);
   border-color: rgba(255,255,255,0.14);
-}
-.howit-card:active {
-  transform: translateY(-4px) scale(0.995);
 }
 
 /* Respect user preference for reduced motion */
