@@ -3,8 +3,9 @@ import "./Home.css";
 import { useState } from "react";
 import FeatureCard from "@/components/FeatureCard.tsx";
 import PricingCard from "@/components/PricingCard.tsx";
+import { useAuth } from "@/contexts/AuthContext.tsx";
 
-// Feature list
+
 const features = [
   {
     title: "AI-Powered Vulnerability Detection",
@@ -22,7 +23,7 @@ const features = [
     title: "Dependency Vulnerability Detection",
     desc: "Detects vulnerable packages and suggests secure alternatives"
   },
-  // Dummy features for demonstration
+  
   {
     title: "Automated Code Review",
     desc: "Instantly reviews your code for best practices and security compliance."
@@ -49,11 +50,22 @@ const features = [
   }
 ];
 
-const DOT_COUNT = 4; // Number of dots to show
+const DOT_COUNT = 4; 
 
 const Home = () => {
   const navigate = useNavigate();
+  const { user, login } = useAuth();
   const [active, setActive] = useState(0);
+
+  const handleStartScan = () => {
+    if (user) {
+      // If user is already logged in, go to repo import
+      navigate("/repo-import");
+    } else {
+      // If not logged in, trigger GitHub OAuth login
+      login();
+    }
+  };
 
   const getDotActive = (dotIdx: number) => {
     // Map dot index to feature index
@@ -85,7 +97,7 @@ const Home = () => {
             <p className="hero-desc">Our AI-powered platform analyzes your MERN stack applications for security vulnerabilities providing actionable insights and automated fixes.</p>
             <button
               className="hero-btn"
-              onClick={() => navigate("/login")}
+              onClick={handleStartScan}
             >
               Start Free Scan
             </button>
@@ -151,7 +163,7 @@ const Home = () => {
           <p className="about-desc">
             Whether you're a solo developer or building your next startup, we make app security simple, smart, and seamless.
           </p>
-          <button className="about-btn">
+          <button className="about-btn" onClick={() => navigate("/about")}>
             Read More
           </button>
         </div>
@@ -164,38 +176,20 @@ const Home = () => {
         </div>
         <div className="howit-steps">
           {/*TODO: add images of the mentioned logos*/}
-          <div
-            className="howit-card"
-            role="button"
-            tabIndex={0}
-            onClick={() => navigate('/documentation')}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') navigate('/documentation'); }}
-          >
+          <div className="howit-card">
             <img src="/github.png" alt="GitHub" className="howit-icon" />
             <div className="howit-step">STEP 01</div>
             <div className="howit-card-title">Connect GitHub</div>
             <div className="howit-card-desc">Securely authorize access to your GitHub repositories. We use OAuth for safe authentication.</div>
           </div>
-          <div
-            className="howit-card"
-            role="button"
-            tabIndex={0}
-            onClick={() => navigate('/documentation')}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') navigate('/documentation'); }}
-          >
+          <div className="howit-card">
             {/* folder.png was missing in public; use an existing decorative asset instead */}
             <img src="/Folder.png" alt="Folder" className="howit-icon" />
             <div className="howit-step">STEP 02</div>
             <div className="howit-card-title">Select Repository</div>
             <div className="howit-card-desc">Choose the specific MERN application repository you want to analyze.</div>
           </div>
-          <div
-            className="howit-card"
-            role="button"
-            tabIndex={0}
-            onClick={() => navigate('/documentation')}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') navigate('/documentation'); }}
-          >
+          <div className="howit-card">
             <img src="/shield-image.png" alt="Shield" className="howit-icon" />
             <div className="howit-step">STEP 03</div>
             <div className="howit-card-title">Get Security Report</div>
@@ -213,6 +207,7 @@ const Home = () => {
           <PricingCard
             plan="BASIC"
             price="FREE"
+            tokens="500 Tokens"
             features={["Real-time Threat Monitoring", "Community support", "Limited scans per month"]}
             buttonText="Get Started"
           />

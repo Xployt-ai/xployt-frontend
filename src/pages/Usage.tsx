@@ -135,7 +135,7 @@ export default function Usage() {
         <div className="bg-card rounded-lg p-6 border border-border shadow-sm max-w-md">
           <div className="flex items-center justify-between mb-2">
             <span className="text-muted-foreground">Available Tokens</span>
-            <span className="text-3xl font-bold">{tokens !== null ? tokens : '...'} TKN</span>
+            <span className="text-3xl font-bold">{tokens !== null ? tokens.toFixed(2) : '...'} TKN</span>
           </div>
           <p className="text-sm text-muted-foreground">Use tokens to perform security scans</p>
         </div>

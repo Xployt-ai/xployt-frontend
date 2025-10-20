@@ -8,20 +8,27 @@ const About = () => {
                     <img src="/map.png" alt="Team working" />
                 </div>
                 <div className="about-content">
-                    <div className="about-label">ABOUT US</div>
+                    {/* <div className="about-label">ABOUT US</div> */}
                     <h1 className="about-title">At Xployt.ai, we're on a mission to make modern web development secure</h1>
                     <p className="about-prose">
-                        Xployt.ai is a cutting-edge security scanning platform designed to help developers
-                        identify and fix vulnerabilities in their codebase. We combine static analysis,
-                        AI-driven heuristics, and developer-friendly reporting to make security work for teams.
+                        We know how it feels when security vulnerabilities slip into production. That sleepless night, 
+                        the emergency hotfix, the worried conversations with your team. We've been there too.
                     </p>
                     <p className="about-prose">
-                        Whether you're a solo developer or part of a large engineering org, our goal is to
-                        make app security accessible, actionable, and integrated into your workflow.
+                        Xployt.ai was built by developers who got tired of expensive security tools that were either 
+                        too complex to use or too simple to be effective. We wanted something different - a platform 
+                        that catches real vulnerabilities before they become real problems, without breaking your 
+                        development flow or your budget.
                     </p>
-                    <div className="about-actions">
-                        <button className="about-btn">Read More</button>
-                    </div>
+                    <p className="about-prose">
+                        Today, we help developers like you scan GitHub repositories, catch security issues early, 
+                        and ship with confidence. No security degree required. Just connect your repo and let our 
+                        AI-powered engine do the heavy lifting while you focus on building great products.
+                    </p>
+                    <p className="about-prose">
+                        Because at the end of the day, security isn't just about protecting code - it's about 
+                        protecting the trust your users place in you.
+                    </p>
                 </div>
             </div>
         </section>

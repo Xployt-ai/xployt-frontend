@@ -184,7 +184,6 @@ body, .home-root {
   box-shadow: 0 2px 24px 0 rgba(0,0,0,0.12);
   border: 2px solid transparent;
   transition: transform 0.2s ease, box-shadow 0.25s ease, border 0.3s;
-  cursor: pointer;
   will-change: transform, box-shadow;
   display: flex;
   flex-direction: column;
@@ -195,15 +194,11 @@ body, .home-root {
   border: 2px solid transparent;
   background: linear-gradient(120deg,rgba(255,255,255,0.04) 60%,rgba(255,255,255,0.01));
 }
-/* Hover & focus styles for better affordance */
-.feature-card:hover,
-.feature-card:focus-visible {
+/* Hover styles - cards are hoverable but not clickable */
+.feature-card:hover {
   transform: translateY(-12px) scale(1.04);
   box-shadow: 0 22px 60px rgba(0,0,0,0.46);
   border-color: rgba(255,255,255,0.14);
-}
-.feature-card:active {
-  transform: translateY(-4px) scale(0.995);
 }
 .feature-card h3 {
   font-size: 2rem;
@@ -371,21 +366,16 @@ body, .home-root {
   box-shadow: 0 2px 24px 0 rgba(0,0,0,0.12);
   border: 2px solid transparent;
   transition: transform 0.2s ease, box-shadow 0.25s ease, border 0.3s;
-  cursor: pointer;
   will-change: transform, box-shadow;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   text-align: center;
 }
-.howit-card:hover,
-.howit-card:focus-visible {
+.howit-card:hover {
   transform: translateY(-12px) scale(1.04);
   box-shadow: 0 22px 60px rgba(0,0,0,0.46);
   border-color: rgba(255,255,255,0.14);
-}
-.howit-card:active {
-  transform: translateY(-4px) scale(0.995);
 }
 
 /* Respect user preference for reduced motion */
@@ -542,7 +532,7 @@ body, .home-root {
   border-radius: 32px;
   color: #fff;
   font-size: 2.2rem;
-  font-weight: 800;
+  font-weight: 500;
   padding: 0.7rem 3.5rem;
   margin-right: 0.5rem;
   box-shadow: 0 0 24px 0 rgba(120,120,140,0.18);
@@ -555,6 +545,32 @@ body, .home-root {
   color: #b3b8c5;
   font-size: 1.1rem;
   font-weight: 500;
+}
+.pricing-tokens {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  margin-top: -1rem;
+}
+.pricing-tokens-badge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0.5rem 1.5rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  letter-spacing: 0.05em;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  }
+  50% {
+    box-shadow: 0 4px 25px rgba(102, 126, 234, 0.6);
+  }
 }
 .pricing-features {
   list-style: none;

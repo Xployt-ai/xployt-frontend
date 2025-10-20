@@ -28,15 +28,20 @@ const Footer = () => {
         {/* Right: Contact Info */}
         <div className="flex flex-col items-center md:items-start w-full md:w-1/3 mt-4 md:mt-0">
           <span className="text-white font-semibold mb-4">Contact Us</span>
-          <div className="flex items-center text-[#E0E0E0] mb-2">
-            <FaEnvelope className="w-5 h-5 mr-2" />
-            info@xployt.com
+          <div className="flex items-center text-[#E0E0E0] mb-3">
+            <FaEnvelope className="w-5 h-5 mr-3" />
+            <a href="mailto:support@xployt.ai" className="hover:text-white transition-colors">support@xployt.ai</a>
           </div>
-          <div className="flex items-center text-[#E0E0E0] mb-2">
-            <FaPhone className="w-5 h-5 mr-2" />
-            +9411XXXXXXX
+          <div className="flex items-center text-[#E0E0E0] mb-3">
+            <FaPhone className="w-5 h-5 mr-3" />
+            <a href="tel:+94112345678" className="hover:text-white transition-colors">+94 11 234 5678</a>
           </div>
-          <div className="text-[#E0E0E0]">Xployt Co, Colombo, Sri Lanka</div>
+          <div className="text-[#E0E0E0] leading-relaxed">
+            <div className="font-medium mb-1">Xployt.ai Inc.</div>
+            <div>Level 12, World Trade Center</div>
+            <div>Echelon Square, Colombo 01</div>
+            <div>Sri Lanka</div>
+          </div>
         </div>
       </div>
       <div className="max-w-6xl mx-auto mt-8 border-t border-[#23262F] pt-4 text-center">
