@@ -50,7 +50,7 @@ export default function Usage() {
         const txDate = parseISO(tx.created_at);
         const txType = tx.transaction_type.toLowerCase();
         return isSameDay(txDate, dateObj) && 
-               (txType === 'debit' || Number(tx.amount) < 0);
+               (txType === 'scan_debit' || Number(tx.amount) < 0);
       })
       .reduce((sum: number, tx: CreditTransaction) => sum + Math.abs(Number(tx.amount)), 0);
     
@@ -217,9 +217,8 @@ export default function Usage() {
       <section>
         <h2 className="text-xl font-semibold mb-4">Transaction history</h2>
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-gray-600">
             <TableRow>
-              <TableHead>ID</TableHead>
               <TableHead>Date</TableHead>
               <TableHead>Type</TableHead>
               <TableHead>Description</TableHead>
@@ -229,11 +228,10 @@ export default function Usage() {
           <TableBody>
             {paginated.map((tx: CreditTransaction) => (
               <TableRow key={tx.id}>
-                <TableCell className="text-white">{tx.id}</TableCell>
                 <TableCell className="text-white">{format(parseISO(tx.created_at), 'MMM dd, yyyy')}</TableCell>
                 <TableCell>
                   <span className={`capitalize font-semibold ${
-                    tx.transaction_type.toLowerCase() === 'topup' || tx.transaction_type.toLowerCase() === 'pro_monthly' 
+                    tx.transaction_type.toLowerCase() === 'topup' || tx.transaction_type.toLowerCase() === 'pro_monthly' || tx.transaction_type.toLowerCase() === 'credit'
                       ? 'text-green-500' 
                       : 'text-red-500'
                   }`}>
@@ -242,11 +240,11 @@ export default function Usage() {
                 </TableCell>
                 <TableCell className="text-white">{tx.description || '-'}</TableCell>
                 <TableCell className={`text-right font-semibold ${
-                  Number(tx.amount) > 0 
+                  tx.transaction_type.toLowerCase() === 'topup' || tx.transaction_type.toLowerCase() === 'pro_monthly' || tx.transaction_type.toLowerCase() === 'credit'
                     ? 'text-green-500' 
                     : 'text-red-500'
                 }`}>
-                  {Number(tx.amount) > 0 ? '+' : ''}{Number(tx.amount)}
+                  {tx.transaction_type.toLowerCase() === 'topup' || tx.transaction_type.toLowerCase() === 'pro_monthly' || tx.transaction_type.toLowerCase() === 'credit' ? '+' : '-'}{Math.abs(Number(tx.amount))}
                 </TableCell>
               </TableRow>
             ))}
