@@ -33,7 +33,7 @@ function App() {
   return (
     <BrowserRouter>
       <Navbar />
-      <main className="flex-1 bg-black">
+      <main className="flex-1 bg-background">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
