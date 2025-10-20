@@ -3,7 +3,7 @@ import { GitBranch, Calendar, ChevronRight, Clock } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { TypographyH1, TypographyH2, TypographyP, TypographySmall } from "@/components/ui/typography.tsx";
+import { TypographyH2, TypographyP, TypographySmall } from "@/components/ui/typography.tsx";
 import type { ScanResult, Scan } from "@/data/models/scan";
 import { scanEndpoints } from "@/data/network/scan";
 
@@ -30,11 +30,6 @@ const SEVERITY_COLORS = {
   High: "#ea580c", // orange-600
   Medium: "#ca8a04", // yellow-600
   Low: "#6b7280", // gray-500
-};
-
-const STATUS_COLORS = {
-  Open: "#000000",
-  Resolved: "#a3a3a3",
 };
 
 const formatDate = (dateStr?: string) => {
@@ -83,33 +78,31 @@ export default function Reports() {
         setError(null);
         const scansData = await scanEndpoints.listScans();
         
-        // Use mock data if API returns empty results
-        const finalScans = scansData.length > 0 ? scansData : MOCK_SCANS;
+        // Always include mock data alongside real data
+        const finalScans = [...scansData, ...MOCK_SCANS];
         setScans(finalScans);
 
         // Fetch results for each scan
         const resultsMap = new Map<string, ScanResult[]>();
+        
+        // Fetch results for real scans
         await Promise.all(
-          finalScans.map(async (scan) => {
+          scansData.map(async (scan) => {
             try {
               const results = await scanEndpoints.getScanResults(scan.id);
               resultsMap.set(scan.id, results.length > 0 ? results : []);
             } catch (err) {
               console.error(`Failed to fetch results for scan ${scan.id}:`, err);
-              // Use mock results for this scan if it matches a mock scan ID
-              const mockResults = MOCK_SCAN_RESULTS.filter(r => r.scan_id === scan.id);
-              resultsMap.set(scan.id, mockResults);
+              resultsMap.set(scan.id, []);
             }
           })
         );
         
-        // If no results were fetched, use mock data
-        if (resultsMap.size === 0 || Array.from(resultsMap.values()).every(r => r.length === 0)) {
-          MOCK_SCANS.forEach(scan => {
-            const mockResults = MOCK_SCAN_RESULTS.filter(r => r.scan_id === scan.id);
-            resultsMap.set(scan.id, mockResults);
-          });
-        }
+        // Always add mock scan results
+        MOCK_SCANS.forEach(scan => {
+          const mockResults = MOCK_SCAN_RESULTS.filter(r => r.scan_id === scan.id);
+          resultsMap.set(scan.id, mockResults);
+        });
         
         setScanResults(resultsMap);
       } catch (err) {
@@ -200,25 +193,18 @@ export default function Reports() {
     return data;
   };
 
-  const getStatusData = (summary: RepoSummary) => {
-    return [
-      { name: 'Open', value: summary.open, color: STATUS_COLORS.Open },
-      { name: 'Resolved', value: summary.resolved, color: STATUS_COLORS.Resolved },
-    ].filter(item => item.value > 0);
-  };
-
   return (
-    <div className="min-h-screen bg-black text-white p-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-background text-white p-8">
+      <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <TypographyH1 className="mb-2">Repository Security Reports</TypographyH1>
-          <TypographyP className="text-gray-400">Overview of security scans and vulnerabilities across all repositories</TypographyP>
+          <h2 className="text-2xl font-semibold   ">Repository Security Reports</h2>
+          <p className="text-gray-400">Overview of security scans and vulnerabilities across all repositories</p>
         </div>
 
         {/* Loading State */}
         {loading && (
-          <Card className="p-12 text-center bg-gray-950 border border-gray-600">
+          <Card className="p-12 text-center bg-background border-0 ">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-500 mx-auto mb-4"></div>
             <TypographyP className="text-gray-400">Loading scan reports...</TypographyP>
           </Card>
@@ -226,13 +212,13 @@ export default function Reports() {
 
         {/* Error State */}
         {error && !loading && (
-          <Card className="p-12 text-center bg-gray-950 border border-red-900">
+          <Card className="p-12 text-center bg-background border border-red-900">
             <div className="text-red-500 text-5xl mb-4">⚠</div>
             <TypographyH2 className="mb-2 text-red-400">Error Loading Reports</TypographyH2>
             <TypographyP className="text-gray-400 mb-4">{error}</TypographyP>
             <button 
               onClick={() => window.location.reload()}
-              className="px-6 py-3 bg-gray-900 hover:bg-gray-800 text-white rounded-md transition-colors font-medium"
+              className="px-6 py-3 bg-background hover:bg-gray-800 text-white rounded-md transition-colors font-medium"
             >
               Retry
             </button>
@@ -270,48 +256,48 @@ export default function Reports() {
         </div>
 
         {/* Repository Cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-          {filteredRepos.map((repo) => {
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-6">
+          {filteredRepos.map((repo, index) => {
             const highestSeverity = getHighestSeverity(repo.summary);
             const severityData = getSeverityData(repo.summary);
-            const statusData = getStatusData(repo.summary);
             
             return (
               <Card
                 key={repo.name}
-                className="p-6 bg-background border border-gray-600 hover:border-gray-700 transition-all cursor-pointer hover:shadow-md"
+                className="p-6 bg-background border border-gray-600 hover:border-gray-500 transition-all cursor-pointer hover:shadow-xl hover:scale-[1.02] group animate-fade-in"
+                style={{ animationDelay: `${index * 150}ms` }}
                 onClick={() => setSelectedRepo(repo)}
               >
                 {/* Header */}
                 <div className="flex items-start justify-between mb-6">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <GitBranch className="w-5 h-5 text-gray-400" />
-                      <TypographyH2 className="mb-0">{repo.name}</TypographyH2>
+                      <GitBranch className="w-5 h-5 text-gray-400 group-hover:text-gray-300 transition-colors" />
+                      <h2 className="text-2xl font-semibold">{repo.name}</h2>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-gray-400">
                       <Calendar className="w-3 h-3" />
                       <span>{formatDate(repo.summary.lastScan)}</span>
                     </div>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-gray-500" />
+                  <ChevronRight className="w-5 h-5 text-gray-500 group-hover:text-gray-300 group-hover:translate-x-1 transition-all" />
                 </div>
 
-                {/* Charts Section */}
-                <div className="grid grid-cols-2 gap-6 mb-6">
-                  {/* Severity Chart */}
-                  <div>
-                    <div className="text-xs font-medium text-gray-400 mb-3 text-center">SEVERITY</div>
-                    <div className="h-32 flex items-center justify-center">
+                {/* Severity Chart with Legend */}
+                <div className="mb-6">
+                  <div className="text-xs font-medium text-gray-400 mb-3 text-center">SEVERITY DISTRIBUTION</div>
+                  <div className="flex items-center gap-6">
+                    {/* Pie Chart - Left Side */}
+                    <div className="flex-shrink-0" style={{ width: '180px', height: '180px' }}>
                       <ResponsiveContainer width="100%" height="100%">
                         <PieChart>
                           <Pie
                             data={severityData}
                             cx="50%"
                             cy="50%"
-                            innerRadius={25}
-                            outerRadius={45}
-                            paddingAngle={2}
+                            innerRadius={40}
+                            outerRadius={70}
+                            paddingAngle={3}
                             dataKey="value"
                           >
                             {severityData.map((entry, index) => (
@@ -321,80 +307,53 @@ export default function Reports() {
                         </PieChart>
                       </ResponsiveContainer>
                     </div>
-                    <div className="text-center mt-2">
-                      <div className="text-2xl font-bold text-white">{repo.summary.total}</div>
-                      <TypographySmall className="text-gray-400">Total Issues</TypographySmall>
-                    </div>
-                  </div>
 
-                  {/* Status Chart */}
-                  <div>
-                    <div className="text-xs font-medium text-gray-400 mb-3 text-center">STATUS</div>
-                    <div className="h-32 flex items-center justify-center">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={statusData}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={25}
-                            outerRadius={45}
-                            paddingAngle={2}
-                            dataKey="value"
-                          >
-                            {statusData.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={entry.color} />
-                            ))}
-                          </Pie>
-                        </PieChart>
-                      </ResponsiveContainer>
+                    {/* Legend Details - Right Side */}
+                    <div className="flex-1 space-y-3">
+                      <div className="text-center mb-4">
+                        <div className="text-3xl font-bold text-white">{repo.summary.total}</div>
+                        <TypographySmall className="text-gray-400">Total Issues</TypographySmall>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        {repo.summary.critical > 0 && (
+                          <div className="flex items-center justify-between p-2 rounded bg-red-950/20 border border-red-900/30">
+                            <div className="flex items-center gap-2">
+                              <div className="w-3 h-3 rounded-full" style={{ backgroundColor: SEVERITY_COLORS.Critical }} />
+                              <span className="text-sm font-medium text-gray-200">Critical</span>
+                            </div>
+                            <span className="text-lg font-bold text-white">{repo.summary.critical}</span>
+                          </div>
+                        )}
+                        {repo.summary.high > 0 && (
+                          <div className="flex items-center justify-between p-2 rounded bg-orange-950/20 border border-orange-900/30">
+                            <div className="flex items-center gap-2">
+                              <div className="w-3 h-3 rounded-full" style={{ backgroundColor: SEVERITY_COLORS.High }} />
+                              <span className="text-sm font-medium text-gray-200">High</span>
+                            </div>
+                            <span className="text-lg font-bold text-white">{repo.summary.high}</span>
+                          </div>
+                        )}
+                        {repo.summary.medium > 0 && (
+                          <div className="flex items-center justify-between p-2 rounded bg-yellow-950/20 border border-yellow-900/30">
+                            <div className="flex items-center gap-2">
+                              <div className="w-3 h-3 rounded-full" style={{ backgroundColor: SEVERITY_COLORS.Medium }} />
+                              <span className="text-sm font-medium text-gray-200">Medium</span>
+                            </div>
+                            <span className="text-lg font-bold text-white">{repo.summary.medium}</span>
+                          </div>
+                        )}
+                        {repo.summary.low > 0 && (
+                          <div className="flex items-center justify-between p-2 rounded bg-gray-900/30 border border-gray-700/30">
+                            <div className="flex items-center gap-2">
+                              <div className="w-3 h-3 rounded-full" style={{ backgroundColor: SEVERITY_COLORS.Low }} />
+                              <span className="text-sm font-medium text-gray-200">Low</span>
+                            </div>
+                            <span className="text-lg font-bold text-white">{repo.summary.low}</span>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <div className="text-center mt-2">
-                      <div className="text-2xl font-bold text-white">{repo.summary.open}</div>
-                      <TypographySmall className="text-gray-400">Open Issues</TypographySmall>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Legend - Severity */}
-                <div className="border-t border-gray-600 pt-4 mb-3">
-                  <div className="grid grid-cols-2 gap-2 text-xs">
-                    {repo.summary.critical > 0 && (
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-black rounded-full" />
-                          <span className="text-gray-300">Critical</span>
-                        </div>
-                        <span className="font-semibold text-white">{repo.summary.critical}</span>
-                      </div>
-                    )}
-                    {repo.summary.high > 0 && (
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-neutral-600 rounded-full" />
-                          <span className="text-gray-300">High</span>
-                        </div>
-                        <span className="font-semibold text-white">{repo.summary.high}</span>
-                      </div>
-                    )}
-                    {repo.summary.medium > 0 && (
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-neutral-400 rounded-full" />
-                          <span className="text-gray-300">Medium</span>
-                        </div>
-                        <span className="font-semibold text-white">{repo.summary.medium}</span>
-                      </div>
-                    )}
-                    {repo.summary.low > 0 && (
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-neutral-300 rounded-full" />
-                          <span className="text-gray-300">Low</span>
-                        </div>
-                        <span className="font-semibold text-white">{repo.summary.low}</span>
-                      </div>
-                    )}
                   </div>
                 </div>
 
@@ -414,7 +373,7 @@ export default function Reports() {
         </div>
 
         {filteredRepos.length === 0 && (
-          <Card className="p-12 text-center bg-gray-950 border border-gray-600">
+          <Card className="p-12 text-center bg-background border border-gray-600">
             <GitBranch className="w-12 h-12 text-gray-500 mx-auto mb-4" />
             <TypographyH2 className="mb-2 text-gray-300">No repositories found</TypographyH2>
             <TypographyP className="text-gray-400">Try adjusting your filters or search query</TypographyP>
@@ -428,7 +387,7 @@ export default function Reports() {
             onClick={() => setSelectedRepo(null)}
           >
             <Card 
-              className="p-6 max-w-4xl w-full bg-gray-950 border border-gray-600 max-h-[90vh] overflow-y-auto"
+              className="p-6 max-w-4xl w-full bg-background border border-gray-600 max-h-[90vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex justify-between items-start mb-6">
@@ -451,91 +410,96 @@ export default function Reports() {
               </div>
 
               {/* Charts in Modal */}
-              <div className="grid grid-cols-2 gap-8 mb-8">
-                <Card className="p-6  border border-gray-600">
+              <div className="mb-8">
+                <Card className="p-6 bg-background border border-gray-600">
                   <TypographySmall className="font-semibold text-gray-300 mb-4">SEVERITY DISTRIBUTION</TypographySmall>
-                  <div className="h-48 mb-4">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={getSeverityData(selectedRepo.summary)}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={40}
-                          outerRadius={70}
-                          paddingAngle={3}
-                          dataKey="value"
-                        >
-                          {getSeverityData(selectedRepo.summary).map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
-                          ))}
-                        </Pie>
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </div>
-                  <div className="space-y-2">
-                    {getSeverityData(selectedRepo.summary).map((item) => (
-                      <div key={item.name} className="flex items-center justify-between text-sm">
-                        <div className="flex items-center gap-2">
-                          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
-                          <span className="text-gray-300">{item.name}</span>
-                        </div>
-                        <span className="font-semibold text-white">{item.value}</span>
-                      </div>
-                    ))}
-                  </div>
-                </Card>
+                  <div className="flex items-center gap-8">
+                    {/* Pie Chart - Left Side */}
+                    <div className="flex-shrink-0" style={{ width: '250px', height: '250px' }}>
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={getSeverityData(selectedRepo.summary)}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={60}
+                            outerRadius={100}
+                            paddingAngle={4}
+                            dataKey="value"
+                          >
+                            {getSeverityData(selectedRepo.summary).map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={entry.color} />
+                            ))}
+                          </Pie>
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </div>
 
-                <Card className="p-6 bg-gray-900 border border-gray-600">
-                  <TypographySmall className="font-semibold text-gray-300 mb-4">STATUS OVERVIEW</TypographySmall>
-                  <div className="h-48 mb-4">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={getStatusData(selectedRepo.summary)}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={40}
-                          outerRadius={70}
-                          paddingAngle={3}
-                          dataKey="value"
-                        >
-                          {getStatusData(selectedRepo.summary).map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
-                          ))}
-                        </Pie>
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </div>
-                  <div className="space-y-2">
-                    {getStatusData(selectedRepo.summary).map((item) => (
-                      <div key={item.name} className="flex items-center justify-between text-sm">
-                        <div className="flex items-center gap-2">
-                          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
-                          <span className="text-gray-300">{item.name}</span>
-                        </div>
-                        <span className="font-semibold text-white">{item.value}</span>
+                    {/* Legend Details - Right Side */}
+                    <div className="flex-1 space-y-3">
+                      <div className="text-center mb-6">
+                        <div className="text-5xl font-bold text-white">{selectedRepo.summary.total}</div>
+                        <TypographyP className="text-gray-400 mt-2">Total Vulnerabilities</TypographyP>
                       </div>
-                    ))}
+                      
+                      <div className="space-y-3">
+                        {selectedRepo.summary.critical > 0 && (
+                          <div className="flex items-center justify-between p-3 rounded-lg bg-red-950/30 border border-red-900/50">
+                            <div className="flex items-center gap-3">
+                              <div className="w-4 h-4 rounded-full" style={{ backgroundColor: SEVERITY_COLORS.Critical }} />
+                              <span className="text-base font-semibold text-gray-100">Critical</span>
+                            </div>
+                            <span className="text-2xl font-bold text-white">{selectedRepo.summary.critical}</span>
+                          </div>
+                        )}
+                        {selectedRepo.summary.high > 0 && (
+                          <div className="flex items-center justify-between p-3 rounded-lg bg-orange-950/30 border border-orange-900/50">
+                            <div className="flex items-center gap-3">
+                              <div className="w-4 h-4 rounded-full" style={{ backgroundColor: SEVERITY_COLORS.High }} />
+                              <span className="text-base font-semibold text-gray-100">High</span>
+                            </div>
+                            <span className="text-2xl font-bold text-white">{selectedRepo.summary.high}</span>
+                          </div>
+                        )}
+                        {selectedRepo.summary.medium > 0 && (
+                          <div className="flex items-center justify-between p-3 rounded-lg bg-yellow-950/30 border border-yellow-900/50">
+                            <div className="flex items-center gap-3">
+                              <div className="w-4 h-4 rounded-full" style={{ backgroundColor: SEVERITY_COLORS.Medium }} />
+                              <span className="text-base font-semibold text-gray-100">Medium</span>
+                            </div>
+                            <span className="text-2xl font-bold text-white">{selectedRepo.summary.medium}</span>
+                          </div>
+                        )}
+                        {selectedRepo.summary.low > 0 && (
+                          <div className="flex items-center justify-between p-3 rounded-lg bg-gray-900/40 border border-gray-700/50">
+                            <div className="flex items-center gap-3">
+                              <div className="w-4 h-4 rounded-full" style={{ backgroundColor: SEVERITY_COLORS.Low }} />
+                              <span className="text-base font-semibold text-gray-100">Low</span>
+                            </div>
+                            <span className="text-2xl font-bold text-white">{selectedRepo.summary.low}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </Card>
               </div>
 
               {/* Summary Stats */}
               <div className="grid grid-cols-4 gap-4 mb-6">
-                <Card className="p-4 bg-gray-950 border border-gray-600">
+                <Card className="p-4 bg-background border border-gray-600">
                   <TypographySmall className="text-gray-400 mb-1">Total Issues</TypographySmall>
                   <div className="text-2xl font-bold text-white">{selectedRepo.summary.total}</div>
                 </Card>
-                <Card className="p-4 bg-gray-950 border border-gray-600">
+                <Card className="p-4 bg-background border border-gray-600">
                   <TypographySmall className="text-gray-400 mb-1">Critical</TypographySmall>
                   <div className="text-2xl font-bold text-white">{selectedRepo.summary.critical}</div>
                 </Card>
-                <Card className="p-4 bg-gray-950 border border-gray-600">
+                <Card className="p-4 bg-background border border-gray-600">
                   <TypographySmall className="text-gray-400 mb-1">Open</TypographySmall>
                   <div className="text-2xl font-bold text-white">{selectedRepo.summary.open}</div>
                 </Card>
-                <Card className="p-4 bg-gray-950 border border-gray-600">
+                <Card className="p-4 bg-background border border-gray-600">
                   <TypographySmall className="text-gray-400 mb-1">Resolved</TypographySmall>
                   <div className="text-2xl font-bold text-white">{selectedRepo.summary.resolved}</div>
                 </Card>
@@ -545,7 +509,7 @@ export default function Reports() {
                 <button className="flex-1 bg-gray-900 hover:bg-gray-800 text-white px-4 py-3 rounded-md transition-colors font-medium">
                   View All Issues
                 </button>
-                <button className="flex-1 border border-gray-600 hover:bg-gray-900 text-white px-4 py-3 rounded-md transition-colors font-medium">
+                <button className="flex-1 border border-gray-600 hover:bg-background text-white px-4 py-3 rounded-md transition-colors font-medium">
                   Download Report
                 </button>
               </div>
@@ -555,6 +519,24 @@ export default function Reports() {
         </>
         )}
       </div>
+      
+      <style>{`
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .animate-fade-in {
+          animation: fade-in 0.6s ease-out forwards;
+          opacity: 0;
+        }
+      `}</style>
     </div>
   );
 }
