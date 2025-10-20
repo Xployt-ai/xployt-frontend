@@ -15,14 +15,6 @@ const userNavItems: NavItem[] = [
     name: 'Dashboard',
   },
   {
-    link: '/Issues',
-    name: 'Issues',
-  },
-  {
-    link: '/Assets',
-    name: 'Assets',
-  },
-  {
     link: '/Reports',
     name: 'Reports',
   },
@@ -107,14 +99,16 @@ const Navbar: React.FC = () => {
           </div>
         </div>
         {/* Right Section */}
-        <div className="hidden md:flex items-center space-x-2">
-          {loggedIn && user && (
-            <span className="text-muted-foreground text-sm font-medium">
-              Welcome, {user.username || user.email || 'User'}!
-            </span>
-          )}
-          {!loggedIn ? (
-            <>
+                  <div className="hidden md:flex items-center space-x-2">
+                {loggedIn && user && (
+                    <button
+                      onClick={() => navigate("/settings")}
+                      className="text-muted-foreground text-sm font-medium hover:text-foreground transition-colors duration-200 cursor-pointer"
+                    >
+                      Welcome, {user.username || user.email || "User"}!
+                    </button>
+                  )}
+                  {!loggedIn ? (            <>
               <Button
                 onClick={handleAuthClick}
                 className="h-auto px-4 py-1.5 text-sm"

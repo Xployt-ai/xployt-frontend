@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {Loader2, FileText, AlertTriangle, Target,  TrendingUp, TrendingDown} from "lucide-react";
+import {FileText, AlertTriangle, Target,  TrendingUp, TrendingDown} from "lucide-react";
 import {ProjectCard} from "@/components/ProjectCard.tsx";
 import {SearchBar} from "@/components/SearchBar.tsx";
 import {repoEndpoints} from "@/data/network/repo.ts";
@@ -9,7 +9,6 @@ import { Badge } from "@/components/ui/badge.tsx";
 
 const Dashboard: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
   const [repositories, setRepositories] = useState<Repo[]>([]);
 
@@ -42,10 +41,8 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     const getRepositories = async () => {
-      setIsLoading(true)
       console.debug("Fetching repositories...");
       const repos = await repoEndpoints.getRepos();
-      setIsLoading(false)
       return repos;
     };
     getRepositories()
@@ -72,7 +69,11 @@ const Dashboard: React.FC = () => {
           <h2 className="text-2xl font-semibold mb-4">Welcome back, Developer</h2>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {metrics.map((metric, index) => (
-              <Card key={index} className="transition-all hover:shadow-lg">
+              <Card 
+                key={index} 
+                className="transition-all duration-300 hover:shadow-lg hover:shadow-primary/20 hover:scale-105 hover:border-primary/50 cursor-pointer animate-fade-in"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
                 <CardContent >
                   <div className="flex items-start justify-between">
                     <div className="space-y-2">
@@ -92,7 +93,7 @@ const Dashboard: React.FC = () => {
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <metric.icon className="h-8 w-8 text-muted-foreground" />
+                      <metric.icon className="h-8 w-8 text-muted-foreground transition-transform duration-300 group-hover:scale-110" />
                       <Badge variant={metric.isPositive ? "default" : "secondary"}>
                         {metric.badge}
                       </Badge>
@@ -111,14 +112,15 @@ const Dashboard: React.FC = () => {
           isLoading={searchLoading}
         /></div>
 <div className="w-full grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-  {!isLoading && repositories.map(project => (
-    <ProjectCard key={project.github_repo_id} project={project}/>
-  ))}
-  {isLoading && (
-    <div className="flex items-center justify-center col-span-full py-12">
-      <Loader2 className="h-8 w-8 animate-spin text-gray-500"/>
+  {repositories.map((project, index) => (
+    <div 
+      key={project.github_repo_id}
+      className="animate-fade-in"
+      style={{ animationDelay: `${index * 80}ms` }}
+    >
+      <ProjectCard project={project}/>
     </div>
-  )}
+  ))}
 </div>
 
         {!searchLoading && repositories.length === 0 && searchQuery && (
@@ -130,6 +132,23 @@ const Dashboard: React.FC = () => {
         
       </div>
 
+      <style>{`
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .animate-fade-in {
+          animation: fade-in 0.5s ease-out forwards;
+          opacity: 0;
+        }
+      `}</style>
     </div>
   );
 };
