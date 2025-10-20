@@ -34,7 +34,7 @@ const Footer = () => {
           </div>
           <div className="flex items-center text-[#E0E0E0] mb-2">
             <FaPhone className="w-5 h-5 mr-2" />
-            +9411XXXXXXX
+            +94768467014
           </div>
           <div className="text-[#E0E0E0]">Xployt Co, Colombo, Sri Lanka</div>
         </div>
