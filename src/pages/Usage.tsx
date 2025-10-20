@@ -53,7 +53,7 @@ export default function Usage() {
       })
       .reduce((sum: number, tx: CreditTransaction) => sum + Number(tx.amount), 0);
     
-    // Calculate tokens SPENT (negative amounts or debit transactions)
+    // Calculate tokens SPENT (negative amounts or debit transactions, minus refunds)
     const usageValue = transactions
       .filter((tx: CreditTransaction) => {
         const txDate = parseISO(tx.created_at);
@@ -63,10 +63,21 @@ export default function Usage() {
       })
       .reduce((sum: number, tx: CreditTransaction) => sum + Math.abs(Number(tx.amount)), 0);
     
+    // Subtract refunds from usage (refunds reduce the spent amount)
+    const refundValue = transactions
+      .filter((tx: CreditTransaction) => {
+        const txDate = parseISO(tx.created_at);
+        const txType = tx.transaction_type.toLowerCase();
+        return isSameDay(txDate, dateObj) && txType === 'scan_refund';
+      })
+      .reduce((sum: number, tx: CreditTransaction) => sum + Math.abs(Number(tx.amount)), 0);
+    
+    const netUsage = Math.max(0, usageValue - refundValue); // Ensure it doesn't go negative
+    
     return {
       date: dateStr,
       topup: Number(topupValue),
-      usage: Number(usageValue),
+      usage: Number(netUsage),
     };
   });
 
@@ -290,7 +301,7 @@ export default function Usage() {
                 <TableCell className="text-white">{format(parseISO(tx.created_at), 'MMM dd, yyyy')}</TableCell>
                 <TableCell>
                   <span className={`capitalize font-semibold ${
-                    tx.transaction_type.toLowerCase() === 'topup' || tx.transaction_type.toLowerCase() === 'pro_monthly' || tx.transaction_type.toLowerCase() === 'credit'
+                    tx.transaction_type.toLowerCase() === 'topup' || tx.transaction_type.toLowerCase() === 'pro_monthly' || tx.transaction_type.toLowerCase() === 'credit' || tx.transaction_type.toLowerCase() === 'scan_refund'
                       ? 'text-green-500' 
                       : 'text-red-500'
                   }`}>
@@ -299,11 +310,11 @@ export default function Usage() {
                 </TableCell>
                 <TableCell className="text-white">{tx.description || '-'}</TableCell>
                 <TableCell className={`text-right font-semibold ${
-                  tx.transaction_type.toLowerCase() === 'topup' || tx.transaction_type.toLowerCase() === 'pro_monthly' || tx.transaction_type.toLowerCase() === 'credit'
+                  tx.transaction_type.toLowerCase() === 'topup' || tx.transaction_type.toLowerCase() === 'pro_monthly' || tx.transaction_type.toLowerCase() === 'credit' || tx.transaction_type.toLowerCase() === 'scan_refund'
                     ? 'text-green-500' 
                     : 'text-red-500'
                 }`}>
-                  {tx.transaction_type.toLowerCase() === 'topup' || tx.transaction_type.toLowerCase() === 'pro_monthly' || tx.transaction_type.toLowerCase() === 'credit' ? '+' : '-'}{Math.abs(Number(tx.amount))}
+                  {tx.transaction_type.toLowerCase() === 'topup' || tx.transaction_type.toLowerCase() === 'pro_monthly' || tx.transaction_type.toLowerCase() === 'credit' || tx.transaction_type.toLowerCase() === 'scan_refund' ? '+' : '-'}{Math.abs(Number(tx.amount))}
                 </TableCell>
               </TableRow>
             ))}
