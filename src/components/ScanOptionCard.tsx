@@ -30,8 +30,8 @@ const ScanOptionCard = ({
     <Card
       onClick={onClick}
       className={cn(
-        "cursor-pointer transition border hover:border-primary hover:shadow-md flex flex-col justify-between h-full bg-background",
-        selected ? "border-primary bg-muted" : "bg-card"
+        "cursor-pointer transition border hover:border-primary hover:shadow-md flex flex-col justify-between h-full",
+        selected ? "border-primary bg-muted" : ""
       )}
     >
       <div className="px-5 space-y-2">

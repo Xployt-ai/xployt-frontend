@@ -49,7 +49,6 @@ export const options: ScanOption[] = [
     title: "LLM Deep Dive",
     description: "AI-powered security assessment",
     Icon: Cpu,
-    badge: "Pro",
     details: ["Duration: 15-20 min", "Resource: Medium"],
     scanner: ["llm_scanner"]
   },
@@ -57,7 +56,6 @@ export const options: ScanOption[] = [
     title: "Dynamic Scan",
     description: "Runtime security testing",
     Icon: Zap,
-    badge: "Pro",
     details: ["Duration: 20-30 min", "Resource: High"],
     scanner: ["dast_scanner"]
   }
