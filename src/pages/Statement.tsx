@@ -58,7 +58,7 @@ export default function PrivacyStatement() {
             </ul>
             <div className="mt-6 p-4 bg-green-900/30 border border-green-500/20 rounded-lg">
               <p className="text-green-300 font-semibold">
-                ✓ We NEVER sell, publicly share, or monetize your source code or personal data.
+                We NEVER sell, publicly share, or monetize your source code or personal data.
               </p>
             </div>
           </IconCard>
@@ -132,22 +132,18 @@ export default function PrivacyStatement() {
           <IconCard icon={<Shield />} title="How We Share Data">
             <div className="space-y-4">
               <SharingPoint 
-                emoji="🚫"
                 title="We DO NOT sell your data"
                 desc="Your code and personal information will never be sold to advertisers, data brokers, or third parties."
               />
               <SharingPoint 
-                emoji="📊"
                 title="Anonymized Research"
                 desc="We may use aggregated, anonymized vulnerability patterns to improve detection algorithms (no identifiable code or user data)."
               />
               <SharingPoint 
-                emoji="🔧"
                 title="Service Providers"
                 desc="We share minimal data with subprocessors like AWS (hosting), Stripe (billing), and email services — all bound by strict confidentiality agreements."
               />
               <SharingPoint 
-                emoji="⚖️"
                 title="Legal Compliance"
                 desc="We may disclose data if required by law, court order, or to protect against security threats."
               />
@@ -156,12 +152,12 @@ export default function PrivacyStatement() {
 
           <IconCard icon={<Lock />} title="Security Measures">
             <div className="grid md:grid-cols-2 gap-4">
-              <SecurityFeature icon="🔐" title="End-to-End Encryption" desc="TLS 1.3 for data in transit, AES-256 for data at rest" />
-              <SecurityFeature icon="🏝️" title="Isolated Sandboxes" desc="Code runs in containerized environments with no network access" />
-              <SecurityFeature icon="🛡️" title="Access Controls" desc="Role-based permissions and multi-factor authentication (MFA)" />
-              <SecurityFeature icon="🔍" title="Regular Audits" desc="Quarterly security reviews and penetration testing" />
-              <SecurityFeature icon="👁️" title="No Human Access" desc="Engineers cannot view your code without explicit permission" />
-              <SecurityFeature icon="📝" title="Audit Logs" desc="All data access is logged and monitored for suspicious activity" />
+              <SecurityFeature title="End-to-End Encryption" desc="TLS 1.3 for data in transit, AES-256 for data at rest" />
+              <SecurityFeature title="Isolated Sandboxes" desc="Code runs in containerized environments with no network access" />
+              <SecurityFeature title="Access Controls" desc="Role-based permissions and multi-factor authentication (MFA)" />
+              <SecurityFeature title="Regular Audits" desc="Quarterly security reviews and penetration testing" />
+              <SecurityFeature title="No Human Access" desc="Engineers cannot view your code without explicit permission" />
+              <SecurityFeature title="Audit Logs" desc="All data access is logged and monitored for suspicious activity" />
             </div>
           </IconCard>
 
@@ -180,7 +176,7 @@ export default function PrivacyStatement() {
           </IconCard>
 
           <div className="bg-gray-900/50 border border-yellow-500/20 rounded-2xl p-8">
-            <h3 className="text-yellow-300 text-2xl font-bold mb-4">⚠️ Important Disclosures</h3>
+            <h3 className="text-yellow-300 text-2xl font-bold mb-4">Important Disclosures</h3>
             <div className="space-y-4">
               <Disclosure 
                 title="Children's Privacy" 
@@ -198,7 +194,7 @@ export default function PrivacyStatement() {
           </div>
 
           <div className="bg-gray-900/50 border border-blue-500/20 rounded-2xl p-8 text-center">
-            <h3 className="text-white text-2xl font-bold mb-4">📬 Questions or Concerns?</h3>
+            <h3 className="text-white text-2xl font-bold mb-4">Questions or Concerns?</h3>
             <p className="text-gray-300 text-lg mb-6">
               We're here to help. Reach out to our privacy team anytime:
             </p>
@@ -298,10 +294,9 @@ function RightCard({ title, desc }) {
   );
 }
 
-function SharingPoint({ emoji, title, desc }) {
+function SharingPoint({ title, desc }) {
   return (
     <div className="flex items-start gap-4">
-      <span className="text-3xl flex-shrink-0">{emoji}</span>
       <div>
         <h4 className="text-white font-semibold text-lg mb-1">{title}</h4>
         <p className="text-gray-300 text-base leading-relaxed">{desc}</p>
@@ -310,10 +305,9 @@ function SharingPoint({ emoji, title, desc }) {
   );
 }
 
-function SecurityFeature({ icon, title, desc }) {
+function SecurityFeature({ title, desc }) {
   return (
     <div className="bg-gray-800 rounded-lg p-4 border border-white/10">
-      <div className="text-2xl mb-2">{icon}</div>
       <h4 className="text-white font-semibold text-base mb-1">{title}</h4>
       <p className="text-gray-400 text-sm">{desc}</p>
     </div>
