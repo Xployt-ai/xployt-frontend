@@ -8,7 +8,7 @@ const About = () => {
                     <img src="/map.png" alt="Team working" />
                 </div>
                 <div className="about-content">
-                    <div className="about-label">ABOUT US</div>
+                    {/* <div className="about-label">ABOUT US</div> */}
                     <h1 className="about-title">At Xployt.ai, we're on a mission to make modern web development secure</h1>
                     <p className="about-prose">
                         We know how it feels when security vulnerabilities slip into production. That sleepless night, 
