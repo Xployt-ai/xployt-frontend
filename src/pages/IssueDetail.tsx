@@ -186,7 +186,6 @@ const IssueDetail = () => {
   const { issueId } = useParams<{ issueId: string }>();
   const navigate = useNavigate();
   const [issue, setIssue] = useState<ScanResult | null>(null);
-  const [loading, setLoading] = useState(true);
 
   // Try to get repo from localStorage or default
   const [repo, setRepo] = useState<string>("");
@@ -210,8 +209,6 @@ const IssueDetail = () => {
       } catch (error) {
         console.error("Failed to fetch issue:", error);
         setIssue(null);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -373,21 +370,6 @@ app.use(cors({
       };
     }
   };
-
-  if (loading) {
-    return (
-      <div className="p-8 bg-black text-white min-h-screen">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-center justify-center min-h-[400px]">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-500 mx-auto mb-4"></div>
-              <TypographyP className="text-gray-500">Loading issue details...</TypographyP>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   if (!issue) {
     return (

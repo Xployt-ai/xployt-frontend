@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { GitBranch, Calendar, ChevronRight, Clock } from "lucide-react";
+import { Calendar, ChevronRight, Clock } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -283,7 +283,7 @@ export default function Reports() {
             return (
               <Card
                 key={repo.name}
-                className="p-6 bg-background border border-gray-600 hover:border-gray-500 transition-all cursor-pointer hover:shadow-xl hover:scale-[1.02] group animate-fade-in"
+                className="p-6 bg-background border border-gray-600 hover:border-primary/50 transition-all duration-300 cursor-pointer hover:shadow-2xl hover:shadow-primary/10 hover:scale-[1.03] group animate-fade-in"
                 style={{ animationDelay: `${index * 150}ms` }}
                 onClick={() => setSelectedRepo(repo)}
               >
@@ -291,15 +291,22 @@ export default function Reports() {
                 <div className="flex items-start justify-between mb-6">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <GitBranch className="w-5 h-5 text-gray-400 group-hover:text-gray-300 transition-colors" />
-                      <h2 className="text-2xl font-semibold">{repo.name}</h2>
+                      <div className="flex-shrink-0 w-5 h-5">
+                        <img 
+                          src="/FolderNoBG.png" 
+                          alt="Repository folder icon" 
+                          className="w-full h-full object-contain group-hover:scale-110 transition-all duration-300"
+                          onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                        />
+                      </div>
+                      <h2 className="text-2xl font-semibold group-hover:text-primary transition-colors duration-300">{repo.name}</h2>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-gray-400">
-                      <Calendar className="w-3 h-3" />
+                      <Calendar className="w-3 h-3 group-hover:scale-110 transition-transform duration-300" />
                       <span>{formatDate(repo.summary.lastScan)}</span>
                     </div>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-gray-500 group-hover:text-gray-300 group-hover:translate-x-1 transition-all" />
+                  <ChevronRight className="w-5 h-5 text-gray-500 group-hover:text-primary group-hover:translate-x-2 transition-all duration-300" />
                 </div>
 
                 {/* Severity Chart with Legend */}
@@ -330,42 +337,42 @@ export default function Reports() {
                     {/* Legend Details - Right Side */}
                     <div className="flex-1 space-y-3">
                       <div className="text-center mb-4">
-                        <div className="text-3xl font-bold text-white">{repo.summary.total}</div>
+                        <div className="text-3xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{repo.summary.total}</div>
                         <TypographySmall className="text-gray-400">Total Issues</TypographySmall>
                       </div>
                       
                       <div className="space-y-2">
                         {repo.summary.critical > 0 && (
-                          <div className="flex items-center justify-between p-2 rounded bg-red-950/20 border border-red-900/30">
+                          <div className="flex items-center justify-between p-2 rounded bg-red-950/20 border border-red-900/30 hover:bg-red-950/40 hover:border-red-800/50 transition-all duration-300 hover:scale-105">
                             <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 rounded-full" style={{ backgroundColor: SEVERITY_COLORS.Critical }} />
+                              <div className="w-3 h-3 rounded-full group-hover:scale-125 transition-transform duration-300" style={{ backgroundColor: SEVERITY_COLORS.Critical }} />
                               <span className="text-sm font-medium text-gray-200">Critical</span>
                             </div>
                             <span className="text-lg font-bold text-white">{repo.summary.critical}</span>
                           </div>
                         )}
                         {repo.summary.high > 0 && (
-                          <div className="flex items-center justify-between p-2 rounded bg-orange-950/20 border border-orange-900/30">
+                          <div className="flex items-center justify-between p-2 rounded bg-orange-950/20 border border-orange-900/30 hover:bg-orange-950/40 hover:border-orange-800/50 transition-all duration-300 hover:scale-105">
                             <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 rounded-full" style={{ backgroundColor: SEVERITY_COLORS.High }} />
+                              <div className="w-3 h-3 rounded-full group-hover:scale-125 transition-transform duration-300" style={{ backgroundColor: SEVERITY_COLORS.High }} />
                               <span className="text-sm font-medium text-gray-200">High</span>
                             </div>
                             <span className="text-lg font-bold text-white">{repo.summary.high}</span>
                           </div>
                         )}
                         {repo.summary.medium > 0 && (
-                          <div className="flex items-center justify-between p-2 rounded bg-yellow-950/20 border border-yellow-900/30">
+                          <div className="flex items-center justify-between p-2 rounded bg-yellow-950/20 border border-yellow-900/30 hover:bg-yellow-950/40 hover:border-yellow-800/50 transition-all duration-300 hover:scale-105">
                             <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 rounded-full" style={{ backgroundColor: SEVERITY_COLORS.Medium }} />
+                              <div className="w-3 h-3 rounded-full group-hover:scale-125 transition-transform duration-300" style={{ backgroundColor: SEVERITY_COLORS.Medium }} />
                               <span className="text-sm font-medium text-gray-200">Medium</span>
                             </div>
                             <span className="text-lg font-bold text-white">{repo.summary.medium}</span>
                           </div>
                         )}
                         {repo.summary.low > 0 && (
-                          <div className="flex items-center justify-between p-2 rounded bg-gray-900/30 border border-gray-700/30">
+                          <div className="flex items-center justify-between p-2 rounded bg-gray-900/30 border border-gray-700/30 hover:bg-gray-900/60 hover:border-gray-600/50 transition-all duration-300 hover:scale-105">
                             <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 rounded-full" style={{ backgroundColor: SEVERITY_COLORS.Low }} />
+                              <div className="w-3 h-3 rounded-full group-hover:scale-125 transition-transform duration-300" style={{ backgroundColor: SEVERITY_COLORS.Low }} />
                               <span className="text-sm font-medium text-gray-200">Low</span>
                             </div>
                             <span className="text-lg font-bold text-white">{repo.summary.low}</span>
@@ -393,7 +400,14 @@ export default function Reports() {
 
         {filteredRepos.length === 0 && (
           <Card className="p-12 text-center bg-background border border-gray-600">
-            <GitBranch className="w-12 h-12 text-gray-500 mx-auto mb-4" />
+            <div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center">
+              <img 
+                src="/FolderNoBG.png" 
+                alt="Repository folder icon" 
+                className="w-full h-full object-contain opacity-50"
+                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+              />
+            </div>
             <TypographyH2 className="mb-2 text-gray-300">No repositories found</TypographyH2>
             <TypographyP className="text-gray-400">Try adjusting your filters or search query</TypographyP>
           </Card>
@@ -412,7 +426,14 @@ export default function Reports() {
               <div className="flex justify-between items-start mb-6">
                 <div>
                   <div className="flex items-center gap-3 mb-1">
-                    <GitBranch className="w-5 h-5 text-gray-400" />
+                    <div className="flex-shrink-0 w-5 h-5">
+                      <img 
+                        src="/FolderNoBG.png" 
+                        alt="Repository folder icon" 
+                        className="w-full h-full object-contain"
+                        onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                      />
+                    </div>
                     <TypographyH2 className="mb-0 text-2xl">{selectedRepo.name}</TypographyH2>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-gray-400">
@@ -463,36 +484,36 @@ export default function Reports() {
                       
                       <div className="space-y-2">
                         {selectedRepo.summary.critical > 0 && (
-                          <div className="flex items-center justify-between p-2 rounded bg-red-950/30 border border-red-900/50">
+                          <div className="flex items-center justify-between p-2 rounded bg-red-950/30 border border-red-900/50 hover:bg-red-950/50 hover:border-red-800/70 hover:scale-105 transition-all duration-300 cursor-pointer">
                             <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 rounded-full" style={{ backgroundColor: SEVERITY_COLORS.Critical }} />
+                              <div className="w-3 h-3 rounded-full hover:scale-125 transition-transform duration-300" style={{ backgroundColor: SEVERITY_COLORS.Critical }} />
                               <span className="text-sm font-semibold text-gray-100">Critical</span>
                             </div>
                             <span className="text-xl font-bold text-white">{selectedRepo.summary.critical}</span>
                           </div>
                         )}
                         {selectedRepo.summary.high > 0 && (
-                          <div className="flex items-center justify-between p-2 rounded bg-orange-950/30 border border-orange-900/50">
+                          <div className="flex items-center justify-between p-2 rounded bg-orange-950/30 border border-orange-900/50 hover:bg-orange-950/50 hover:border-orange-800/70 hover:scale-105 transition-all duration-300 cursor-pointer">
                             <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 rounded-full" style={{ backgroundColor: SEVERITY_COLORS.High }} />
+                              <div className="w-3 h-3 rounded-full hover:scale-125 transition-transform duration-300" style={{ backgroundColor: SEVERITY_COLORS.High }} />
                               <span className="text-sm font-semibold text-gray-100">High</span>
                             </div>
                             <span className="text-xl font-bold text-white">{selectedRepo.summary.high}</span>
                           </div>
                         )}
                         {selectedRepo.summary.medium > 0 && (
-                          <div className="flex items-center justify-between p-2 rounded bg-yellow-950/30 border border-yellow-900/50">
+                          <div className="flex items-center justify-between p-2 rounded bg-yellow-950/30 border border-yellow-900/50 hover:bg-yellow-950/50 hover:border-yellow-800/70 hover:scale-105 transition-all duration-300 cursor-pointer">
                             <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 rounded-full" style={{ backgroundColor: SEVERITY_COLORS.Medium }} />
+                              <div className="w-3 h-3 rounded-full hover:scale-125 transition-transform duration-300" style={{ backgroundColor: SEVERITY_COLORS.Medium }} />
                               <span className="text-sm font-semibold text-gray-100">Medium</span>
                             </div>
                             <span className="text-xl font-bold text-white">{selectedRepo.summary.medium}</span>
                           </div>
                         )}
                         {selectedRepo.summary.low > 0 && (
-                          <div className="flex items-center justify-between p-2 rounded bg-gray-900/40 border border-gray-700/50">
+                          <div className="flex items-center justify-between p-2 rounded bg-gray-900/40 border border-gray-700/50 hover:bg-gray-900/70 hover:border-gray-600/70 hover:scale-105 transition-all duration-300 cursor-pointer">
                             <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 rounded-full" style={{ backgroundColor: SEVERITY_COLORS.Low }} />
+                              <div className="w-3 h-3 rounded-full hover:scale-125 transition-transform duration-300" style={{ backgroundColor: SEVERITY_COLORS.Low }} />
                               <span className="text-sm font-semibold text-gray-100">Low</span>
                             </div>
                             <span className="text-xl font-bold text-white">{selectedRepo.summary.low}</span>
@@ -506,19 +527,19 @@ export default function Reports() {
 
               {/* Summary Stats */}
               <div className="grid grid-cols-4 gap-3 mb-4">
-                <Card className="p-3 bg-background border border-gray-600">
+                <Card className="p-3 bg-background border border-gray-600 hover:border-primary/50 hover:scale-105 transition-all duration-300">
                   <TypographySmall className="text-gray-400 mb-0.5 text-xs">Total Issues</TypographySmall>
                   <div className="text-xl font-bold text-white">{selectedRepo.summary.total}</div>
                 </Card>
-                <Card className="p-3 bg-background border border-gray-600">
+                <Card className="p-3 bg-background border border-gray-600 hover:border-red-500/50 hover:scale-105 transition-all duration-300">
                   <TypographySmall className="text-gray-400 mb-0.5 text-xs">Critical</TypographySmall>
                   <div className="text-xl font-bold text-white">{selectedRepo.summary.critical}</div>
                 </Card>
-                <Card className="p-3 bg-background border border-gray-600">
+                <Card className="p-3 bg-background border border-gray-600 hover:border-blue-500/50 hover:scale-105 transition-all duration-300">
                   <TypographySmall className="text-gray-400 mb-0.5 text-xs">Open</TypographySmall>
                   <div className="text-xl font-bold text-white">{selectedRepo.summary.open}</div>
                 </Card>
-                <Card className="p-3 bg-background border border-gray-600">
+                <Card className="p-3 bg-background border border-gray-600 hover:border-green-500/50 hover:scale-105 transition-all duration-300">
                   <TypographySmall className="text-gray-400 mb-0.5 text-xs">Resolved</TypographySmall>
                   <div className="text-xl font-bold text-white">{selectedRepo.summary.resolved}</div>
                 </Card>
@@ -527,11 +548,11 @@ export default function Reports() {
               <div className="flex gap-2">
                 <button 
                   onClick={() => navigate(`/securitydashboard/${selectedRepo.scanId}`)}
-                  className="flex-1 bg-gray-900 hover:bg-gray-800 text-white px-3 py-2 rounded-md transition-colors font-medium text-sm"
+                  className="flex-1 bg-gray-900 hover:bg-primary hover:scale-105 text-white px-3 py-2 rounded-md transition-all duration-300 font-medium text-sm"
                 >
                   View All Issues
                 </button>
-                <button className="flex-1 border border-gray-600 hover:bg-background text-white px-3 py-2 rounded-md transition-colors font-medium text-sm">
+                <button className="flex-1 border border-gray-600 hover:bg-background hover:border-primary/50 hover:scale-105 text-white px-3 py-2 rounded-md transition-all duration-300 font-medium text-sm">
                   Download Report
                 </button>
               </div>
