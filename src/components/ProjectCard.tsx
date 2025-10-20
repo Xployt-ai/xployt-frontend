@@ -5,13 +5,38 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import type { Repo } from "@/data/models/repo.ts";
 import { formatRepoName } from "@/lib/utils.ts";
+import type { ScanCollection } from '@/data/models/scan_collection';
+import { scanCollectionEndpoints } from '@/data/network/scan_collection';
 
 export const ProjectCard = ({ project }: { project: Repo }) => {
   const navigate = useNavigate();
   const [scanningProject, setScanningProject] = useState('');
 
-  const handleClick = () => {
-    navigate(`/securitydashboard/${formatRepoName(project.name)}`);
+  const handleClick = async () => {
+    let scansData: ScanCollection[];
+    try {
+      scansData = await scanCollectionEndpoints.getUserCollections();
+    } catch (apiError) {
+      console.error("API error fetching scans:", apiError);
+      // Continue with empty array if API fails
+      scansData = [];
+    }
+
+    // Group collections by repository_name and keep only the latest collection per repository
+    const latestMap = new Map<string, ScanCollection>();
+    scansData.forEach((c) => {
+      const repo = c.repository_name || "Unknown Repository";
+      const existing = latestMap.get(repo);
+      const curTime = c.created_at ? new Date(c.created_at).getTime() : 0;
+      const existingTime = existing && existing.created_at ? new Date(existing.created_at).getTime() : 0;
+      if (!existing || curTime > existingTime) {
+        latestMap.set(repo, c);
+      }
+    });
+
+    const latestScan = latestMap.get(project.name);
+    // Keep only the latest scan collections per repository
+    navigate(`/securitydashboard/${latestScan?.id}`);
   };
 
   const lastScan = project.last_scan || "July 26, 2024, 10:30 AM";
