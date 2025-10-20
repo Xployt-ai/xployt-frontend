@@ -213,12 +213,12 @@ const Home = () => {
           <PricingCard
             plan="BASIC"
             price="FREE"
-            features={["Real-time Threat Monitoring", "Community support", "Limited scans per month"]}
+            features={["Real-time Threat Monitoring", "Community support", "500 Tkn on Login"]}
             buttonText="Get Started"
           />
           <PricingCard
             plan="STANDARD"
-            price="$5"
+            price="$20"
             per="/per month"
             features={["Unlimited scans", "Vulnerability Assessments", "Priority support", "Advanced reporting"]}
             buttonText="Purchase"

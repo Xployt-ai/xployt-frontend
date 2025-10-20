@@ -33,11 +33,10 @@ function App() {
   return (
     <BrowserRouter>
       <Navbar />
-      <main className="flex-1 bg-black">
+      <main className="flex-1 bg-background">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/pricing" element={<Pricing />} />
           <Route path="/docs" element={<Documentation />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/selectscan/:repo_name" element={<Selectscan />} />

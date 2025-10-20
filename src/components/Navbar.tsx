@@ -26,10 +26,6 @@ const guestNavItems: NavItem[] = [
     name: 'About Us',
   },
   {
-    link: '/bill',
-    name: 'Pricing',
-  },
-  {
     link: '/docs',
     name: 'Documents',
   },
