@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { Code2 } from "lucide-react";
 import type { Vulnerability } from "@/data/models/scan.ts";
 
 import ProjectDetailsCard from "@/components/ProjectDetailsCard";
@@ -14,6 +15,7 @@ import type { ScanCollection } from "@/data/models/scan_collection.ts";
 const SecurityDashboardPage = () => {
   const [results, setResults] = useState<Vulnerability[]>([]);
   const {collection_id} = useParams<{ collection_id: string }>();
+  const navigate = useNavigate();
   const [collection, setCollection] = useState<ScanCollection>({
     id: "",
     repository_name: "",
@@ -125,12 +127,31 @@ const SecurityDashboardPage = () => {
   const hasActiveFilters =
     !!searchTerm || selectedSeverity !== "All" || selectedStatus !== "All";
 
+  const handleViewCodebase = () => {
+    if (collection.repository_name) {
+      // Navigate to code viewer with repository name as query parameter
+      navigate(`/codeviewer?repo=${encodeURIComponent(collection.repository_name)}`);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background p-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className=" text-white text-4xl font-bold mb-8">
-          {collection.repository_name ? `${collection.repository_name} Security Overview` : "Project Security Overview"}
-        </h1>
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-white text-3xl font-bold">
+            {collection.repository_name ? `${collection.repository_name} Security Overview` : "Project Security Overview"}
+          </h1>
+          
+          {collection.repository_name && (
+            <button
+              onClick={handleViewCodebase}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors border border-slate-600 hover:border-slate-500"
+            >
+              <Code2 size={18} />
+              <span className="font-medium">View Codebase</span>
+            </button>
+          )}
+        </div>          
 
         <ProjectDetailsCard repo={collection.repository_name}/>
 

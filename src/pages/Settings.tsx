@@ -45,40 +45,32 @@ export default function SettingsPage() {
   const fetchUser = async () => {
     try {
       const userData: UserModel = await authEndpoints.getCurrentUser();
-
-
-      let plan = 'Free';
+      // Start from current plan and only update if subscription info is available
+      let nextPlan = user.plan;
       try {
         const pro = await subscriptionEndpoints.getProStatus();
         if (pro) {
-          if (pro.is_pro && !pro.is_cancelled) plan = 'Pro';
-          else if (pro.is_cancelled) plan = 'Expired';
+          if (pro.is_pro && !pro.is_cancelled) nextPlan = 'Pro';
+          else if (pro.is_cancelled) nextPlan = 'Expired';
+          else nextPlan = 'Free';
         }
       } catch (subErr) {
-        console.warn('Could not fetch subscription status, defaulting to Free', subErr);
+        console.warn('Could not fetch subscription status; keeping existing plan', subErr);
       }
 
-      setUser({
-        name: userData.username || 'User',
-        username: userData.username || 'user',
-        email: userData.email || 'user@example.com',
-        avatar: userData.username ? userData.username.charAt(0).toUpperCase() : 'U',
-        plan,
-        scansUsed: 47, // Default value, can be fetched from another endpoint if available
-        scansLimit: 100 // Default value, can be fetched from another endpoint if available
-      });
+      // Update only with values we actually received; keep existing values otherwise
+      setUser((prev) => ({
+        name: userData.username || prev.name,
+        username: userData.username || prev.username,
+        email: userData.email || prev.email,
+        avatar: userData.username ? userData.username.charAt(0).toUpperCase() : prev.avatar,
+        plan: nextPlan,
+        scansUsed: prev.scansUsed,
+        scansLimit: prev.scansLimit,
+      }));
     } catch (error) {
       console.error('Failed to fetch user data:', error);
-      // Keep default values on error
-      setUser({
-        name: 'Madushika Marapana',
-        username: 'madushika02',
-        email: 'madushika@example.com',
-        avatar: 'M',
-        plan: 'Free',
-        scansUsed: 47,
-        scansLimit: 100
-      });
+      // Do not overwrite with hard-coded defaults on error; keep existing state
     }
   };
 
@@ -159,18 +151,15 @@ interface NavItemProps {
   label: string;
   active?: boolean;
   onClick?: () => void;
-  danger?: boolean;
 }
 
-function NavItem({ icon, label, active, onClick, danger }: NavItemProps) {
+function NavItem({ icon, label, active, onClick }: NavItemProps) {
   return (
     <button
       onClick={onClick}
       className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
         active
           ? 'bg-slate-800 text-white'
-          : danger
-          ? 'text-red-400 hover:bg-red-500/10'
           : 'text-gray-400 hover:bg-slate-800/50 hover:text-white'
       }`}
     >
