@@ -254,7 +254,7 @@ function Timeline({ items }) {
     <div className="space-y-4">
       {items.map((item, i) => (
         <div key={i} className="flex items-start gap-4">
-          <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+          <div className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
             {item.step}
           </div>
           <p className="text-gray-300 text-lg leading-relaxed pt-1">{item.text}</p>
