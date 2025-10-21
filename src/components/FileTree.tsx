@@ -12,13 +12,14 @@ export default function FileTree({ files, repo, vulnerabilities, onFileOpen }: {
     else if (files && typeof files === 'object') list = [files as FileNode];
 
     return (
-      // allow horizontal scrolling for long file names
-      <ScrollArea className="h-full w-full overflow-x-auto">
-        <ul className="list-none pl-2 text-sm text-gray-200" style={{ minWidth: 'max-content' }}>
-          {list.map((file) => (
-            <FileNode key={file.name} file={file} level={0} repo={repo} parentPath={""} onFileOpen={onFileOpen} vulnerabilities={vulnerabilities} />
-          ))}
-        </ul>
+      <ScrollArea className="h-full w-full">
+        <div className="overflow-x-auto overflow-y-auto">
+          <ul className="list-none pl-2 text-sm text-gray-200 min-w-max">
+            {list.map((file) => (
+              <FileNode key={file.name} file={file} level={0} repo={repo} parentPath={""} onFileOpen={onFileOpen} vulnerabilities={vulnerabilities} />
+            ))}
+          </ul>
+        </div>
       </ScrollArea>
     )
   }
