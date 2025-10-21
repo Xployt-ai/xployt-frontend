@@ -120,7 +120,7 @@ const ScanningPage = () => {
             <ScanLiveSummary />
 
             {/* Scan Details */}
-            <ScanDetails scanFindings={scanFindings} />
+            {/*<ScanDetails scanFindings={scanFindings} />*/}
           </div>
 
           {/* Right Sidebar */}
@@ -136,12 +136,12 @@ const ScanningPage = () => {
             </div>
 
             {/* Scan Indicators */}
-            <div className="space-y-4">
-              <TypographyH2>Scan Indicators</TypographyH2>
-              {scanIndicators.map(([label, value], index) => (
-                <DetailItem key={index} label={label} value={value} />
-              ))}
-            </div>
+            {/*<div className="space-y-4">*/}
+            {/*  <TypographyH2>Scan Indicators</TypographyH2>*/}
+            {/*  {scanIndicators.map(([label, value], index) => (*/}
+            {/*    <DetailItem key={index} label={label} value={value} />*/}
+            {/*  ))}*/}
+            {/*</div>*/}
           </div>
         </div>
       </div>
