@@ -10,7 +10,8 @@ import "prismjs/components/prism-typescript";
 interface CodeViewerProps {
   code: string;
   language: string;
-  errors?: { line: number; message: string }[];
+  // errors may include an optional severity to render colored markers
+  errors?: { line: number; message: string; severity?: string }[];
 }
 
 export default function CodeViewer({
@@ -18,15 +19,39 @@ export default function CodeViewer({
   language,
   errors = [],
 }: CodeViewerProps) {
+  // ensure we use a Prism-supported language for highlighting and UI
+  const safeLang = Prism.languages[language] ? language : 'javascript';
   const highlighted = useMemo(() => {
-    const html = Prism.highlight(code, Prism.languages[language], language);
+    // ensure code is a string (Prism expects a string)
+    const codeStr = code;
+    // ensure language is available in Prism, fallback to javascript
+    const lang = safeLang;
+    const html = Prism.highlight(codeStr, Prism.languages[lang], lang);
 
+    const severityColors: Record<string, string> = {
+      CRITICAL: '#DC2626',
+      HIGH: '#EA580C',
+      MEDIUM: '#CA8A04',
+      LOW: '#6B7280',
+      INFO: '#6B7280',
+    };
     const lines = html.split("\n").map((line, index) => {
       const lineNumber = index + 1;
       const error = errors.find((e) => e.line === lineNumber);
+      // build gutter marker HTML if severity present
+      let gutterHtml = '';
+      if (error && error.severity) {
+        const key = String(error.severity).toUpperCase();
+        const color = severityColors[key] || '#6B7280';
+        gutterHtml = `<span class="gutter-marker" style="background:${color}" title="${key}"></span>`;
+      } else if (error) {
+        // default marker for errors without severity
+        gutterHtml = `<span class="gutter-marker" style="background:${severityColors.INFO}" title="INFO"></span>`;
+      }
 
       return `
         <div class="code-line ${error ? "error-line" : ""}">
+          ${gutterHtml}
           <span class="line-number">${lineNumber}</span>
           <span class="code-content">${line || "&nbsp;"}</span>
           ${error ? `<span class="error-message">💡 ${error.message}</span>` : ""}
@@ -39,18 +64,13 @@ export default function CodeViewer({
 
  return (
   <div className=" text-sm rounded-lg shadow-lg overflow-auto h-full min-h-0">
-    {/* Language label */}
-    <div className="px-3 py-1 text-xs font-semibold text-neutral-300 bg-neutral-800 border-b border-neutral-700 rounded-t-lg">
-      {language.charAt(0).toUpperCase() + language.slice(1)}
-    </div>
-
-    <pre className={`language-${language}`}>
+    <pre className={`language-${safeLang}`}>
       <code
         dangerouslySetInnerHTML={{ __html: highlighted }}
       />
     </pre>
 
-    <style jsx>{`
+    <style>{`
       pre {
         margin: 0;
         padding: 0.5rem;
@@ -69,6 +89,14 @@ export default function CodeViewer({
         line-height: 1;
         margin: 0;
         padding: 0;
+      }
+      .gutter-marker {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        margin-right: 0.5rem;
+        box-shadow: 0 0 0 2px rgba(0,0,0,0.2) inset;
       }
       .line-number {
         color: #555;
@@ -94,4 +122,4 @@ export default function CodeViewer({
   </div>
 );
 
-} 
+}

@@ -130,7 +130,7 @@ const SecurityDashboardPage = () => {
   const handleViewCodebase = () => {
     if (collection.repository_name) {
       // Navigate to code viewer with repository name as query parameter
-      navigate(`/codeviewer?repo=${encodeURIComponent(collection.repository_name)}`);
+      navigate(`/codeviewer?repo=${encodeURIComponent(collection.repository_name)}${collection_id ? `&collection_id=${encodeURIComponent(collection_id)}` : ""}`);
     }
   };
 

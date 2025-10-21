@@ -423,14 +423,7 @@ class Network {
     source.onerror = (err) => {
       handlers.onError?.(err);
       // Close if server closed connection
-      if (source.readyState === EventSource.CLOSED) {
-        try {
-          source.close();
-        } catch (e) {
-          // ignore
-        }
-        if (checkInterval) clearInterval(checkInterval);
-      }
+      source.close();
     };
 
     // When closed explicitly by caller, clear watchdog
