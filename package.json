@@ -9,7 +9,6 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "format": "prettier --write ./src",
-    "preinstall": "node preinstall.js"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",
